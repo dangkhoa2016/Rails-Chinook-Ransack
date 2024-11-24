@@ -1,0 +1,19 @@
+<div id='<%= dom_id(playlist_track) %>' class='card'>
+  <div class='card-header'>
+    Playlist Track: <%= link_to playlist_track.id, playlist_track %>
+  </div>
+
+  <div class='card-body'>
+    <p><strong>Playlist:</strong>
+      <%= link_to playlist_track.playlist.name, playlist_path(playlist_track.playlist) %>
+    </p>
+
+    <p><strong>Track:</strong>
+      <%= link_to playlist_track.track.name, track_path(playlist_track.track) %>
+    </p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this playlist track', playlist_track %>
+  </div>
+</div>

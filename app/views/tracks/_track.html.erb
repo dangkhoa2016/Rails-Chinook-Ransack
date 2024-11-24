@@ -1,0 +1,19 @@
+<div id='<%= dom_id(track) %>' class='card'>
+  <div class='card-header'>
+    <%= link_to track.name, track %>
+  </div>
+
+  <div class='card-body'>
+    <p><strong>Album:</strong> <%= link_to track.album.title, album_path(track.album) %> </p>
+    <p><strong>Media Type:</strong> <%= link_to track.media_type.name, media_type_path(track.media_type) %> </p>
+    <p><strong>Genre:</strong> <%= link_to track.genre.name, genre_path(track.genre) %> </p>
+    <p><strong>Composer:</strong> <%= track.composer %></p>
+    <p><strong>Milliseconds:</strong> <%= track.milliseconds %></p>
+    <p><strong>Bytes:</strong> <%= track.bytes %></p>
+    <p><strong>Unit Price:</strong> $<%= track.unit_price %></p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this track', track %>
+  </div>
+</div>

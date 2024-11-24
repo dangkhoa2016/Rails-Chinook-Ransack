@@ -1,0 +1,36 @@
+<div id='<%= dom_id(invoice_line) %>' class='card'>
+  <div class='card-header'>
+    Invoice ID: <%= link_to invoice_line.id, invoice_line %>
+  </div>
+
+  <div class='card-body'>
+    <p>
+      <strong>Invoice:</strong>
+      <%= link_to invoice_line.invoice_id, invoice_path(invoice_line.invoice_id) %>
+    </p>
+
+    <p>
+      <strong>Track:</strong>
+      <%= link_to invoice_line.track.name, track_path(invoice_line.track) %>
+    </p>
+
+    <p>
+      <strong>Unit Price:</strong>
+      <%= number_to_currency(invoice_line.unit_price) %>
+    </p>
+
+    <p>
+      <strong>Quantity:</strong>
+      <%= invoice_line.quantity %>
+    </p>
+
+    <p>
+      <strong>Total:</strong>
+      <%= number_to_currency(invoice_line.unit_price * invoice_line.quantity) %>
+    </p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this invoice line', invoice_line %>
+  </div>
+</div>

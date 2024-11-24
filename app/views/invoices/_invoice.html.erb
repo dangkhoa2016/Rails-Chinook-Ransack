@@ -1,0 +1,51 @@
+<div id='<%= dom_id(invoice) %>' class='card'>
+  <div class='card-header'>
+  Invoice: <%= link_to invoice.id, invoice %>
+  </div>
+
+  <div class='card-body'>
+    <p>
+      <strong>Customer:</strong>
+      <%= link_to invoice.customer.full_name, customer_path(invoice.customer) %>
+    </p>
+
+    <p>
+      <strong>Invoice Date:</strong>
+      <%= invoice.invoice_date.strftime('%B %d, %Y') %>
+    </p>
+
+    <p>
+      <strong>Billing Address:</strong>
+      <%= invoice.billing_address %>
+    </p>
+
+    <p>
+      <strong>Billing City:</strong>
+      <%= invoice.billing_city %>
+    </p>
+
+    <p>
+      <strong>Billing State:</strong>
+      <%= invoice.billing_state %>
+    </p>
+
+    <p>
+      <strong>Billing Country:</strong>
+      <%= invoice.billing_country %>
+    </p>
+
+    <p>
+      <strong>Billing Postal Code:</strong>
+      <%= invoice.billing_postal_code %>
+    </p>
+
+    <p>
+      <strong>Total:</strong>
+      <%= number_to_currency(invoice.total) %>
+    </p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this invoice', invoice %>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div style='color: green'>
+  <%= notice %>
+</div>
+
+<div class='d-flex justify-content-between align-items-center'>
+  <h1 class='mb-0'>Playlist Tracks</h1>
+  <%= link_to 'New', new_playlist_track_path, class: 'btn btn-primary' %>
+</div>
+
+<div id='playlist_tracks' class='my-4 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4'>
+  <% @playlist_tracks.each do |playlist_track| %>
+    <div class='col'>
+      <%= render playlist_track %>
+    </div>
+  <% end %>
+</div>
+
+<div class='pagination'>
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>
+
+<%= link_to 'New playlist track', new_playlist_track_path %>

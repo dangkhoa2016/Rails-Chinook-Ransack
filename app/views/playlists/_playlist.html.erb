@@ -1,0 +1,16 @@
+<div id='<%= dom_id(playlist) %>' class='card'>
+  <div class='card-header'>
+    <%= playlist.name %>
+  </div>
+  
+  <div class='card-body'>
+    <h4 class='card-title'>More info</h4>
+
+    <p><strong>Created at:</strong> <%= playlist.created_at %></p>
+    <p><strong>Updated at:</strong> <%= playlist.updated_at %></p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this playlist', playlist %>
+  </div>
+</div>

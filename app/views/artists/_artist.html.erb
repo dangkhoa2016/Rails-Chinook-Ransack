@@ -1,0 +1,16 @@
+<div id='<%= dom_id artist %>' class='card'>
+  <div class='card-header'>
+    <%= artist.name %>
+  </div>
+  
+  <div class='card-body'>
+    <h4 class='card-title'>More info</h4>
+
+    <p><strong>Created at:</strong> <%= artist.created_at %></p>
+    <p><strong>Updated at:</strong> <%= artist.updated_at %></p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this artist', artist %>
+  </div>
+</div>

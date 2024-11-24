@@ -1,0 +1,17 @@
+
+<div id='<%= dom_id(media_type) %>' class='card'>
+  <div class='card-header'>
+    <%= media_type.name %>
+  </div>
+  
+  <div class='card-body'>
+    <h4 class='card-title'>More info</h4>
+
+    <p><strong>Created at:</strong> <%= media_type.created_at %></p>
+    <p><strong>Updated at:</strong> <%= media_type.updated_at %></p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this media type', media_type %>
+  </div>
+</div>
