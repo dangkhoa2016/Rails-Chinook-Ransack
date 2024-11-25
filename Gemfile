@@ -75,3 +75,5 @@ end
 
 
 gem 'pagy', '~> 9.3'
+
+gem "ransack", "~> 4.2"
