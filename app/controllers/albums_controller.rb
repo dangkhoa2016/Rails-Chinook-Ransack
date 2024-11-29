@@ -2,8 +2,25 @@ class AlbumsController < ApplicationController
   before_action :set_album, only: %i[ show edit update destroy ]
 
   # GET /albums or /albums.json
+  def index2
+    @q = Album.includes(:artist).ransack(params[:q])
+
+    @albums = @q.result(distinct: true)
+
+    @pagy, @albums = pagy(@albums)
+  end
+
   def index
-    @pagy, @albums = pagy(Album.includes(:artist).all)
+    # Get search parameters from the URL
+    title_cont = params[:title] || ''
+    artist_name_cont = params[:artist_name] || ''
+
+    # Use ransack or ActiveRecord queries to filter the results based on those parameters
+    @q = Album.includes(:artist).ransack(title_cont: title_cont, artist_name_cont: artist_name_cont)
+
+    @albums = @q.result(distinct: true)
+
+    @pagy, @albums = pagy(@albums)
   end
 
   # GET /albums/1 or /albums/1.json

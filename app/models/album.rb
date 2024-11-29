@@ -11,11 +11,37 @@ class Album < ApplicationRecord
   has_many :support_reps, through: :customers, source: :support_rep
 
 
-  def self.ransackable_attributes(auth_object = nil)
-    ['id', 'title', 'artist_id', 'created_at', 'updated_at']
-  end
+  class << self
+    def ransackable_attributes(auth_object = nil)
+      ['id', 'title', 'artist_id', 'created_at', 'updated_at']
+    end
 
-  def self.ransackable_associations(auth_object = nil)
-    ['artist', 'tracks', 'genres', 'media_types', 'invoice_lines', 'invoices', 'customers', 'playlist_tracks', 'playlists', 'support_reps']
+    def ransackable_associations(auth_object = nil)
+      ['artist', 'tracks', 'genres', 'media_types', 'invoice_lines', 'invoices', 'customers', 'playlist_tracks', 'playlists', 'support_reps']
+    end
+
+    def top_most_popular_artist_ids(has_more_than_albums = 5)
+      Album.group('artist_id').having("count_id >= #{has_more_than_albums}").order('count_id desc').count('id')&.keys
+    end
+
+    def first_of_most_popular_artist_id(has_more_than_albums = 5)
+      top_most_popular_artist_ids(has_more_than_albums).first
+    end
+
+    def last_of_most_popular_artist_id(has_more_than_albums = 5)
+      top_most_popular_artist_ids(has_more_than_albums).last
+    end
+
+    def least_most_popular_artist_ids(has_less_than_albums = 5)
+      Album.group('artist_id').having("count_id <= #{has_less_than_albums}").order('count_id desc').count('id')&.keys
+    end
+
+    def first_of_least_popular_artist_id(has_more_than_albums = 5)
+      least_most_popular_artist_ids(has_more_than_albums).first
+    end
+
+    def last_of_least_popular_artist_id(has_more_than_albums = 5)
+      least_most_popular_artist_ids(has_more_than_albums).last
+    end
   end
 end

@@ -6,24 +6,15 @@
   <%= link_to 'New', new_album_path, class: 'btn btn-primary' %>
 </div>
 
-<div class='card'>
-  <div class='card-body'>
-    <h5>Add search fields</h5>
-    <div>
-      <%= select_tag 'search_template', options_for_select(search_fields_for_select, params[:search]), class: 'form-select' %>
-    </div>
-  </div>
-</div>
-
-<%= form_with url: albums_path, method: :get, local: true do |f| %>
+<%= search_form_for @q do |f| %>
   <div>
-    <%= f.label :title, "Album title" %>
-    <%= f.text_field :title, value: params[:title] %>
+    <%= f.label :title_cont, "Album title" %>
+    <%= f.text_field :title_cont %>
   </div>
 
   <div>
-    <%= f.label :artist_name, "Artist name" %>
-    <%= f.text_field :artist_name, value: params[:artist_name] %>
+    <%= f.label :artist_name_cont, "Artist name" %>
+    <%= f.text_field :artist_name_cont %>
   </div>
 
   <div>
