@@ -1,0 +1,24 @@
+
+<h1>Home#index</h1>
+
+<div class='row'>
+  <div class='col'>
+    <label for="pet-select">Choose a pet:</label>
+    <div data-controller="choices">
+      <select name="pets" id="pet-select" class='d-none'
+        data-placeholder='Choose a pet...' data-choices-target='select'>
+        <option value="dog">Dog</option>
+        <option value="cat">Cat</option>
+        <option value="hamster">Hamster</option>
+        <option value="parrot">Parrot</option>
+        <option value="spider">Spider</option>
+        <option value="goldfish">Goldfish</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<%= turbo_frame_tag 'test' do %>
+  <h4>Test</h4>
+  <p>Test content</p>
+<% end %>

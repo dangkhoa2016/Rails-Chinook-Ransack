@@ -9,8 +9,10 @@
 <div class='card'>
   <div class='card-body'>
     <h5>Add search fields</h5>
-    <div>
-      <%= select_tag 'search_template', options_for_select(search_fields_for_select, params[:search]), class: 'form-select' %>
+    <div id='filter-control' data-controller='choices'>
+      <%= select_tag 'search_template',
+        options_for_select(search_fields_for_select, params[:search]),
+        data: { 'choices-target': 'select', placeholder: 'Choose a filter' } %>
     </div>
   </div>
 </div>
@@ -44,3 +46,22 @@
 </div>
 
 <%= link_to 'New album', new_album_path %>
+
+<script>
+function waitForStimulus(callback) {
+  if (window.Stimulus) {
+    if (callback) callback();
+  } else {
+    setTimeout(function() {
+      waitForStimulus(callback);
+    }, 100)
+  }
+}
+
+waitForStimulus(function() {
+  const select = document.querySelector('#filter-control select');
+  select.addEventListener('change', function() {
+    console.log('change', this, this.value);
+  });
+});
+</script>

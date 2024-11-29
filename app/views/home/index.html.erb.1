@@ -1,0 +1,190 @@
+<div class='row mt-4'>
+  <div class='col'>
+    <label for="my-select">Choose a pet:</label>
+
+    <select name="pets" id="my-select" class='d-none'
+      data-placeholder='Choose a pet...'>
+      <option disabled data-label-class='search-hint' value="">Enter more than 1 character</option>
+    </select>
+  </div>
+</div>
+
+<style>
+[data-label-class="search-hint"] {
+  display: none;
+}
+</style>
+
+<script>
+function init() {
+  let currentPage = 1;
+  const itemsPerPage = 10;
+  let isLoading = false;
+  let hasMoreData = true;
+  let triggerSearch = false;
+	let keyword = '';
+
+  // Fetch data function
+  const fetchData = () => {
+    return fetch(`/home/test?page=${currentPage}&per_page=${itemsPerPage}&keyword=${keyword || ''}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.length < itemsPerPage) {
+          hasMoreData = false;
+        }
+
+        return data.map(item => ({
+          value: item.value,
+          label: item.label
+        }));
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        return [];
+      });
+  };
+
+  // Check if the dropdown is scrolled to the bottom
+  function checkDropdownScroll() {
+    if (!hasMoreData) {
+      return;
+    }
+
+    const scrollableElement = choices.choiceList.element;
+    const bottomOfDropdown = scrollableElement.scrollHeight - scrollableElement.scrollTop === scrollableElement.clientHeight;
+
+    if (bottomOfDropdown && !isLoading) {
+      isLoading = true;
+      currentPage++;
+
+      const currentScrollTop = scrollableElement.scrollTop;
+
+      choices.setChoices(fetchData, 'value', 'label', false).then((xx) => {
+        console.log('Data loaded', xx);
+      });
+
+      isLoading = false;
+    }
+  }
+
+  // Function to handle the keyup event
+  function handleKeyUp(event) {
+    // Clear any existing timeout (this needs to be within the function to clear it for each keyup)
+    if (handleKeyUp.timeout) {
+      clearTimeout(handleKeyUp.timeout);
+    }
+
+    // Set a new timeout to trigger after 500ms (or your desired delay)
+    handleKeyUp.timeout = setTimeout(() =>{
+      handleSearch(event);
+    }, 300);
+  }
+
+  function showSearchHint(message) {
+		const hintElement = choices.choiceList.element.querySelector('[data-label-class="search-hint"]');
+		const hintText = hintElement.querySelector('.search-hint');
+		hintElement.style.display = 'block';
+		hintText.innerText = message;
+	}
+
+	function hideSearchHint() {
+		const hintElement = choices.choiceList.element.querySelector('[data-label-class="search-hint"]');
+		hintElement.style.display = 'none';
+	}
+
+	function toggleSelectableItems(displayStyle) {
+		choices.choiceList.element.querySelectorAll('[data-choice-selectable]').forEach(item => {
+			item.style.display = displayStyle;
+		});
+	}
+
+	function setOptionItems(displaySearchHint = false) {
+		choices._store._state.choices = choices._store._state.choices.filter(item => item.labelClass?.includes('search-hint'));
+		// delete all option tags
+		element.querySelectorAll(':not([data-label-class="search-hint"],[selected]').forEach(item => item.remove());
+		toggleSelectableItems('none');
+		showSearchHint(displaySearchHint ? `Searching for "${keyword}"...` : 'Loading...');
+
+		choices.setChoices(fetchData, 'value', 'label', false).then(() => {
+			hideSearchHint();
+		});
+	}
+
+	function handleSearch(event) {
+		keyword = event.target.value;
+
+		// No search value
+		if (keyword.length === 0) {
+			console.log('Resetting the dropdown');
+			hideSearchHint();
+
+			if (triggerSearch) {
+				currentPage = 1;
+				hasMoreData = true;
+				triggerSearch = false;
+				setOptionItems();
+			} else {
+				// Show all items
+				toggleSelectableItems('block');
+			}
+			return;
+		}
+
+		// Search with 1 or fewer characters
+		if (keyword.length <= 1) {
+			// Show the custom item and hide others
+			toggleSelectableItems('none');
+			showSearchHint('Enter more than 1 character');
+			return;
+		}
+
+		// Search with more than 1 character
+		currentPage = 1;
+		hasMoreData = true;
+		triggerSearch = true;
+		setOptionItems(true);
+	}
+
+	
+  const element = document.getElementById('my-select');
+  const choices = new Choices(element, {
+    resetScrollPosition: false,
+    searchChoices: false,
+    searchFloor: 1,
+    callbackOnInit: function() {
+      // Load initial data for the first page
+      this.setChoices(fetchData, 'value', 'label', false);
+
+      // Attach the scroll event to the dropdown
+      this.choiceList.element.addEventListener('scroll', checkDropdownScroll);
+
+      console.log('Choices initialized', this);
+    },
+  });
+
+  element.addEventListener('hideDropdown', function(v) {
+    choices.choiceList.scrollToTop();
+  });
+
+  element.addEventListener('change', function(v) {
+		if (keyword) {
+			currentPage = 1;
+			keyword = null;
+			triggerSearch = true;
+			hasMoreData = true;
+		}
+	});
+
+  element.addEventListener('showDropdown', function(v) {
+		if (triggerSearch) {
+			triggerSearch = false;
+			setOptionItems();
+		}
+  });
+  choices.input.element.addEventListener('keyup', handleKeyUp);
+
+  window.choices = choices;
+}
+
+setTimeout(init, 1000);
+</script>

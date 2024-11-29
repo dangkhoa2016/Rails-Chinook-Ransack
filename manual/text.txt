@@ -1,2 +1,2 @@
-rm -rf /home/gmanley943/rails-chinook-ransack/storage/development*
+rm -rf ./storage/development*
 rails db:migrate db:seed_with_sql_log
