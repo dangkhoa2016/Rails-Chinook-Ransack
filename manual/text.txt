@@ -1,0 +1,2 @@
+rm -rf ./storage/development*
+rails db:migrate db:seed_with_sql_log
