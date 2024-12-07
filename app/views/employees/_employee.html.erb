@@ -1,72 +1,26 @@
-<div id="<%= dom_id employee %>">
-  <p>
-    <strong>Last name:</strong>
-    <%= employee.last_name %>
-  </p>
+<div id='<%= dom_id employee %>' class='card'>
+  <div class='card-header'>
+    <%= employee.full_name %>
+  </div>
 
-  <p>
-    <strong>First name:</strong>
-    <%= employee.first_name %>
-  </p>
+  <div class='card-body'>
+    <h4 class='card-title'>Details</h4>
+    
+    <p><strong>Email:</strong> <%= employee.email %></p>
+    <p><strong>Title:</strong> <%= employee.title %></p>
+    <p><strong>Reports to:</strong> <%= employee.reports_to %></p>
+    <p><strong>Birth date:</strong> <%= employee.birth_date %></p>
+    <p><strong>Hire date:</strong> <%= employee.hire_date %></p>
+    <p><strong>Address:</strong> <%= employee.address %></p>
+    <p><strong>City:</strong> <%= employee.city %></p>
+    <p><strong>State:</strong> <%= employee.state %></p>
+    <p><strong>Country:</strong> <%= employee.country %></p>
+    <p><strong>Postal code:</strong> <%= employee.postal_code %></p>
+    <p><strong>Phone:</strong> <%= employee.phone %></p>
+    <p><strong>Fax:</strong> <%= employee.fax %></p>
+  </div>
 
-  <p>
-    <strong>Email:</strong>
-    <%= employee.email %>
-  </p>
-
-  <p>
-    <strong>Title:</strong>
-    <%= employee.title %>
-  </p>
-
-  <p>
-    <strong>Reports to:</strong>
-    <%= employee.reports_to %>
-  </p>
-
-  <p>
-    <strong>Birth date:</strong>
-    <%= employee.birth_date %>
-  </p>
-
-  <p>
-    <strong>Hire date:</strong>
-    <%= employee.hire_date %>
-  </p>
-
-  <p>
-    <strong>Address:</strong>
-    <%= employee.address %>
-  </p>
-
-  <p>
-    <strong>City:</strong>
-    <%= employee.city %>
-  </p>
-
-  <p>
-    <strong>State:</strong>
-    <%= employee.state %>
-  </p>
-
-  <p>
-    <strong>Country:</strong>
-    <%= employee.country %>
-  </p>
-
-  <p>
-    <strong>Postal code:</strong>
-    <%= employee.postal_code %>
-  </p>
-
-  <p>
-    <strong>Phone:</strong>
-    <%= employee.phone %>
-  </p>
-
-  <p>
-    <strong>Fax:</strong>
-    <%= employee.fax %>
-  </p>
-
+  <div class='card-footer'>
+    <%= link_to 'Show this employee', employee %>
+  </div>
 </div>

@@ -1,14 +1,20 @@
-<p style="color: green"><%= notice %></p>
+<p style='color: green'><%= notice %></p>
 
-<h1>Tracks</h1>
+<div class='d-flex justify-content-between align-items-center mb-4'>
+  <h1 class='mb-0'>Tracks</h1>
+  <%= link_to 'New', new_track_path, class: 'btn btn-primary' %>
+</div>
 
-<div id="tracks">
+<div id='tracks' class='my-4 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4'>
   <% @tracks.each do |track| %>
-    <%= render track %>
-    <p>
-      <%= link_to "Show this track", track %>
-    </p>
+    <div class='col'>
+      <%= render track %>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New track", new_track_path %>
+<div class='pagination'>
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>
+
+<%= link_to 'New Track', new_track_path %>

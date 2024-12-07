@@ -3,7 +3,7 @@ class InvoiceLinesController < ApplicationController
 
   # GET /invoice_lines or /invoice_lines.json
   def index
-    @invoice_lines = InvoiceLine.all
+    @pagy, @invoice_lines = pagy(InvoiceLine.includes(:track).all)
   end
 
   # GET /invoice_lines/1 or /invoice_lines/1.json

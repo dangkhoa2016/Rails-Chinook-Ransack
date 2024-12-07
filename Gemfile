@@ -32,6 +32,9 @@ gem 'cssbundling-rails'
 # Bootstrap 5 for Rails [https://github.com/twbs/bootstrap-rubygem]
 gem 'bootstrap', '~> 5.3.3'
 
+# The Best Pagination Ruby Gem [https://github.com/ddnexus/pagy]
+gem 'pagy', '~> 9.3'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

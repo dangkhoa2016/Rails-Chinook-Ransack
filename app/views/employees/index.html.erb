@@ -1,14 +1,22 @@
-<p style="color: green"><%= notice %></p>
+<div style='color: green'>
+  <%= notice %>
+</div>
 
-<h1>Employees</h1>
+<div class='d-flex justify-content-between align-items-center'>
+  <h1 class='mb-0'>Employees</h1>
+  <%= link_to 'New', new_employee_path, class: 'btn btn-primary' %>
+</div>
 
-<div id="employees">
+<div id='employees' class='my-4 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4'>
   <% @employees.each do |employee| %>
-    <%= render employee %>
-    <p>
-      <%= link_to "Show this employee", employee %>
-    </p>
+    <div class='col'>
+      <%= render employee %>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New employee", new_employee_path %>
+<div class='pagination'>
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>
+
+<%= link_to 'New employee', new_employee_path %>

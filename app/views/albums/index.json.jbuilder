@@ -1,1 +1,1 @@
-json.array! @albums, partial: "albums/album", as: :album
+json.array! @albums, partial: 'albums/album', as: :album

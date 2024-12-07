@@ -1,7 +1,16 @@
-<div id="<%= dom_id genre %>">
-  <p>
-    <strong>Name:</strong>
+<div id='<%= dom_id(genre) %>' class='card'>
+  <div class='card-header'>
     <%= genre.name %>
-  </p>
+  </div>
+  
+  <div class='card-body'>
+    <h4 class='card-title'>More info</h4>
 
+    <p><strong>Created at:</strong> <%= genre.created_at %></p>
+    <p><strong>Updated at:</strong> <%= genre.updated_at %></p>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this genre', genre %>
+  </div>
 </div>

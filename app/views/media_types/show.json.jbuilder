@@ -1,1 +1,1 @@
-json.partial! "media_types/media_type", media_type: @media_type
+json.partial! 'media_types/media_type', media_type: @media_type

@@ -3,7 +3,7 @@ class PlaylistTracksController < ApplicationController
 
   # GET /playlist_tracks or /playlist_tracks.json
   def index
-    @playlist_tracks = PlaylistTrack.all
+    @pagy, @playlist_tracks = pagy(PlaylistTrack.includes(:track, :playlist).all)
   end
 
   # GET /playlist_tracks/1 or /playlist_tracks/1.json

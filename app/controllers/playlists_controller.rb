@@ -3,7 +3,7 @@ class PlaylistsController < ApplicationController
 
   # GET /playlists or /playlists.json
   def index
-    @playlists = Playlist.all
+    @pagy, @playlists = pagy(Playlist.all)
   end
 
   # GET /playlists/1 or /playlists/1.json

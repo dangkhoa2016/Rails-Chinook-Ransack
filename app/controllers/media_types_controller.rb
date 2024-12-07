@@ -3,7 +3,7 @@ class MediaTypesController < ApplicationController
 
   # GET /media_types or /media_types.json
   def index
-    @media_types = MediaType.all
+    @pagy, @media_types = pagy(MediaType.all)
   end
 
   # GET /media_types/1 or /media_types/1.json

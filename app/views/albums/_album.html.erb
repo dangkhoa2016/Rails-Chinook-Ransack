@@ -1,12 +1,17 @@
-<div id="<%= dom_id album %>">
-  <p>
-    <strong>Title:</strong>
+<div id='<%= dom_id album %>' class='card'>
+  <div class='card-header'>
     <%= album.title %>
-  </p>
+  </div>
+  
+  <div class='card-body'>
+    <h4 class='card-title'>More info</h4>
+    
+    <p><strong>Artist:</strong> <%= album.artist.name %></p>
+    <p><strong>Created at:</strong> <%= album.created_at %></p>
+    <p><strong>Updated at:</strong> <%= album.updated_at %></p>
+  </div>
 
-  <p>
-    <strong>Artist:</strong>
-    <%= album.artist_id %>
-  </p>
-
+  <div class='card-footer text-body-secondary'>
+    <%= link_to 'Show this album', album %>
+  </div>
 </div>

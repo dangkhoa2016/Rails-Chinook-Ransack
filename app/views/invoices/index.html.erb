@@ -1,14 +1,20 @@
-<p style="color: green"><%= notice %></p>
+<p style='color: green'><%= notice %></p>
 
-<h1>Invoices</h1>
+<div class='d-flex justify-content-between align-items-center mb-4'>
+  <h1 class='mb-0'>Invoices</h1>
+  <%= link_to 'New', new_invoice_path, class: 'btn btn-primary' %>
+</div>
 
-<div id="invoices">
+<div id='invoices' class='my-4 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4'>
   <% @invoices.each do |invoice| %>
-    <%= render invoice %>
-    <p>
-      <%= link_to "Show this invoice", invoice %>
-    </p>
+    <div class='col'>
+      <%= render invoice %>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New invoice", new_invoice_path %>
+<div class='pagination'>
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>
+
+<%= link_to 'New invoice', new_invoice_path %>

@@ -3,7 +3,7 @@ class GenresController < ApplicationController
 
   # GET /genres or /genres.json
   def index
-    @genres = Genre.all
+    @pagy, @genres = pagy(Genre.all)
   end
 
   # GET /genres/1 or /genres/1.json
