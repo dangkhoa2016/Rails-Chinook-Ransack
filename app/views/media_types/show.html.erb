@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @media_type %>
+
+<div>
+  <%= link_to "Edit this media type", edit_media_type_path(@media_type) %> |
+  <%= link_to "Back to media types", media_types_path %>
+
+  <%= button_to "Destroy this media type", @media_type, method: :delete %>
+</div>

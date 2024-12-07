@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Invoice lines</h1>
+
+<div id="invoice_lines">
+  <% @invoice_lines.each do |invoice_line| %>
+    <%= render invoice_line %>
+    <p>
+      <%= link_to "Show this invoice line", invoice_line %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New invoice line", new_invoice_line_path %>

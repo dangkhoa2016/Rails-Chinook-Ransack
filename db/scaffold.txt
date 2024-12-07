@@ -1,0 +1,21 @@
+rails generate scaffold Album title:string artist:references --no-migration
+
+rails generate scaffold Artist name:string --no-migration
+
+rails generate scaffold Customer first_name:string last_name:string company:string address:string city:string state:string country:string postal_code:string phone:string fax:string email:string support_rep:references --no-migration
+
+rails generate scaffold Employee last_name:string first_name:string email:string title:string reports_to:integer birth_date:date hire_date:datetime address:string city:string state:string country:string postal_code:string phone:string fax:string --no-migration
+
+rails generate scaffold Genre name:string --no-migration
+
+rails generate scaffold InvoiceLine invoice:references track:references unit_price:integer quantity:integer --no-migration
+
+rails generate scaffold Invoice customer:references invoice_date:datetime billing_address:string billing_city:string billing_state:string billing_country:string billing_postal_code:string total:integer --no-migration
+
+rails generate scaffold MediaType name:string --no-migration
+
+rails generate scaffold PlaylistTrack playlist:references track:references --no-migration
+
+rails generate scaffold Playlist name:string --no-migration
+
+rails generate scaffold Track name:string album:references media_type:references genre:references composer:string milliseconds:integer bytes:integer unit_price:integer --no-migration
