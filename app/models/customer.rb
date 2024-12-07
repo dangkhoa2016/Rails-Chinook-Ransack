@@ -13,4 +13,14 @@ class Customer < ApplicationRecord
   def full_name
     [first_name, last_name].join(' ')
   end
+  
+  class << self
+    def ransackable_attributes(auth_object = nil)
+      ['id', 'first_name', 'last_name', 'company', 'address', 'city', 'state', 'country', 'postal_code', 'phone', 'fax', 'email', 'created_at', 'updated_at']
+    end
+
+    def ransackable_associations(auth_object = nil)
+      ['support_rep', 'invoices', 'invoice_lines', 'tracks', 'albums', 'artists', 'genres', 'media_types', 'playlist_tracks', 'playlists']
+    end
+  end
 end

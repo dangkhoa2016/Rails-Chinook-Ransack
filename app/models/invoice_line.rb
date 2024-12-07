@@ -9,4 +9,14 @@ class InvoiceLine < ApplicationRecord
   has_one :media_type, through: :track
   has_many :playlist_tracks, through: :track
   has_many :playlists, through: :playlist_tracks
+
+  class << self
+    def ransackable_attributes(auth_object = nil)
+      ['id', 'invoice_id', 'track_id', 'unit_price', 'quantity', 'created_at', 'updated_at']
+    end
+
+    def ransackable_associations(auth_object = nil)
+      ['invoice', 'track', 'customer', 'support_rep', 'album', 'artist', 'genre', 'media_type', 'playlist_tracks', 'playlists']
+    end
+  end
 end

@@ -35,6 +35,9 @@ gem 'bootstrap', '~> 5.3.3'
 # The Best Pagination Ruby Gem [https://github.com/ddnexus/pagy]
 gem 'pagy', '~> 9.3'
 
+# Ransack will help you easily add searching to your Rails application, without any additional dependencies [https://github.com/activerecord-hackery/ransack]
+gem "ransack", "~> 4.2"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

@@ -15,4 +15,14 @@ class Employee < ApplicationRecord
   def full_name
     [first_name, last_name].join(' ')
   end
+
+  class << self
+    def ransackable_attributes(auth_object = nil)
+      ['id', 'first_name', 'last_name', 'title', 'reports_to', 'birth_date', 'hire_date', 'address', 'city', 'state', 'country', 'postal_code', 'phone', 'fax', 'email', 'created_at', 'updated_at']
+    end
+
+    def ransackable_associations(auth_object = nil)
+      ['customers', 'reporting_to', 'subordinates', 'invoices', 'invoice_lines', 'tracks', 'genres', 'media_types', 'playlist_tracks', 'playlists', 'albums', 'artists']
+    end
+  end
 end
