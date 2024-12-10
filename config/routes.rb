@@ -8,14 +8,29 @@ Rails.application.routes.draw do
   resources :invoices
   resources :invoice_lines
   resources :genres
-  resources :employees
-  resources :customers
-  resources :artists do
+  resources :employees do
     collection do
-      get :list_for_select
+      get :json_list_for_select_element
     end
   end
-  resources :albums
+
+  resources :customers do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
+
+  resources :artists do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
+
+  resources :albums do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
 
   resources :filters, only: [:index], controller: 'tools/filters'
 

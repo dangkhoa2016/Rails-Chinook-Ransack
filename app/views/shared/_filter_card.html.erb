@@ -1,0 +1,11 @@
+<div class='col' id='<%= id %>' data-field-name='<%= name %>'<%= template.present? ? " data-template-name='#{template}'".html_safe : '' %>>
+  <div class='card'>
+    <div class='card-body px-2 pt-4 pb-3'>
+      <button type='button' data-controller='btn-remove'
+        data-btn-remove-element-to-remove-value='#<%= id %>'
+        class='btn-close' aria-label='Remove'></button>
+
+      <%= yield %>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,34 @@
 class CustomersController < ApplicationController
+  include Filterable
   before_action :set_customer, only: %i[ show edit update destroy ]
 
   # GET /customers or /customers.json
   def index
-    @pagy, @customers = pagy(Customer.all)
+    begin
+      @pagy, @customers = process_filters(model_query)
+    rescue => e
+      if e.is_a?(Pagy::OverflowError)
+        @pagy = Pagy.new(count: 0)
+        @customers = Customer.none
+      else
+        raise e
+      end
+    end
+
+    if @customers.present?
+      invoices_count = Invoice.count_by_model_ids(:customer, @customers.pluck(:id))
+      @customers.each do |customer|
+        customer.invoices_count = invoices_count[customer.id] || 0
+      end
+    end
+  end
+
+  def json_list_for_select_element
+    _, customers = pagy(Customer.ransack(first_name_or_last_name_cont_cont: params[:keyword]).result)
+    customers = customers.map do |customer|
+      { value: customer.id, label: customer.full_name }
+    end
+    render json: customers
   end
 
   # GET /customers/1 or /customers/1.json
@@ -66,5 +91,34 @@ class CustomersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def customer_params
       params.require(:customer).permit(:first_name, :last_name, :company, :address, :city, :state, :country, :postal_code, :phone, :fax, :email, :support_rep_id)
+    end
+
+    def default_ransack_params
+      :first_name_or_last_name_or_address_or_phone_or_email_cont
+    end
+
+    def model_query
+      if is_sort_by_support_rep?
+        Customer.left_joins(:support_rep).preload(:support_rep)
+      else
+        Customer.includes(:support_rep)
+      end
+    end
+
+    def is_sort_by_support_rep?
+      @is_sort_by_support_rep ||= (params[:sort]&.downcase == 'support_rep')
+    end
+
+    def sorting_params
+      if is_sort_by_support_rep?
+        sort_direction = params[:direction] || 'desc'
+
+        {
+          'employees.first_name' => sort_direction,
+          'employees.last_name' => sort_direction
+        }
+      else
+        super
+      end
     end
 end

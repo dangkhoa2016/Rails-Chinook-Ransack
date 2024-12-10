@@ -1,34 +1,29 @@
-<% id = 'remote_select_field_' + object_id.to_s %>
-<% name = defined?(locals) ? locals[:field_name] : (defined?(field_name) ? field_name : nil) %>
-<% value = defined?(locals) ? locals[:field_value] : (defined?(field_value) ? field_value : nil) %>
 <%
-label = defined?(locals) ? locals[:field_label] : (defined?(field_label) ? field_label : nil)
-label ||= 'Remote Select'
-%>
-<%
-filter_props = defined?(locals) ? locals[:field_props] : (defined?(field_props) ? field_props : nil)
-filter_props ||= {}
+  id = 'remote_select_field_' + object_id.to_s
+  name = defined?(locals) ? locals[:field_name] : (defined?(field_name) ? field_name : nil)
+  value = defined?(locals) ? locals[:field_value] : (defined?(field_value) ? field_value : nil)
+
+  label = defined?(locals) ? locals[:field_label] : (defined?(field_label) ? field_label : nil)
+  label ||= 'Remote Select'
+
+  filter_props = defined?(locals) ? locals[:field_props] : (defined?(field_props) ? field_props : nil)
+  filter_props ||= {}
+
+  template = defined?(locals) ? locals[:template_name] : (defined?(template_name) ? template_name : nil)
 %>
 
-<div class='col' id='<%= id %>' data-field-name='<%= name %>'>
-  <div class='card'>
-    <div class='card-body px-2 py-3'>
-      <button type='button' data-controller='btn-remove'
-        data-btn-remove-element-to-remove-value='#<%= id %>'
-        class='btn-close' aria-label='Remove'></button>
-
-      <div class='form-group'
-        data-controller='choices-remote-data'
-        data-choices-remote-data-fetch-url-value='<%= filter_props[:filter_url] %>'>
-        <%= label_tag name, translate(label), class: 'mb-1' %>
-        <%= select_tag name, options_for_select(filter_props[:collection] || [], value),
-          class: 'form-control', multiple: true,
-          data: {
-            choices_remote_data_target: 'select',
-            placeholder: translate(filter_props[:placeholder]),
-          }
-        %>
-      </div>
-    </div>
+<%= render 'shared/filter_card', id: id, name: name, template: template do %>
+  <div class=''
+    data-controller='choices-remote-data'
+    data-choices-remote-data-load-data-on-init-value='false'
+    data-choices-remote-data-fetch-url-value='<%= filter_props[:filter_url] %>'>
+    <%= label_tag name, translate(label), class: 'form-label' %>
+    <%= select_tag name, options_for_select(filter_props[:collection] || [], value),
+      class: 'form-control', multiple: true,
+      data: {
+        choices_remote_data_target: 'select',
+        placeholder: translate(filter_props[:placeholder]),
+      }
+    %>
   </div>
-</div>
+<% end %>

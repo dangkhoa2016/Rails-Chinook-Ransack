@@ -12,9 +12,11 @@ class Employee < ApplicationRecord
   has_many :albums, through: :tracks, source: :album
   has_many :artists, through: :albums
 
+
   def full_name
     [first_name, last_name].join(' ')
   end
+
 
   class << self
     def ransackable_attributes(auth_object = nil)

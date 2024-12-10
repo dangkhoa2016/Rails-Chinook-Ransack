@@ -1,29 +1,24 @@
-<% id = 'date_field_' + object_id.to_s %>
-<% name = defined?(locals) ? locals[:field_name] : (defined?(field_name) ? field_name : nil) %>
 <%
-value = defined?(locals) ? locals[:field_value] : (defined?(field_value) ? field_value : nil)
-value ||= { from: nil, to: nil }
-%>
-<%
-label = defined?(locals) ? locals[:field_label] : (defined?(field_label) ? field_label : nil)
-label ||= 'Date Range'
+  id = 'range_date_field_' + object_id.to_s
+  name = defined?(locals) ? locals[:field_name] : (defined?(field_name) ? field_name : nil)
+  value = defined?(locals) ? locals[:field_value] : (defined?(field_value) ? field_value : nil)
+
+  label = defined?(locals) ? locals[:field_label] : (defined?(field_label) ? field_label : nil)
+  label ||= 'Date Range'
+
+  filter_props = defined?(locals) ? locals[:field_props] : (defined?(field_props) ? field_props : nil)
+  filter_props ||= {}
+
+  template = defined?(locals) ? locals[:template_name] : (defined?(template_name) ? template_name : nil)
 %>
 
-<div class='col' id='<%= id %>' data-field-name='<%= name %>'>
-  <div class='card'>
-    <div class='card-body px-2 py-3'>
-      <button type='button' data-controller='btn-remove'
-        data-btn-remove-element-to-remove-value='#<%= id %>'
-        class='btn-close' aria-label='Remove'></button>
-
-      <div class='form-group'>
-        <%= label_tag "#{name}_from", translate("#{field_label}_from"), class: 'mb-1' %>
-        <%= date_field_tag "#{name}_from", value[:from], class: 'form-control' %>
-      </div>
-      <div class='form-group'>
-        <%= label_tag "#{name}_to", translate("#{field_label}_to"), class: 'mb-1' %>
-        <%= date_field_tag "#{name}_to", value[:to], class: 'form-control' %>
-      </div>
-    </div>
+<%= render 'shared/filter_card', id: id, name: name, template: template do %>
+  <div class=''>
+    <%= label_tag "#{name}_from", translate("#{label}_from"), class: 'form-label' %>
+    <%= date_field_tag "#{name}_from", value[:min_value], class: 'form-control' %>
   </div>
-</div>
+  <div class='mt-2'>
+    <%= label_tag "#{name}_to", translate("#{label}_to"), class: 'form-label' %>
+    <%= date_field_tag "#{name}_to", value[:max_value], class: 'form-control' %>
+  </div>
+<% end %>

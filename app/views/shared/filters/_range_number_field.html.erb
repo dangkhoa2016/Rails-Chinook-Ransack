@@ -1,23 +1,24 @@
 <%
-  id = 'select_field_' + object_id.to_s
+  id = 'range_number_field_' + object_id.to_s
   name = defined?(locals) ? locals[:field_name] : (defined?(field_name) ? field_name : nil)
   value = defined?(locals) ? locals[:field_value] : (defined?(field_value) ? field_value : nil)
 
   label = defined?(locals) ? locals[:field_label] : (defined?(field_label) ? field_label : nil)
-  label ||= 'Select'
+  label ||= 'Number Range'
 
   filter_props = defined?(locals) ? locals[:field_props] : (defined?(field_props) ? field_props : nil)
   filter_props ||= {}
 
   template = defined?(locals) ? locals[:template_name] : (defined?(template_name) ? template_name : nil)
-  multiple_choices = defined?(locals) ? locals[:multiple] : (defined?(multiple) ? multiple : true)
 %>
 
 <%= render 'shared/filter_card', id: id, name: name, template: template do %>
-  <div class='' data-controller='choices'>
-    <%= label_tag name, translate(label), class: 'form-label' %>
-    <%= select_tag name, options_for_select(filter_props[:collection] || [], value),
-      class: 'form-control', multiple: multiple_choices,
-      data: { choices_target: 'select', placeholder: translate(filter_props[:placeholder]) } %>
+  <div class=''>
+    <%= label_tag "#{name}_from", translate("#{label}_from"), class: 'form-label' %>
+    <%= number_field_tag "#{name}_from", value[:min_value], class: 'form-control' %>
+  </div>
+  <div class='mt-2'>
+    <%= label_tag "#{name}_to", translate("#{label}_to"), class: 'form-label' %>
+    <%= number_field_tag "#{name}_to", value[:max_value], class: 'form-control' %>
   </div>
 <% end %>

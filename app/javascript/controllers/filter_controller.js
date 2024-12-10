@@ -15,13 +15,29 @@ export default class extends Controller {
     return this.element.querySelector('form.advanced-form');
   }
 
+  get filterPanel() {
+    return this.element.querySelector('#filter-panel');
+  }
+
+  get noFiltersSelected() {
+    return this.element.querySelector('.no-filters-selected');
+  }
+
+  get advancedFilterCollapse() {
+    return this.element.querySelector('#advanced-filter');
+  }
+
+  get simpleFilterCollapse() {
+    return this.element.querySelector('#simple-filter');
+  }
+
+  get toggleFilterCardsCollapse() {
+    return this.advancedFilterCollapse.querySelector('#toggle-filter-cards');
+  }
+
   get loadingDiv() {
     if (this.formTarget)
       return this.formTarget.querySelector('.filter-holder > .loading');
-  }
-
-  get filterPanel() {
-    return this.element.querySelector('#filter-panel');
   }
 
   get btnAddSelected() {
@@ -76,7 +92,7 @@ export default class extends Controller {
 
   get formSelector() {
     if (this.modelValue)
-      return `[data-filter-model-value='${this.modelValue}'] form`;
+      return `[data-filter-model-value='${this.modelValue}'] form.advanced-form`;
   }
 
   get templateController() {
@@ -88,21 +104,29 @@ export default class extends Controller {
 
   connect() {
     this.initEvents();
-    console.log('FiltersController connected', this, this.element, this.choices);
-    this.addTemplateChangeEvent();
+    // console.log('FiltersController connected', this, this.element, this.choices);
+    this.waitForTemplateControllerConnected(() => {
+      this.addTemplateChangeEvent();
+    });
+    this.addEventHanleForCollapse();
     this.addFormSubmitEvent();
     this.initializeChoices();
     this.addEventHanleForButtons();
+
+    this.toggleFilterCardsVisible();
+    this.toggleAdvancedFilterVisible();
     
     // document.addEventListener('turbo:before-fetch-request', this.handleTurboBeforeFetchRequest);
     document.addEventListener('turbo:before-fetch-response', this.handleTurboBeforeFetchResponse);
     document.addEventListener('turbo:fetch-request-error', this.handleTurboRequestError);
+    document.addEventListener('turbo:before-stream-render', this.handleBeforeStreamRender);
   }
 
   disconnect() {
     // document.removeEventListener('turbo:before-fetch-request', this.handleTurboBeforeFetchRequest);
     document.removeEventListener('turbo:before-fetch-response', this.handleTurboBeforeFetchResponse);
     document.removeEventListener('turbo:fetch-request-error', this.handleTurboRequestError);
+    document.removeEventListener('turbo:before-stream-render', this.handleBeforeStreamRender);
 
     if (this.choices) {
       this.choices.destroy();
@@ -110,36 +134,163 @@ export default class extends Controller {
     }
   }
 
+  handleBeforeStreamRender(event) {
+    // console.log('turbo:before-stream-render', event.target);
+    const elements = event.target.templateContent.querySelectorAll('[data-field-name]');
+    if (elements.length === 0)
+      return;
+
+    if (this.toggleFilterCardsCollapse && !this.toggleFilterCardsCollapse.classList.contains('show')) {
+      const button = this.advancedFilterCollapse.querySelector(`[data-bs-target='#toggle-filter-cards']`);
+      if (button)
+        button.click();
+    }
+
+    elements.forEach(element => {
+      const filter_name = element.getAttribute('data-field-name');
+      let filter_element = this.formTarget.querySelector(`[data-field-name='${filter_name}']`);
+      if (filter_element) {
+        filter_element.remove();
+
+        setTimeout(() => {
+          filter_element = this.formTarget.querySelector(`[data-field-name='${filter_name}']`);
+          // animated-border
+          if (filter_element)
+            this.animatedBorderForFilter(filter_element);
+        }, 300);
+      }
+    });
+  }
+
   addFormSubmitEvent() {
     if (this.formTarget) {
       this.formTarget.addEventListener('turbo:before-fetch-request', (event) => {
         event.preventDefault();
-        console.log('Form submit event', event);
+        // console.log('Form submit event', event);
 
         let searchParams = event.detail.url.searchParams;
         
-        searchParams = this.modifySearchParams(searchParams, ['created_at_between_from', 'created_at_between_to'], 'created_at_between');
-        searchParams = this.modifySearchParams(searchParams, ['created_at_or_updated_at_between_from', 'created_at_or_updated_at_between_to'], 'created_at_or_updated_at_between');
-
+        // searchParams = this.modifySearchParams(searchParams, ['created_at_between_from', 'created_at_between_to'], 'created_at_between');
+        // searchParams = this.modifySearchParams(searchParams, ['updated_at_between_from', 'updated_at_between_to'], 'updated_at_between');
+        // searchParams = this.modifySearchParams(searchParams, ['created_at_or_updated_at_between_from', 'created_at_or_updated_at_between_to'], 'created_at_or_updated_at_between');
+        // searchParams = this.modifySearchParams(searchParams, ['number_of_tracks_between_from', 'number_of_tracks_between_to'], 'number_of_tracks_between');
+        // searchParams = this.modifySearchParams(searchParams, ['number_of_invoices_between_from', 'number_of_invoices_between_to'], 'number_of_invoices_between');
+        // searchParams = this.modifySearchParams(searchParams, ['number_of_invoice_lines_between_from', 'number_of_invoice_lines_between_to'], 'number_of_invoice_lines_between');
+        // searchParams = this.modifySearchParams(searchParams, ['bytes_between_from', 'bytes_between_to'], 'bytes_between');
+        // searchParams = this.modifySearchParams(searchParams, ['milliseconds_between_from', 'milliseconds_between_to'], 'milliseconds_between');
+        // searchParams = this.modifySearchParams(searchParams, ['unit_price_between_from', 'unit_price_between_to'], 'unit_price_between');
+        searchParams = this.modifySearchBetweenParams(searchParams);
+        searchParams = this.modifySearchIDArrayParams(searchParams);
         event.detail.url.search = searchParams.toString();
+
         event.detail.resume();
       });
     }
+  }
+
+  waitForTemplateControllerConnected(callback, currentTry = 0, maxTries = 10) {
+    if (currentTry >= maxTries) {
+      console.log('waitForTemplateControllerConnected maxTries reached');
+      return;
+    }
+
+    if (this.templateController) {
+      callback();
+    } else {
+      setTimeout(() => {
+        this.waitForTemplateControllerConnected(callback, currentTry + 1, maxTries);
+      }, 50);
+    }
+  }
+
+  hasBetweenKey(key, field) {
+    return key.includes('_between_') && key.includes(field);
+  }
+
+  modifySearchBetweenParams(searchParams) {
+    let entries = Array.from(searchParams.entries());
+
+    const keys = ['created_at_or_updated_at_between', 'created_at_between', 'updated_at_between',
+      'number_of_tracks_between', 'number_of_invoices_between', 'number_of_invoice_lines_between',
+      'bytes_between', 'milliseconds_between', 'unit_price_between'];
+
+    keys.forEach(field => {
+      const indx = entries.findIndex(([key, value]) => this.hasBetweenKey(key, field));
+      if (indx !== -1) {
+        const arrDates = [];
+        const newEntries = [];
+        entries.forEach(([key, value]) => {
+          if (this.hasBetweenKey(key, field))
+            arrDates.push(value);
+          else
+            newEntries.push([key, value]);
+        });
+
+        if (arrDates.length > 0)
+          newEntries.splice(indx, 0, [field, arrDates.join(',')]);
+
+        entries = newEntries;
+      }
+    });
+
+    return new URLSearchParams(entries);
+  }
+
+  modifySearchIDArrayParams(searchParams) {
+    let found = true;
+    let attempt = 0;
+    while (found && attempt < 5) {
+      var result = this.modifySearchArrayParams(searchParams, 'ids[]');
+      if (result)
+        searchParams = result;
+      else
+        found = false;
+
+      attempt++;
+    }
+
+    return searchParams;
+  }
+
+  modifySearchArrayParams(searchParams, keys_to_find) {
+    const entries = Array.from(searchParams.entries());
+
+    const indx = entries.findIndex(([key, value]) => key.includes(keys_to_find));
+    if (indx === -1)
+      return false;
+
+    const key_name = entries[indx][0];
+    const key_to_replace = key_name.replace('[]', '');
+
+    const arrIds = [];
+    const newEntries = [];
+    entries.forEach(([key, value]) => {
+      if (key === key_name)
+        arrIds.push(value);
+      else
+        newEntries.push([key, value]);
+    });
+
+    if (arrIds.length > 0)
+      newEntries.splice(indx, 0, [key_to_replace, arrIds.join(',')]);
+
+    return new URLSearchParams(newEntries);
   }
 
   modifySearchParams(searchParams, keys_to_find, key_to_replace) {
     const entries = Array.from(searchParams.entries());
     // find the index of the key-value pair with key 'created_at_between_from'
     const indx = entries.findIndex(([key, value]) => keys_to_find.includes(key));
+    if (indx === -1)
+      return searchParams;
     
     const arrDates = [];
     const newEntries = [];
     entries.forEach(([key, value]) => {
-      if (keys_to_find.includes(key)) {
+      if (keys_to_find.includes(key))
         arrDates.push(value);
-      } else {
+      else
         newEntries.push([key, value]);
-      }
     });
 
     if (arrDates.length > 0)
@@ -153,6 +304,9 @@ export default class extends Controller {
       const choices = this.templateController.choices;
       choices.passedElement.element.addEventListener('change', (event) => {
         const valueObject = choices.getValue();
+        if (valueObject.length === 0)
+          return;
+
         this.startLoadingFilter(`[${valueObject.label}] template`);
         const target = encodeURIComponent(`${this.formSelector} > .filter-holder > .loading`);
         const location = `/filters?template=${valueObject.value}&model=${this.modelValue}&target=${target}`;
@@ -170,6 +324,71 @@ export default class extends Controller {
     this.clearFilters = this.clearFilters.bind(this);
     this.clearInputs = this.clearInputs.bind(this);
     this.handleSelectedChange = this.handleSelectedChange.bind(this);
+    this.handleBeforeStreamRender = this.handleBeforeStreamRender.bind(this);
+  }
+
+  toggleFilterCardsVisible(forceVisible = false) {
+    if (this.toggleFilterCardsCollapse) {
+      forceVisible = forceVisible || (this.application.filterCardsShow === true || this.application.filterCardsShow === undefined);
+      if (forceVisible)
+        this.toggleFilterCardsCollapse.classList.add('show');
+      else
+        this.toggleFilterCardsCollapse.classList.remove('show');
+    }
+  }
+
+  toggleAdvancedFilterVisible(forceHidden = null) {
+    if (!this.advancedFilterCollapse)
+      return;
+  
+    if (typeof forceHidden === 'undefined' || forceHidden === null) {
+      if (typeof this.application.advancedFilterShow === 'undefined' || this.application.advancedFilterShow === null)
+        forceHidden = this.selectedFilters.length === 0;
+      else
+        forceHidden = this.application.advancedFilterShow === false;
+    }
+
+    if (forceHidden) {
+      this.advancedFilterCollapse.classList.remove('show');
+      this.simpleFilterCollapse.classList.add('show');
+    } else {
+      this.advancedFilterCollapse.classList.add('show');
+      this.simpleFilterCollapse.classList.remove('show');
+
+      if (this.noFiltersSelected && this.selectedFilters.length === 0)
+        this.noFiltersSelected.classList.remove('d-none');
+    }
+  }
+
+  addEventHanleForCollapse() {
+    if (this.toggleFilterCardsCollapse) {
+      this.toggleFilterCardsCollapse.addEventListener('show.bs.collapse', (event) => {
+        this.application.filterCardsShow = true;
+      });
+
+      this.toggleFilterCardsCollapse.addEventListener('hide.bs.collapse', (event) => {
+        this.application.filterCardsShow = false;
+      });
+    }
+
+    if (this.advancedFilterCollapse) {
+      this.advancedFilterCollapse.addEventListener('show.bs.collapse', (event) => {
+        if (event.target !== this.advancedFilterCollapse)
+          return;
+
+        if (this.noFiltersSelected && this.selectedFilters.length === 0)
+          this.noFiltersSelected.classList.remove('d-none');
+
+        this.application.advancedFilterShow = true;
+      });
+
+      this.advancedFilterCollapse.addEventListener('hide.bs.collapse', (event) => {
+        if (event.target !== this.advancedFilterCollapse)
+          return;
+
+        this.application.advancedFilterShow = false;
+      });
+    }
   }
 
   addEventHanleForButtons() {
@@ -187,6 +406,18 @@ export default class extends Controller {
           this.loadingDiv.classList.add('d-none');
       });
     }
+
+    if (this.btnRemoveOutlets.length > 0) {
+      this.btnRemoveOutlets.forEach(controller => {
+        controller.element.addEventListener('btn-remove:removed', (event) => {
+          this.toggleFilterStatus(event.detail.value, false);
+          this.choices.refresh();
+
+          if (this.noFiltersSelected && this.selectedFilters.length === 0)
+            this.noFiltersSelected.classList.remove('d-none');
+        });
+      });
+    }
   }
 
   handleTurboRequestError(event) {
@@ -197,11 +428,15 @@ export default class extends Controller {
   }
 
   handleTurboBeforeFetchResponse(event) {
-    console.log('turbo:before-fetch-response', event);
+    // console.log('turbo:before-fetch-response', event);
+    // this.toggleFilterCardsVisible();
 
     if (!this.isFilterRequest(event.detail)) return;
 
     event.preventDefault();
+
+    if (this.noFiltersSelected)
+      this.noFiltersSelected.classList.add('d-none');
 
     if (!event.detail.fetchResponse.succeeded) {
       this.handleErrorLoad();
@@ -210,6 +445,7 @@ export default class extends Controller {
 
     if (this.loadingDiv)
       this.loadingDiv.classList.add('d-none');
+
     this.disabledSelectedOption();
   }
 
@@ -226,7 +462,7 @@ export default class extends Controller {
       this.filterLoadingDisplay.classList.add('text-danger');
     if (this.closeLoadingButton)
       this.closeLoadingButton.classList.remove('d-none');
-    this.choices.refresh(null, false, true);
+    this.choices.refresh();
   }
 
   startLoadingFilter(filterName) {
@@ -265,64 +501,15 @@ export default class extends Controller {
   disabledSelectedOption() {
     if (!this.selectTarget)
       return;
+
     const selectOption = this.selectTarget.selectedOptions[0];
-    if (selectOption) {
+    if (selectOption)
       selectOption.disabled = true;
 
-      /*
-      // special case
-      switch (selectOption.value) {
-        case 'created_at':
-          var relatedOptions = this.selectTarget.querySelectorAll(`option[value='created_at_after'], option[value='created_at_before']`);
-          if (relatedOptions.length > 0) {
-            relatedOptions.forEach(option => {
-              option.disabled = true;
-            });
-          }
-          break;
-        case 'updated_at':
-          var relatedOptions = this.selectTarget.querySelectorAll(`option[value='updated_at_after'], option[value='updated_at_before']`);
-          if (relatedOptions.length > 0) {
-            relatedOptions.forEach(option => {
-              option.disabled = true;
-            });
-          }
-          break;
-        case 'created_at_after':
-        case 'created_at_before':
-          var relatedOption = this.selectTarget.querySelector(`option[value='created_at']`);
-          if (relatedOption) {
-            relatedOption.disabled = true;
-          }
-          break;
-        case 'updated_at_after':
-        case 'updated_at_before':
-          var relatedOption = this.selectTarget.querySelector(`option[value='updated_at']`);
-          if (relatedOption) {
-            relatedOption.disabled = true;
-          }
-          break;
-      }
-      */
-    }
-
-    this.choices.refresh(null, false, true);
+    this.choices.refresh();
   }
 
   handleSelectedChange(event) {
-    /*
-    // console.log('FiltersController change event', event);
-    const selectOption = event.target.selectedOptions[0];
-    this.startLoadingFilter(selectOption.textContent);
-    // this.choices.refresh(null, false, true);
-
-    const target = encodeURIComponent(`${this.formSelector} > .filter-holder > .loading`);
-    const location = `/filters?name=${event.detail.value}&model=${this.modelValue}&target=${target}`;
-    Turbo.visit(location, {
-      acceptsStreamResponse: true
-    });
-    */
-
     if (event.target.selectedOptions.length === 0) {
       this.btnAddSelected.disabled = true;
       this.btnRemoveSelected.disabled = true;
@@ -342,10 +529,7 @@ export default class extends Controller {
     const selectedFilters = controller.selectedFilters;
     if (selectedFilters && selectedFilters.length > 0) {
       controller.selectedFilters.forEach(filter => {
-        const value = filter.getAttribute('data-field-name');
-        const option = controller.selectTarget.querySelector(`option[value='${value}']`);
-        if (option)
-          option.disabled = true;
+        controller.toggleFilterStatus(filter, true);
       });
     }
 
@@ -368,6 +552,17 @@ export default class extends Controller {
     this.choices = choicesInstance;
   }
 
+  toggleFilterStatus(element, disabled = true) {
+    // console.log('toggleFilterStatus', element, disabled);
+    const value = element.getAttribute('data-field-name');
+    if (!value)
+      return;
+
+    const option = this.selectTarget.querySelector(`option[value='${value}']`);
+    if (option)
+      option.disabled = disabled;
+  }
+
   clearFilters(event) {
     const btnRemoveOutlets = this.btnRemoveOutlets;
     if (!btnRemoveOutlets || btnRemoveOutlets.length === 0) return;
@@ -375,6 +570,9 @@ export default class extends Controller {
     btnRemoveOutlets.forEach(controller => {
       controller.removeElement(event);
     });
+
+    if (this.noFiltersSelected)
+      this.noFiltersSelected.classList.remove('d-none');
   }
 
   clearInputs(event) {
@@ -385,12 +583,38 @@ export default class extends Controller {
       controller.clearElementValue(event);
     });
   }
+
+  animatedBorderForFilter(element) {
+    const card = element.querySelector('.card');
+    if (!card)
+      return;
+
+    card.classList.add('animated-border');
+    setTimeout(() => {
+      card.classList.remove('animated-border');
+    }, 3000);
+  }
   
   addSelected(event) {
-    const values = this.choices.getValue();
-    this.startLoadingFilter(values.length > 1 ? `${values.length} filters` : `[${values[0].label}] filter`);
+    let selected = this.choices.getValue();
+    // remove duplicated selected
+    selected = selected.filter((item) => {
+      const element = this.formTarget.querySelector(`[data-field-name='${item.value}']`);
+      if (element) {
+        this.animatedBorderForFilter(element);
+        return false;
+      }
+
+      return true;
+    });
+
+    if (selected.length === 0)
+      return;
+
+    this.startLoadingFilter(selected.length > 1 ? `${selected.length} filters` : `[${selected[0].label}] filter`);
+    // animated-border
     const target = encodeURIComponent(`${this.formSelector} > .filter-holder > .loading`);
-    const location = `/filters?name=${values.map(x => x.value).join(',')}&model=${this.modelValue}&target=${target}`;
+    const location = `/filters?name=${selected.map(x => x.value).join(',')}&model=${this.modelValue}&target=${target}`;
     Turbo.visit(location, {
       acceptsStreamResponse: true
     });

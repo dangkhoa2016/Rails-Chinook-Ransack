@@ -1,22 +1,43 @@
-<div style='color: green'>
-  <%= notice %>
-</div>
+
+<div style='color: green'><%= notice %></div>
 
 <div class='d-flex justify-content-between align-items-center'>
-  <h1 class='mb-0'>Customers</h1>
-  <%= link_to 'New', new_customer_path, class: 'btn btn-primary' %>
+  <div>
+    <h1 class='d-inline mb-0'>Customers</h1>
+    <span class='text-muted'>(
+      <%= @filters.present? ? 'filtered: ' : 'all: ' %>
+      <%= pluralize(@pagy.count, 'record') %>
+    )</span>
+  </div>
+  <div>
+    <%= link_to 'New', new_customer_path, class: 'btn btn-primary' %>
+    <div class='btn-group' role='group'>
+      <button type='button' class='btn btn-success' title='Click to change display mode to table'>
+        <i class='bi bi-list'></i>
+        <span class='visually-hidden'>Table</span>
+      </button>
+      <button type='button' class='btn btn-secondary' title='Click to change display mode to card'>
+        <i class='bi bi-grid'></i>  
+        <span class='visually-hidden'>Card</span>
+      </button>
+    </div>
+  </div>
 </div>
 
-<div id='customers' class='my-4 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4'>
-  <% @customers.each do |customer| %>
-    <div class='col'>
-      <%= render customer %>
+<%= render 'shared/filter_form', filter_model: 'Customer' %>
+
+<div id='customers' class='py-4'>
+  <% if @pagy.count.zero? %>
+    <div class='alert alert-warning' role='alert'>
+      No customers found
+    </div>
+  <% else %>
+    <%= render 'customers/table' %>
+
+    <div class='pagination'>
+      <%== pagy_bootstrap_nav(@pagy) %>
     </div>
   <% end %>
-</div>
-
-<div class='pagination'>
-  <%== pagy_bootstrap_nav(@pagy) %>
 </div>
 
 <%= link_to 'New customer', new_customer_path %>

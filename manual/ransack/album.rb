@@ -5,7 +5,7 @@ album = Album.order('LENGTH(title) DESC').first
 # find the album that has the most tracks
 album = Album.joins(:tracks).group('albums.id').order('COUNT(tracks.id) DESC').first
 album.tracks. count
-# find the album that has the least tracks
+# find the album that has the fewest tracks
 album = Album.joins(:tracks).group('albums.id').order('COUNT(tracks.id)').first
 album.tracks. count
 # find the album that has the most genres
@@ -15,7 +15,7 @@ Track.where(album_id: 141).includes(:genre).distinct('genres.id').count('genres.
 Track.where(album_id: 141).includes(:genre).distinct('genres.name').pluck('genres.name, genres.id')
 Genre.where(id: Track.where(album_id: 141).select('genre_id').distinct).count
 
-# find the album that has the least genres
+# find the album that has the fewest genres
 album = Album.joins(:genres).group('albums.id').distinct('genres.id').order('COUNT(genres.id)').first
 album.genres.distinct.count
 

@@ -1,6 +1,5 @@
 <%
-filter_fields = defined?(locals) ? locals[:filters] : (defined?(filters) ? filters : nil)
-puts "Rails-Chinook-Ransack/app/views/shared/_selected_filters.html.erb: #{filter_fields.inspect}"
+	filter_fields = defined?(locals) ? locals[:filters] : (defined?(filters) ? filters : nil)
 %>
 
 <% if filter_fields.present? %>

@@ -7,7 +7,7 @@ module Tools
 
       model = model.to_s.underscore.pluralize
       if format == :json
-        path = "list_for_select_#{model}_path"
+        path = "json_list_for_select_element_#{model}_path"
       else
         path = "#{model}_path"
       end
@@ -62,7 +62,6 @@ module Tools
     end
 
     def get_filters_from_template_for_form(list_of_templates, model)
-
       service = get_filter_service(model)
       if service.nil?
         return []
@@ -72,7 +71,7 @@ module Tools
       templates = list_of_templates.split(',')
 
       templates.each do |template|
-        filters = service.get_filters_from_template(template)
+        filters = service.get_filters_from_template(template, self)
         if filters.present?
           filters.each do |filter|
             filter_list << filter
@@ -80,16 +79,17 @@ module Tools
         end
       end
 
-      puts "get_filters_from_template_for_form 1: #{filter_list}"
       filters = []
       filter_list.each do |item|
-        filter = service.get_params_to_render_filter_with_value(item[:name], item[:value], self)
-        if filter.present?
-          filters << filter
+        filter = if item[:name].blank? && item[:field_name].present?
+          item
+        else
+          service.get_params_to_render_filter_with_value(item[:name], item[:value], self)
         end
+
+        filters << filter if filter.present?
       end
 
-      puts "get_filters_from_template_for_form 2: #{filters}"
       filters
     end
 
@@ -104,7 +104,6 @@ module Tools
 
       names.each do |name|
         filter = service.get_params_to_render_filter_with_value(name, nil, self)
-        puts "get_filters_for_form: #{filter}"
         if filter.present?
           filters << filter
         end

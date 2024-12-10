@@ -1,13 +1,12 @@
 <% filter_model = defined?(locals) ? locals[:filter_model] : (defined?(filter_model) ? filter_model : @filter_model) %>
-<% has_filters = @filter_list.present? %>
 
 <div class='filter-wrap my-4' data-controller='filter'
   data-filter-model-value='<%= filter_model %>'
   data-filter-btn-remove-outlet='[data-btn-remove-element-to-remove-value]'>
-  <div class='accordion' id='accordionExample'>
+  <div class='accordion' id='filters-accordion'>
     <div class='accordion-item border-0'>
-      <div id='simple-filter' class='accordion-collapse collapse<%= has_filters ? nil : " show" %>'
-        data-bs-parent='#accordionExample'>
+      <div id='simple-filter' class='accordion-collapse collapse'
+        data-bs-parent='#filters-accordion'>
         <div class='accordion-body p-0'>
           <%= form_with url: get_index_url_for_model(filter_model),
             class: 'd-flex simple-form', method: :get do |f| %>
@@ -24,15 +23,15 @@
       </div>
     </div>
     <div class='accordion-item border-0'>
-      <div id='advanced-filter' class='accordion-collapse collapse<%= has_filters ? " show" : nil %>'
-        data-bs-parent='#accordionExample'>
+      <div id='advanced-filter' class='accordion-collapse collapse'
+        data-bs-parent='#filters-accordion'>
         <div class='accordion-body p-0'>
           <div class='buttons'>
             <button class='btn btn-outline-secondary' type='button'
               data-bs-toggle='collapse' data-bs-target='#simple-filter'
               aria-expanded='false' aria-controls='simple-filter'
               >Toggle simple search</button>
-            <div class="btn-group" role="group" aria-label="Tools">
+            <div class='btn-group' role='group' aria-label='Tools'>
               <button class='btn btn-primary' type='button'
                 data-bs-toggle='offcanvas' data-bs-target='#filter-panel'
                 aria-controls='filter-panel'>
@@ -49,6 +48,8 @@
 
           <div class='collapse show' id='toggle-filter-cards'>
             <div class='pt-3'>
+              <%= render 'shared/no_filters_selected' %>
+
               <%= form_with url: get_index_url_for_model(filter_model),
                 class: 'advanced-form', method: :get do |f| %>
 
@@ -97,12 +98,12 @@
           multiple: true,
           data: { placeholder: 'Select filters...' } %>
       </div>
-      <div class='d-flex justify-content-between mt-4'>
+      <div class='d-flex justify-content-between mt-2'>
         <button class='btn btn-primary btn-add-selected' disabled='true' type='button' data-action='filter#addSelected'>Add selected</button>
         <button class='btn btn-secondary btn-remove-selected' disabled='true' type='button' data-action='filter#removeSelected'>Remove selected</button>
       </div>
 
-      <div class='template-filters mt-4' data-controller='choices'>
+      <div class='template-filters mt-5' data-controller='choices'>
         <h5>Template filters</h5>
         <%= select_tag 'filter-templates', filter_templates_for_select(filter_model),
           data: { placeholder: 'Select a template...', choices_target: 'select' } %>

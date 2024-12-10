@@ -44,12 +44,68 @@ en:
       model_fields: "Album fields"
       artist_fields: "Artist fields"
       album_or_artist_contains: "Album title or artist name contains"
-      timestamp_fields: "Timestamp fields"
-      album_title: "Album title"
+      title: "Album title"
       artist_name: "Artist name"
       select_artists: "Select artists"
-      most_popular_artists: "Most popular artists"
       belong_to_artists: "Belong to artists"
+      number_of_tracks: "Number of tracks"
+      number_of_tracks_between: "Number of tracks between"
+      number_of_tracks_from: "Number of tracks from"
+      number_of_tracks_to: "Number of tracks to"
+      ids: "Album IDs"
+      select_albums: "Select albums"
+      has_tracks: "Has tracks"
+
+      template:
+        by_artist_name_accept_test: "By artist with name: Accept (test)"
+        by_artist_pearl_jam_test: "By artist with id: 118 - Pearl Jam (test)"
+        by_artist_name_accept_and_created_at_this_year_test: "By artist name: Accept and created at this year (test)"
+        artists_who_have_10_or_more_albums: "Artists who have 10 or more albums"
+        artists_who_have_2_or_fewer_albums: "Artists who have 2 or fewer albums"
+        albums_that_have_25_or_more_tracks: "Albums that have 25 or more tracks"
+        albums_that_have_2_or_fewer_tracks: "Albums that have 2 or fewer tracks"
+        albums_with_no_tracks: "Albums with no tracks"
+
+    artist:
+      model_fields: "Artist fields"
+
+    customer:
+      model_fields: "Customer fields"
+      support_rep_fields: "Support rep fields"
+      first_name_or_last_name_contains: "First name or last name contains"
+      first_name: "First name"
+      last_name: "Last name"
+      company: "Company"
+      address: "Address"
+      city: "City"
+      state: "State"
+      country: "Country"
+      postal_code: "Postal code"
+      phone: "Phone"
+      fax: "Fax"
+      email: "Email address"
+      city_or_state_or_country_contains: "City or state or country contains"
+      support_rep_name: "Support rep name"
+      by_support_rep: "By support rep"
+      select_employee: "Select employee"
+      number_of_invoices: "Number of invoices"
+      number_of_invoices_between: "Number of invoices between"
+      number_of_invoices_from: "Number of invoices from"
+      number_of_invoices_to: "Number of invoices to"
+      ids: "Customer IDs"
+      select_customers: "Select customers"
+      has_invoices: "Has invoices"
+
+      template:
+        support_by_employee_name_peacok_jane_test: "Support by employee: Peacock Jane"
+        customers_have_more_than_or_equal_to_7_invoices: "Customers that have more than or equal to 7 invoices"
+        customers_have_fewer_than_or_equal_to_4_invoices: "Customers that have fewer than or equal to 4 invoices"
+        customers_in_brazil: "Customers in Brazil"
+        customers_in_brazil_or_usa: "Customers in Brazil or USA"
+        customers_with_no_invoices: "Customers with no invoices"
+
+    common:
+      timestamp_fields: "Timestamp fields"
 
       created_at_between: "Created at between"
       created_at_from: "Created at from"
@@ -65,25 +121,25 @@ en:
       created_at_or_updated_at_from: "Created at or updated at from"
       created_at_or_updated_at_to: "Created at or updated at to"
       created_at_or_updated_at: "Created at or updated at"
+      "yes": "Yes"
+      "no": "No"
+      select: "Select"
+
       template:
-        by_artist_name_accept_test: "By artist name: Accept (test)"
-        by_artist_id_118_test: "By artist id: 118 - Pearl Jam (test)"
-        by_artist_name_accept_and_created_at_this_year_test: "By artist name: Accept and created at this year (test)"
         created_at_this_year: "Created at this year"
         created_at_this_month: "Created at this month"
         created_at_this_week: "Created at this week"
         created_at_today: "Created at today"
+
         updated_at_this_year: "Updated at this year"
         updated_at_this_month: "Updated at this month"
         updated_at_this_week: "Updated at this week"
         updated_at_today: "Updated at today"
+
         created_at_this_year_and_updated_at_this_month: "Created at this year and updated at this month"
         created_at_this_month_and_updated_at_this_week: "Created at this month and updated at this week"
         created_at_this_week_and_updated_at_today: "Created at this week and updated at today"
         created_at_today_and_updated_at_today: "Created at today and updated at today"
-
-    artist:
-      model_fields: "Artist fields"
 
   nav:
     home: "Home"

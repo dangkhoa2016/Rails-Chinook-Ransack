@@ -1,20 +1,27 @@
 <%
-  id = 'date_field_' + object_id.to_s
+  id = 'boolean_field_' + object_id.to_s
   name = defined?(locals) ? locals[:field_name] : (defined?(field_name) ? field_name : nil)
   value = defined?(locals) ? locals[:field_value] : (defined?(field_value) ? field_value : nil)
 
   label = defined?(locals) ? locals[:field_label] : (defined?(field_label) ? field_label : nil)
-  label ||= 'Date'
+  label ||= 'Yes/No'
 
   filter_props = defined?(locals) ? locals[:field_props] : (defined?(field_props) ? field_props : nil)
   filter_props ||= {}
 
   template = defined?(locals) ? locals[:template_name] : (defined?(template_name) ? template_name : nil)
+  collection = [
+    [translate('filters.common.select'), nil],
+    [translate('filters.common.yes'), true],
+    [translate('filters.common.no'), false]
+  ]
 %>
 
-<%= render 'shared/filter_card', id: id, name: name, template: template do %>
-  <div class=''>
-    <%= label_tag name, translate(label), class: 'form-label' %>
-    <%= date_field_tag name, value, class: 'form-control' %>
-  </div>
-<% end %>
+<%= render 'shared/filters/select_field', id: id, name: name,
+  template: template,
+  field_label: label, field_value: value, field_name: name,
+  multiple: false,
+  field_props: filter_props.merge({
+    collection: collection,
+  })
+%>

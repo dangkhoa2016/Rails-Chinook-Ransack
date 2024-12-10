@@ -10,10 +10,37 @@ class Album < ApplicationRecord
   has_many :playlists, through: :playlist_tracks
   has_many :support_reps, through: :customers, source: :support_rep
 
+  attr_accessor :tracks_count
+
+  scope :with_tracks_count_in_range_1, -> (min_value, max_value = nil) {
+    # Create a sub query to get the albums with track count in the specified range
+    sub_query = Album.joins(:tracks)
+                    .select('albums.id').group('albums.id')
+                    .having('COUNT(tracks.id) >= ? AND COUNT(tracks.id) <= ?', min_value, max_value)
+
+    # Use the sub query in the main query
+    where(id: sub_query)
+  }
+
+  scope :with_tracks_count_in_range, -> (min_value, max_value = nil) {
+    # use the sub query from Track model
+    where(id: Track.with_track_count_by_album_in_range_for_use_as_sub_query(min_value, max_value))
+  }
+
   scope :created_or_updated_within, ->(start_date, end_date) {
     where('(created_at BETWEEN :start_date AND :end_date) OR (updated_at BETWEEN :start_date AND :end_date)',
       start_date: start_date, end_date: end_date)
   }
+
+  scope :has_tracks, -> (has_tracks = true) {
+    sub_query = Track.select('1').where('tracks.album_id = albums.id')
+    if has_tracks
+      where('EXISTS (?)', sub_query)
+    else
+      where.not('EXISTS (?)', sub_query)
+    end
+  }
+
 
   class << self
     def ransackable_attributes(auth_object = nil)
@@ -24,28 +51,53 @@ class Album < ApplicationRecord
       ['artist', 'tracks', 'genres', 'media_types', 'invoice_lines', 'invoices', 'customers', 'playlist_tracks', 'playlists', 'support_reps']
     end
 
-    def top_most_popular_artist_ids(has_more_than_albums = 5)
-      Album.group('artist_id').having("count_id >= #{has_more_than_albums}").order('count_id desc').count('id')&.keys
+    def artist_ids_with_most_albums(has_more_than_albums = 5)
+      Album.group(:artist_id).having("count_id >= #{has_more_than_albums}").order('count_id desc').count('id')
     end
 
-    def first_of_most_popular_artist_id(has_more_than_albums = 5)
-      top_most_popular_artist_ids(has_more_than_albums).first
+    def first_of_artist_ids_with_most_albums(has_more_than_albums = 5)
+      artist_ids_with_most_albums(has_more_than_albums)&.keys.first
     end
 
-    def last_of_most_popular_artist_id(has_more_than_albums = 5)
-      top_most_popular_artist_ids(has_more_than_albums).last
+    def last_of_artist_ids_with_most_albums(has_more_than_albums = 5)
+      artist_ids_with_most_albums(has_more_than_albums)&.keys.last
     end
 
-    def least_most_popular_artist_ids(has_less_than_albums = 5)
-      Album.group('artist_id').having("count_id <= #{has_less_than_albums}").order('count_id desc').count('id')&.keys
+    def artist_ids_with_fewest_albums(has_less_than_albums = 5)
+      Album.group(:artist_id).having("count_id <= #{has_less_than_albums}").order('count_id desc').count('id')
     end
 
-    def first_of_least_popular_artist_id(has_more_than_albums = 5)
-      least_most_popular_artist_ids(has_more_than_albums).first
+    def first_of_artist_ids_with_fewest_albums(has_more_than_albums = 5)
+      artist_ids_with_fewest_albums(has_more_than_albums)&.keys.first
     end
 
-    def last_of_least_popular_artist_id(has_more_than_albums = 5)
-      least_most_popular_artist_ids(has_more_than_albums).last
+    def last_of_artist_ids_with_fewest_albums(has_more_than_albums = 5)
+      artist_ids_with_fewest_albums(has_more_than_albums)&.keys.last
+    end
+
+
+    def album_ids_with_most_tracks(has_more_than_tracks = 5)
+      Album.joins(:tracks).group('albums.id').having("count_tracks_id >= #{has_more_than_tracks}").order('count_tracks_id desc').count('tracks.id')
+    end
+
+    def first_of_album_ids_with_most_tracks(has_more_than_tracks = 5)
+      album_ids_with_most_tracks(has_more_than_tracks)&.keys.first
+    end
+
+    def last_of_album_ids_with_most_tracks(has_more_than_tracks = 5)
+      album_ids_with_most_tracks(has_more_than_tracks)&.keys.last
+    end
+
+    def album_ids_with_fewest_tracks(has_less_than_tracks = 5)
+      Album.joins(:tracks).group('albums.id').having("count_tracks_id <= #{has_less_than_tracks}").order('count_tracks_id desc').count('tracks.id')
+    end
+
+    def first_of_album_ids_with_fewest_tracks(has_less_than_tracks = 5)
+      album_ids_with_fewest_tracks(has_less_than_tracks)&.keys.first
+    end
+
+    def last_of_album_ids_with_fewest_tracks(has_less_than_tracks = 5)
+      album_ids_with_fewest_tracks(has_less_than_tracks)&.keys.last
     end
   end
 end

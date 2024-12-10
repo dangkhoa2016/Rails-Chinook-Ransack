@@ -2,28 +2,48 @@
 <div style='color: green'><%= notice %></div>
 
 <div class='d-flex justify-content-between align-items-center'>
-  <h1 class='mb-0'>Albums</h1>
-  <%= link_to 'New', new_album_path, class: 'btn btn-primary' %>
+  <div>
+    <h1 class='d-inline mb-0'>Albums</h1>
+    <span class='text-muted'>(
+      <%= @filters.present? ? 'filtered: ' : 'all: ' %>
+      <%= pluralize(@pagy.count, 'record') %>
+    )</span>
+  </div>
+  <div>
+    <%= link_to 'New', new_album_path, class: 'btn btn-primary' %>
+    <div class='btn-group' role='group'>
+      <button type='button' class='btn btn-secondary' title='Click to change display mode to table'>
+        <i class='bi bi-list'></i>
+        <span class='visually-hidden'>Table</span>
+      </button>
+      <button type='button' class='btn btn-success' title='Click to change display mode to card'>
+        <i class='bi bi-grid'></i>  
+        <span class='visually-hidden'>Card</span>
+      </button>
+    </div>
+  </div>
 </div>
 
 <%= render 'shared/filter_form', filter_model: 'Album' %>
 
-<% if @albums.empty? %>
-  <div class='my-4 alert alert-warning' role='alert'>
-    No albums found
-  </div>
-<% else %>
-  <div id='albums' class='my-4 row row-cols-1 row-cols-sm-2 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 g-4'>
-    <% @albums.each do |album| %>
-      <div class='col'>
-        <%= render album %>
-      </div>
-    <% end %>
-  </div>
+<div id='albums' class='py-4'>
+  <% if @pagy.count.zero? %>
+    <div class='alert alert-warning' role='alert'>
+      No albums found
+    </div>
+  <% else %>
+    <div class='mb-4 row row-cols-1 row-cols-sm-2 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 g-4'>
+      <% @albums.each do |album| %>
+        <div class='col'>
+          <%= render album %>
+        </div>
+      <% end %>
+    </div>
 
-  <div class='pagination'>
-    <%== pagy_bootstrap_nav(@pagy) %>
-  </div>
-<% end %>
+    <div class='pagination'>
+      <%== pagy_bootstrap_nav(@pagy) %>
+    </div>
+  <% end %>
+</div>
 
 <%= link_to 'New album', new_album_path %>

@@ -16,13 +16,19 @@ export default class extends Controller {
   }
 
   removeElement(event) {
-    console.log('BtnRemoveController removeFilter', event);
+    // console.log('BtnRemoveController removeFilter', event);
     if (!this.elementToRemoveValue) {
       return;
     }
 
     if (this.rootElement) {
       this.rootElement.remove();
+
+      this.element.dispatchEvent(new CustomEvent('btn-remove:removed', {
+        detail: { value: this.rootElement },
+        bubbles: false,
+        composed: true
+      }));
     }
   }
 
@@ -32,7 +38,12 @@ export default class extends Controller {
       if (input.tagName === 'INPUT') {
         input.value = '';
       } else if (input.tagName === 'SELECT') {
-        input.selectedIndex = 0;
+        if (input.getAttribute('data-choice') === 'active') {
+          const controllerName = input.closest('[data-controller]').getAttribute('data-controller');
+          const controller = this.application.getControllerForElementAndIdentifier(input.closest('[data-controller]'), controllerName);
+          controller.clearSelection();
+        } else
+          input.selectedIndex = -1;
       }
     });
   }

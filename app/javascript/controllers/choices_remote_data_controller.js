@@ -8,7 +8,7 @@ export default class extends Controller {
     fetchUrl: String,
     itemsPerPage: { type: Number, default: 10 },
     minSearchLength: { type: Number, default: 1 },
-    loadDataOnStart: { type: Boolean, default: true },
+    loadDataOnInit: { type: Boolean, default: true },
     disabled: { type: Boolean, default: false },
   };
 
@@ -22,7 +22,7 @@ export default class extends Controller {
   cacheSearchHintElement = null;
 
   connect() {
-    console.log('ChoicesRemoteDataController connected', this, this.element);
+    // console.log('ChoicesRemoteDataController connected', this, this.element);
 
     this.fetchDataFromServer = this.fetchDataFromServer.bind(this);
     this.initializeChoices();
@@ -96,10 +96,13 @@ export default class extends Controller {
 
   clearSelection(clearOptions = false) {
     if (this.choices) {
-      const values = [].concat(this.choices.getValue(true));
-      values.forEach(value => {
-        this.choices.removeChoice(value);
-      });
+      // const values = [].concat(this.choices.getValue(true));
+      // console.log('clearSelection', values, this.choices);
+      // values.forEach(value => {
+      //   this.choices.removeChoice(value);
+      // });
+      this.choices.removeActiveItems();
+
       if (clearOptions)
         this.clearAllOptions();
     }
@@ -114,11 +117,12 @@ export default class extends Controller {
 
     new Choices(controller.selectTarget, {
       resetScrollPosition: false,
+      allowHTML: true,
       searchChoices: false,
       searchFloor: controller.minSearchLengthValue,
       shouldSort: false,
       classNames: {
-        containerOuter: ['choices', 'mt-2'],
+        containerOuter: ['choices'],
         placeholder: ['choices__placeholder', 'text-secondary'],
         itemSelectable: ['choices__item--selectable', 'text-secondary'],
       },
@@ -130,7 +134,7 @@ export default class extends Controller {
           return;
         }
 
-        if (controller.loadDataOnStartValue && controller.fetchUrlValue) {
+        if (controller.loadDataOnInitValue && controller.fetchUrlValue) {
           controller.triggerSearch = false;
           this.setChoices(controller.fetchDataFromServer, 'value', 'label', false);
         }
@@ -216,7 +220,9 @@ export default class extends Controller {
     choicesInstance.input.element.addEventListener('keyup', this.handleKeyUpInput);
 
     this.choices = choicesInstance;
-    this.cacheSearchHintElement = choicesInstance._store.state.choices[0].choiceEl;
+    const searchHintOption = choicesInstance._store.state.choices.find(item => item.labelClass?.includes('search-hint'));
+    if (searchHintOption)
+      this.cacheSearchHintElement = searchHintOption.choiceEl;
   }
 
   // Check if dropdown is scrolled to the bottom and load more data

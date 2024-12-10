@@ -10,10 +10,33 @@ class Customer < ApplicationRecord
   has_many :playlist_tracks, through: :tracks
   has_many :playlists, through: :playlist_tracks
 
+  attr_accessor :invoices_count
+
+  scope :with_invoices_count_in_range, -> (min_value, max_value = nil) {
+    # use the sub query from Invoice model
+    query = Invoice.with_record_count_by_customer_in_range_for_use_as_sub_query(min_value, max_value)
+    if query.exists?
+      where(id: query)
+    else
+      none
+    end
+  }
+
+  scope :has_invoices, -> (has_invoices = true) {
+    sub_query = Invoice.select('1').where('invoices.customer_id = customers.id')
+    if has_invoices
+      where('EXISTS (?)', sub_query)
+    else
+      where.not('EXISTS (?)', sub_query)
+    end
+  }
+
+
   def full_name
     [first_name, last_name].join(' ')
   end
   
+
   class << self
     def ransackable_attributes(auth_object = nil)
       ['id', 'first_name', 'last_name', 'company', 'address', 'city', 'state', 'country', 'postal_code', 'phone', 'fax', 'email', 'created_at', 'updated_at']

@@ -15,7 +15,18 @@
     <p><strong>Phone:</strong> <%= customer.phone %></p>
     <p><strong>Fax:</strong> <%= customer.fax %></p>
     <p><strong>Email:</strong> <%= customer.email %></p>
-    <p><strong>Support rep:</strong> <%= customer.support_rep_id %></p>
+
+    <p><strong>Invoices Count:</strong> <%= customer.invoices_count ? customer.invoices_count : customer.invoices.count %></p>
+
+    <% if customer.support_rep %>
+      <p><strong>Support rep:</strong> <%= link_to customer.support_rep.full_name, customer.support_rep %></p>
+    <% elsif customer.support_rep_id.present? %>
+      <p><strong>Support rep:</strong> <%= customer.support_rep_id %></p>
+    <% else %>
+      <p><strong>Support rep:</strong> No support rep assigned</p>
+    <% end %>
+    <p><strong>Created at:</strong> <%= customer.created_at %></p>
+    <p><strong>Updated at:</strong> <%= customer.updated_at %></p>
   </div>
 
   <div class='card-footer text-body-secondary'>

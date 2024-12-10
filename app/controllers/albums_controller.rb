@@ -4,10 +4,8 @@ class AlbumsController < ApplicationController
 
   # GET /albums or /albums.json
   def index
-    # sleep 10 if request.headers['HTTP_X_TURBO_REQUEST_ID'].present?
-    # puts "@filters: #{@filters}"
     begin
-      @pagy, @albums = pagy(Album.includes(:artist).ransack(@filters).result)
+      @pagy, @albums = process_filters(Album.includes(:artist))
     rescue => e
       if e.is_a?(Pagy::OverflowError)
         @pagy = Pagy.new(count: 0)
@@ -16,6 +14,21 @@ class AlbumsController < ApplicationController
         raise e
       end
     end
+
+    if @albums.present?
+      tracks_count = Track.count_by_model_ids(:album, @albums.pluck(:id))
+      @albums.each do |album|
+        album.tracks_count = tracks_count[album.id] || 0
+      end
+    end
+  end
+
+  def json_list_for_select_element
+    _, albums = pagy(Album.ransack(title_cont: params[:keyword]).result)
+    albums = albums.map do |album|
+      { value: album.id, label: album.title }
+    end
+    render json: albums
   end
 
   # GET /albums/1 or /albums/1.json

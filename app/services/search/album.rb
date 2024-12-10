@@ -8,15 +8,37 @@ module Search
             get_translate_key('model_fields'),
             [
               {
+                name: 'ids', type: 'remote_select_field',
+                ransack_field_name: 'id_in',
+                label: get_translate_key('ids'),
+                props: lambda do |helper|
+                  {
+                    placeholder: get_translate_key('select_albums'),
+                    filter_url: helper.get_index_url_for_model(:album, format: :json),
+                  }
+                end
+              },
+              {
                 name: 'title', type: 'text_field',
                 ransack_field_name: 'title_cont',
-                label: get_translate_key('album_title')
+                label: get_translate_key('title')
               },
               {
                 name: 'album_or_artist_contains', type: 'text_field',
                 ransack_field_name: 'title_or_artist_name_cont',
                 label: get_translate_key('album_or_artist_contains')
-              }
+              },
+              {
+                name: 'number_of_tracks_between', type: 'range_number_field',
+                scope_name: 'with_tracks_count_in_range',
+                fiter_label: get_translate_key('number_of_tracks'),
+                label: get_translate_key('number_of_tracks_between')
+              },
+              {
+                name: 'has_tracks', type: 'boolean_field',
+                scope_name: 'has_tracks',
+                label: get_translate_key('has_tracks')
+              },
             ]
           ],
           [
@@ -28,86 +50,24 @@ module Search
                 label: get_translate_key('artist_name')
               },
               {
-                name: 'most_popular_artist_ids', type: 'select_field',
-                ransack_field_name: 'artist_id_in',
-                label: get_translate_key('most_popular_artists'),
-                props: lambda do
-                  {
-                    placeholder: get_translate_key('select_artists'),
-                  }
-                end,
-                collection: lambda { load_most_popular_artists(10) }
-              },
-              {
                 name: 'artist_ids', type: 'remote_select_field',
                 ransack_field_name: 'artist_id_in',
                 label: get_translate_key('belong_to_artists'),
-                props: lambda do
+                props: lambda do |helper|
                   props_lambda = lambda do |helper|
                     {
                       placeholder: get_translate_key('select_artists'),
-                      filter_url: helper.get_index_url_for_model('Artist', format: :json),
+                      filter_url: helper.get_index_url_for_model(:artist, format: :json),
                     }
                   end
 
                   props_lambda
                 end
-              }
+              },
             ]
           ],
-          [
-            get_translate_key('timestamp_fields'),
-            [
-              {
-                name: 'created_at_from', type: 'date_field',
-                label: get_translate_key('created_at_from'),
-                ransack_field_name: 'created_at_gteq'
-              },
-              {
-                name: 'created_at_to', type: 'date_field',
-                label: get_translate_key('created_at_to'),
-                ransack_field_name: 'created_at_lteq'
-              },
-              {
-                name: 'updated_at_from', type: 'date_field',
-                label: get_translate_key('updated_at_from'),
-                ransack_field_name: 'updated_at_gteq'
-              },
-              {
-                name: 'updated_at_to', type: 'date_field',
-                label: get_translate_key('updated_at_to'),
-                ransack_field_name: 'updated_at_lteq'
-              },
-              {
-                name: 'created_at_or_updated_at_from', type: 'date_field',
-                ransack_field_name: 'created_at_or_updated_at_gteq',
-                show: false
-              },
-              {
-                name: 'created_at_or_updated_at_to', type: 'date_field',
-                ransack_field_name: 'created_at_or_updated_at_lteq',
-                show: false
-              },
-              {
-                name: 'created_at_or_updated_at_between', type: 'range_date_field',
-                label: get_translate_key('created_at_or_updated_at_between'),
-                ransack_field_name: 'created_at_or_updated_at_between',
-                fiter_label: get_translate_key('created_at_or_updated_at')
-              },
-              {
-                name: 'created_at_between', type: 'range_date_field',
-                label: get_translate_key('created_at_between'),
-                ransack_field_name: 'created_at_between',
-                fiter_label: get_translate_key('created_at')
-              },
-              {
-                name: 'updated_at_between', type: 'range_date_field',
-                label: get_translate_key('updated_at_between'),
-                ransack_field_name: 'updated_at_between',
-                fiter_label: get_translate_key('updated_at')
-              }
-            ]
-          ]
+          
+          base_timestamp_fields
         ]
       end
 
@@ -125,362 +85,107 @@ module Search
             ]
           },
           {
-            name: 'by_artist_name_accept_and_created_at_this_year',
+            name: 'by_artist_name_accept_and_created_at_this_year', # artist name is Accept and created at this year
             label: get_translate_key('template.by_artist_name_accept_and_created_at_this_year_test'),
-            filters: lambda do
+            filters: lambda do |helper|
               [
-                from_search_field('artist_name', 'Accept'),
-                from_template('created_at_this_year')
+                from_search_field('artist_name', 'Accept', helper),
+                from_template('created_at_this_year', helper)
               ].flatten.compact
             end
           },
           {
-            name: 'by_artist_id_118', # Pearl Jam
-            label: get_translate_key('template.by_artist_id_118_test'),
-            filters: lambda do
-              [
-                from_search_field('artist_ids', [118])
-              ]
+            name: 'by_artist_pearl_jam', # Pearl Jam
+            label: get_translate_key('template.by_artist_pearl_jam_test'),
+            filters: lambda do |helper|
+              [from_search_field('artist_ids', get_collection_by_model_ids(:artist, [118]), helper)]
             end
           },
           # test filter templates
 
           {
-            name: 'created_at_this_year',
-            label: get_translate_key('template.created_at_this_year'),
-            filters: lambda do
+            name: 'artists_who_have_10_or_more_albums',
+            label: get_translate_key('template.artists_who_have_10_or_more_albums'),
+            filters: lambda do |helper|
               [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now.beginning_of_year),
-                  format_date(Time.now.end_of_year)
-                ])
-              ]
-            end
-          },
-
-
-          # these lines still working
-          # {
-          #   name: 'created_at_this_month',
-          #   label: get_translate_key('template.created_at_this_month'),
-          #   filters: lambda do
-          #     [{
-          #     name: 'created_at_from',
-          #       value: Time.now.beginning_of_month.iso8601
-          #     }, {
-          #       name: 'created_at_to',
-          #       value: Time.now.end_of_month.iso8601
-          #     }]
-          #   end
-          # },
-
-          # new way
-          {
-            name: 'created_at_this_month',
-            label: get_translate_key('template.created_at_this_month'),
-            filters: lambda do
-              [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now.beginning_of_month),
-                  format_date(Time.now.end_of_month)
-                ])
-              ]
-            end
-          },
-
-
-          {
-            name: 'created_at_this_week',
-            label: get_translate_key('template.created_at_this_week'),
-            filters: lambda do
-              [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now.beginning_of_week),
-                  format_date(Time.now.end_of_week)
-                ])
+                from_search_field('artist_ids', load_artists_by_number_albums(10, true), helper)
               ]
             end
           },
           {
-            name: 'created_at_today',
-            label: get_translate_key('template.created_at_today'),
-            filters: lambda do
+            name: 'artists_who_have_2_or_fewer_albums',
+            label: get_translate_key('template.artists_who_have_2_or_fewer_albums'),
+            filters: lambda do |helper|
               [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now),
-                  format_date(Time.now)
-                ])
+                from_search_field('artist_ids', load_artists_by_number_albums(2, false), helper)
               ]
             end
           },
           {
-            name: 'updated_at_this_year',
-            label: get_translate_key('template.updated_at_this_year'),
-            filters: lambda do
+            name: 'albums_that_have_25_or_more_tracks',
+            label: get_translate_key('template.albums_that_have_25_or_more_tracks'),
+            filters: lambda do |helper|
               [
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now.beginning_of_year),
-                  format_date(Time.now.end_of_year)
-                ])
+                from_search_field('ids', load_album_by_number_tracks(25, true), helper)
               ]
             end
           },
           {
-            name: 'updated_at_this_month',
-            label: get_translate_key('template.updated_at_this_month'),
-            filters: lambda do
+            name: 'albums_that_have_2_or_fewer_tracks',
+            label: get_translate_key('template.albums_that_have_2_or_fewer_tracks'),
+            filters: lambda do |helper|
               [
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now.beginning_of_month),
-                  format_date(Time.now.end_of_month)
-                ])
+                from_search_field('ids', load_album_by_number_tracks(2, false), helper)
               ]
             end
           },
           {
-            name: 'updated_at_this_week',
-            label: get_translate_key('template.updated_at_this_week'),
-            filters: lambda do
-              [
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now.beginning_of_week),
-                  format_date(Time.now.end_of_week)
-                ])
-              ]
-            end
-          },
-          {
-            name: 'updated_at_today',
-            label: get_translate_key('template.updated_at_today'),
-            filters: lambda do
-              [
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now),
-                  format_date(Time.now)
-                ])
-              ]
-            end
-          },
-          {
-            name: 'created_at_this_year_and_updated_at_this_month',
-            label: get_translate_key('template.created_at_this_year_and_updated_at_this_month'),
-            filters: lambda do
-              [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now.beginning_of_year),
-                  format_date(Time.now.end_of_year)
-                ]),
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now.beginning_of_month),
-                  format_date(Time.now.end_of_month)
-                ])
-              ].flatten.compact
-            end
-          },
-          {
-            name: 'created_at_this_month_and_updated_at_this_week',
-            label: get_translate_key('template.created_at_this_month_and_updated_at_this_week'),
-            filters: lambda do
-              [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now.beginning_of_month),
-                  format_date(Time.now.end_of_month)
-                ]),
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now.beginning_of_week),
-                  format_date(Time.now.end_of_week)
-                ])
-              ].flatten.compact
-            end
-          },
-          {
-            name: 'created_at_this_week_and_updated_at_today',
-            label: get_translate_key('template.created_at_this_week_and_updated_at_today'),
-            filters: lambda do
-              [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now.beginning_of_week),
-                  format_date(Time.now.end_of_week)
-                ]),
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now),
-                  format_date(Time.now)
-                ])
-              ].flatten.compact
-            end
-          },
-          {
-            name: 'created_at_today_and_updated_at_today',
-            label: get_translate_key('template.created_at_today_and_updated_at_today'),
-            filters: lambda do
-              [
-                from_search_field(:created_at_between, [
-                  format_date(Time.now),
-                  format_date(Time.now)
-                ]),
-                from_search_field(:updated_at_between, [
-                  format_date(Time.now),
-                  format_date(Time.now)
-                ])
-              ].flatten.compact
-            end
+            name: 'albums_with_no_tracks',
+            label: get_translate_key('template.albums_with_no_tracks'),
+            filters: [
+              {
+                name: 'has_tracks',
+                value: false
+              }
+            ]
           }
-        ]
+        ] + base_template_fields
       end
 
       def model
         'Album'
       end
 
-      def load_most_popular_artists(has_more_than_albums = 5)
-        ids = ::Album.top_most_popular_artist_ids(has_more_than_albums)
-        get_collection_by_ids(ids)
-      end
-
-      def get_collection_by_ids(ids)
-        ::Artist.where(id: ids).map { |artist| [artist.name, artist.id] }
-      end
-      
-      def get_search_field(key)
-        search_fields.each do |group|
-          group[1].each do |field|
-            if field[:name] == key.to_s
-              return field
-            end
-          end
+      def load_artists_by_number_albums(num = 10, is_top = true)
+        if is_top
+          ids = ::Album.artist_ids_with_most_albums(num)
+        else
+          ids = ::Album.artist_ids_with_fewest_albums(num)
         end
 
-        nil
-      end
-
-      def get_params_to_render_filter(filter_field, helper)
-        if filter_field.blank?
-          return
-        end
-
-        filter = get_search_field(filter_field)
-        if filter.blank?
-          return
-        end
-
-        props = {}
-        if filter[:props].present? && helper.present?
-          props_lambda = filter[:props].call
-          if props_lambda && props_lambda.respond_to?(:call)
-            props = props_lambda.call(helper)
-          else
-            props = props_lambda
-          end
-        end
-
-        props ||= {}
-        if filter[:collection].present? && helper.present?
-          props_lambda = filter[:collection].call
-          collection = if props_lambda && props_lambda.respond_to?(:call)
-            props_lambda.call(helper)
-          else
-            props_lambda
-          end
-          props[:collection] = collection || []
-        end
-
-        {
-          field_name: filter_field,
-          field_label: filter[:fiter_label] || filter[:label],
-          field_type: filter[:type],
-          field_props: props,
-          field_value: filter[:value],
-          ransack_field_name: filter[:ransack_field_name]
-        }
-      end
-
-      def get_params_to_render_filter_with_value(filter_field, value, helper)
-        puts "get_params_to_render_filter_with_value: #{filter_field}, #{value}, #{helper}"
-        filter = get_params_to_render_filter(filter_field, helper)
-        if filter.blank?
-          return
-        end
-
-        if filter[:field_type] == 'remote_select_field' && helper.present?
-          filter[:field_props].merge!(collection: get_collection_by_ids(value))
-        end
-
-        if filter[:field_name].to_s.end_with?('_between')
-          value = parse_date_range_between(value)
-        end
-
-        filter.merge!(field_value: value)
-      end
-
-      def get_filters_from_query(params, helper)
-        if params.blank?
-          return []
-        end
-
-        result = []
-        params.each do |k, v|
-          if filter = get_params_to_render_filter_with_value(k, v, helper)
-            result << filter
-          end
+        result = get_collection_by_model_ids(:artist, ids.keys)
+        result.each do |record|
+          total_albums = ids.find { |id, _| id == record.last }&.last
+          record[0] = "#{record[0]} - #{pluralize(total_albums, 'album')}"
         end
 
         result
       end
 
-      def get_filters_from_template(template)
-        filter_template = filter_templates.find { |f| f[:name] == template }
-        if filter_template.blank?
-          return []
-        end
-
-        if filter_template[:filters].respond_to?(:call) # lambda
-          filter_template[:filters].call
+      def load_album_by_number_tracks(num = 10, is_top = true)
+        if is_top
+          ids = ::Album.album_ids_with_most_tracks(num)
         else
-          filter_template[:filters]
-        end
-      end
-
-      def parse_date_range_between(combined_date)
-        return if combined_date.blank?
-        if combined_date.is_a?(Array)
-          return { from: combined_date[0], to: combined_date[1] }
+          ids = ::Album.album_ids_with_fewest_tracks(num)
         end
 
-        dates = combined_date.split(/[ ,;]+/)
-
-        date_hash = { from: nil, to: nil }
-        if dates.size > 0
-          date = Date.parse(dates[0])
-          date_hash[:from] = format_date(date)
+        result = get_collection_by_model_ids(:album, ids.keys)
+        result.each do |record|
+          total_tracks = ids.find { |id, _| id == record.last }&.last
+          record[0] = "#{record[0]} - #{pluralize(total_tracks, 'track')}"
         end
 
-        if dates.size > 1
-          date = Date.parse(dates[1])
-          date_hash[:to] = format_date(date)
-        end
-
-        date_hash
-      end
-
-      def from_search_field(field, value)
-        search_field = get_search_field(field)
-        return if search_field.blank?
-
-        search_field.merge!(value: value)
-      end
-
-      def from_template(template)
-        filters = get_filters_from_template(template)
-        return if filters.blank?
-
-        filters.map do |filter|
-          from_search_field(filter[:name], filter[:value])
-        end
-      end
-
-      def format_date(date)
-        return if date.blank?
-        date.strftime('%Y-%m-%d')
+        result
       end
     end
   end

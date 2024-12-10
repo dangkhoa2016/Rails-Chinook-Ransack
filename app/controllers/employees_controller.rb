@@ -6,6 +6,14 @@ class EmployeesController < ApplicationController
     @pagy, @employees = pagy(Employee.all)
   end
 
+  def json_list_for_select_element
+    _, employees = pagy(Employee.ransack(first_name_or_last_name_cont: params[:keyword]).result)
+    employees = employees.map do |employee|
+      { value: employee.id, label: employee.full_name }
+    end
+    render json: employees
+  end
+
   # GET /employees/1 or /employees/1.json
   def show
   end
