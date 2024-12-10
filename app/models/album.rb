@@ -10,6 +10,11 @@ class Album < ApplicationRecord
   has_many :playlists, through: :playlist_tracks
   has_many :support_reps, through: :customers, source: :support_rep
 
+  scope :created_or_updated_within, ->(start_date, end_date) {
+    where('(created_at BETWEEN :start_date AND :end_date) OR (updated_at BETWEEN :start_date AND :end_date)',
+      start_date: start_date, end_date: end_date)
+  }
+
   class << self
     def ransackable_attributes(auth_object = nil)
       ['id', 'title', 'artist_id', 'created_at', 'updated_at']

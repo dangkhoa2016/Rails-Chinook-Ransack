@@ -1,2 +1,11 @@
 rm -rf ./storage/development*
 rails db:migrate db:seed_with_sql_log
+
+/albums?artist_ids%5B%5D=1&artist_ids%5B%5D=2&artist_name=DC&most_popular_artist_ids%5B%5D=22&most_popular_artist_ids%5B%5D=58&title=About+
+/albums?created_at_or_updated_at_between_gteq=2024-07-09&created_at_or_updated_at_between_lteq=2024-12-09
+/albums?created_at_from=2024-12-09&created_at_to=2024-12-18
+/albums?updated_at_from=2024-12-09&updated_at_to=2024-12-18
+/albums?title=About+
+/albums?created_at_between=2024-12-09,2024-12-18&created_at_or_updated_at_between=2024-12-09,2024-12-20
+
+/albums?created_at_between=2024-12-09%2C2024-12-18&created_at_or_updated_at_between=2024-12-09%2C2024-12-20&updated_at_from=2024-12-09&updated_at_to=2024-12-18&artist_name=DC&created_at_from=2024-12-09&created_at_to=2024-12-18&title=About+&artist_ids%5B%5D=2&artist_ids%5B%5D=4&artist_ids%5B%5D=5&most_popular_artist_ids%5B%5D=22&most_popular_artist_ids%5B%5D=90

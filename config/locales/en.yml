@@ -28,4 +28,59 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+
+  activerecord:
+    models:
+      album: "Album"
+      artist: "Artist"
+    attributes:
+      album:
+        title: "Title"
+      artist:
+        name: "Name"
+
+  filters:
+    album:
+      model_fields: "Album fields"
+      artist_fields: "Artist fields"
+      album_or_artist_contains: "Album title or artist name contains"
+      timestamp_fields: "Timestamp fields"
+      album_title: "Album title"
+      artist_name: "Artist name"
+      select_artists: "Select artists"
+      most_popular_artists: "Most popular artists"
+      belong_to_artists: "Belong to artists"
+
+      created_at_between: "Created at between"
+      created_at_from: "Created at from"
+      created_at_to: "Created at to"
+      created_at: "Created at"
+
+      updated_at_between: "Updated at between"
+      updated_at_from: "Updated at from"
+      updated_at_to: "Updated at to"
+      updated_at: "Updated at"
+
+      created_at_or_updated_at_between: "Created at or updated at between"
+      created_at_or_updated_at_from: "Created at or updated at from"
+      created_at_or_updated_at_to: "Created at or updated at to"
+      created_at_or_updated_at: "Created at or updated at"
+      template:
+        by_artist_name_accept_test: "By artist name: Accept (test)"
+        by_artist_id_118_test: "By artist id: 118 - Pearl Jam (test)"
+        by_artist_name_accept_and_created_at_this_year_test: "By artist name: Accept and created at this year (test)"
+        created_at_this_year: "Created at this year"
+        created_at_this_month: "Created at this month"
+        created_at_this_week: "Created at this week"
+        created_at_today: "Created at today"
+        updated_at_this_year: "Updated at this year"
+        updated_at_this_month: "Updated at this month"
+        updated_at_this_week: "Updated at this week"
+        updated_at_today: "Updated at today"
+        created_at_this_year_and_updated_at_this_month: "Created at this year and updated at this month"
+        created_at_this_month_and_updated_at_this_week: "Created at this month and updated at this week"
+        created_at_this_week_and_updated_at_today: "Created at this week and updated at today"
+        created_at_today_and_updated_at_today: "Created at today and updated at today"
+
+    artist:
+      model_fields: "Artist fields"

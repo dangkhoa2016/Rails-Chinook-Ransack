@@ -1,0 +1,11 @@
+<%
+filter_fields = defined?(locals) ? locals[:filters] : (defined?(filters) ? filters : nil)
+puts "Rails-Chinook-Ransack/app/views/shared/_selected_filters.html.erb: #{filter_fields.inspect}"
+%>
+
+<% if filter_fields.present? %>
+	<% filter_fields.each do |filter| %>
+		<% type = filter.delete(:field_type) %>
+		<%= render("shared/filters/#{type}", filter) if type.present? %>
+	<% end %>
+<% end %>

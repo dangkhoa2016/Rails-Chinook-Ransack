@@ -6,6 +6,14 @@ class ArtistsController < ApplicationController
     @pagy, @artists = pagy(Artist.all)
   end
 
+  def list_for_select
+    _, artists = pagy(Artist.ransack(name_cont: params[:keyword]).result)
+    artists = artists.map do |artist|
+      { value: artist.id, label: artist.name }
+    end
+    render json: artists
+  end
+
   # GET /artists/1 or /artists/1.json
   def show
   end

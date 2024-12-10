@@ -1,0 +1,82 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# Vietnamese, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     vi:
+#       "yes": Đồng ý
+#       enabled: "ON"
+
+vi:
+  date:
+    formats:
+      default: "%d-%m-%Y" # I18n.l(Date.today, format: :default) => "24-12-2024"
+      short: "%d/%m/%Y" # I18n.l(Date.today, format: :short) => "24/12/2024"
+
+  activerecord:
+    models:
+      album: "Bộ sưu tập"
+      artist: "Nghệ sĩ"
+    attributes:
+      album:
+        title: "Tiêu đề"
+      artist:
+        name: "Nghệ danh"
+
+  filters:
+    album:
+      model_fields: "Các trường của bộ sưu tập"
+      artist_fields: "Các trường của nghệ sĩ"
+      album_or_artist_contains: "Tên bộ sưu tập hoặc nghệ sĩ chứa"
+      timestamp_fields: "Các trường thời gian"
+      album_title: "Tiêu đề bộ sưu tập"
+      artist_name: "Tên nghệ sĩ"
+      select_artists: "Chọn các nghệ sĩ"
+      most_popular_artists: "Các nghệ sĩ phổ biến nhất"
+      belong_to_artists: "Thuộc về các nghệ sĩ"
+      created_at_between: "Ngày tạo vào khoảng"
+      created_at: "Ngày tạo"
+      created_at_from: "Ngày tạo từ"
+      created_at_to: "Ngày tạo đến"
+      updated_at: "Ngày cập nhật"
+      updated_at_between: "Ngày cập nhật vào khoảng"
+      updated_at_from: "Ngày cập nhật từ"
+      updated_at_to: "Ngày cập nhật đến"
+      created_at_this_year: "Được tạo trong năm nay"
+      created_at_this_month: "Được tạo trong tháng này"
+      created_at_this_week: "Được tạo trong tuần này"
+      created_at_today: "Được tạo vào hôm nay"
+      updated_at_this_year: "Được cập nhật trong năm nay"
+      updated_at_this_month: "Được cập nhật trong tháng này"
+      updated_at_this_week: "Được cập nhật trong tuần này"
+      updated_at_today: "Được cập nhật vào hôm nay"
+      created_at_this_year_and_updated_at_this_month: "Được tạo trong năm nay và cập nhật trong tháng này"
+      created_at_this_month_and_updated_at_this_week: "Được tạo trong tháng này và cập nhật trong tuần này"
+      created_at_this_week_and_updated_at_today: "Được tạo trong tuần này và cập nhật vào hôm nay"
+      created_at_today_and_updated_at_today: "Được tạo vào hôm nay và cập nhật vào hôm nay"
+      created_at_or_updated_at_between: "Ngày tạo hoặc cập nhật vào khoảng"
+      created_at_or_updated_at_from: "Ngày tạo hoặc cập nhật từ"
+      created_at_or_updated_at_to: "Ngày tạo hoặc cập nhật đến"
+      created_at_or_updated_at: "Ngày tạo hoặc cập nhật"
+    artist:
+      model_fields: "Các trường của nghệ sĩ"

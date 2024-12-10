@@ -1,0 +1,22 @@
+<% id = 'date_field_' + object_id.to_s %>
+<% name = defined?(locals) ? locals[:field_name] : (defined?(field_name) ? field_name : nil) %>
+<% value = defined?(locals) ? locals[:field_value] : (defined?(field_value) ? field_value : nil) %>
+<%
+label = defined?(locals) ? locals[:field_label] : (defined?(field_label) ? field_label : nil)
+label ||= 'Date'
+%>
+
+<div class='col' id='<%= id %>' data-field-name='<%= name %>'>
+  <div class='card'>
+    <div class='card-body px-2 py-3'>
+      <button type='button' data-controller='btn-remove'
+        data-btn-remove-element-to-remove-value='#<%= id %>'
+        class='btn-close' aria-label='Remove'></button>
+
+      <div class='form-group'>
+        <%= label_tag name, translate(label), class: 'mb-1' %>
+        <%= date_field_tag name, value, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<%
+filters = if @filter_params[:name]
+  get_filters_for_form(@filter_params[:name], @filter_params[:model])
+elsif @filter_params[:template]
+  get_filters_from_template_for_form(@filter_params[:template], @filter_params[:model])
+else
+  []
+end
+%>
+
+<%= render 'shared/selected_filters', filters: filters %>

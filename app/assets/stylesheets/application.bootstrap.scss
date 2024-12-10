@@ -1,2 +1,14 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+@import './choice-js';
+
+[data-label-class="search-hint"] {
+  display: none;
+}
+
+.btn-remove-filter {
+  width: 5px;
+  height: 5px;
+  right: 5px;
+  top: 5px;
+}
