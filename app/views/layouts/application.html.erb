@@ -13,8 +13,11 @@
   </head>
 
   <body>
+    <%= render 'layouts/header' %>
     <div class='container-fluid my-3'>
-      <%= yield %>
+      <div class='row px-3'>
+        <%= yield %>
+      </div>
     </div>
   </body>
 </html>

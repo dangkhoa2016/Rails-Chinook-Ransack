@@ -1,0 +1,28 @@
+<ul class='nav custom-nav col-12 col-md-auto my-2 justify-content-center my-md-0 text-small'>
+  <% nav_menus.each do |menu_name, menu_info| %>
+    <% is_active = is_menu_active(menu_info) %>
+    <% if menu_info[:children].present? %> 
+      <li class='nav-item dropdown'>
+        <%= link_to get_url(menu_info[:url]), class: "nav-link dropdown-toggle #{ is_active ? 'text-dark' : 'text-light' }",
+          role:'button', 'data-bs-toggle': 'dropdown', 'aria-expanded': 'false' do %>
+          <svg class='d-block mx-auto mb-1' width='24' height='24'><use xlink:href='<%= asset_path('icons.svg') %>#<%= menu_info[:icon] %>'></use></svg>
+          <%= translate(menu_name) %>
+        <% end %>
+        <ul class='dropdown-menu'>
+          <% menu_info[:children].each do |child_name, child_url| %>
+            <li>
+              <%= link_to translate(child_name), get_url(child_url), class: "dropdown-item#{ is_menu_active(child_url) ? ' bg-dark text-white' : nil }" %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to get_url(menu_info[:url]), class: "nav-link #{ is_active ? 'text-dark' : 'text-light' }" do %>
+          <svg class='d-block mx-auto mb-1' width='24' height='24'><use xlink:href='<%= asset_path('icons.svg') %>#<%= menu_info[:icon] %>'></use></svg>
+          <%= translate(menu_name) %>
+        <% end %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>

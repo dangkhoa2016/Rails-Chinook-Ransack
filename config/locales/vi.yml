@@ -80,3 +80,22 @@ vi:
       created_at_or_updated_at: "Ngày tạo hoặc cập nhật"
     artist:
       model_fields: "Các trường của nghệ sĩ"
+
+  nav:
+    home: "Trang chủ"
+    music: "Âm nhạc"
+    albums: "Bộ sưu tập"
+    artists: "Nghệ sĩ"
+    genres: "Thể loại"
+    media_types: "Loại phương tiện"
+    tracks: "Bài hát"
+    playlists: "Danh sách phát"
+    store: "Cửa hàng"
+    invoices: "Hóa đơn"
+    invoice_lines: "Chi tiết hóa đơn"
+    employees: "Nhân viên"
+    customers: "Khách hàng"
+    settings: "Cài đặt"
+    languages: "Ngôn ngữ"
+    vietnamese: "Tiếng Việt"
+    english: "Tiếng Anh"

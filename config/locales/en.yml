@@ -84,3 +84,22 @@ en:
 
     artist:
       model_fields: "Artist fields"
+
+  nav:
+    home: "Home"
+    music: "Music"
+    albums: "Albums"
+    artists: "Artists"
+    genres: "Genres"
+    media_types: "Media Types"
+    tracks: "Tracks"
+    playlists: "Playlists"
+    store: "Store"
+    invoices: "Invoices"
+    invoice_lines: "Invoice Lines"
+    employees: "Employees"
+    customers: "Customers"
+    settings: "Settings"
+    languages: "Languages"
+    vietnamese: "Vietnamese"
+    english: "English"
