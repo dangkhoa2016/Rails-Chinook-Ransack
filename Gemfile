@@ -29,9 +29,6 @@ gem "jbuilder"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem 'cssbundling-rails'
 
-# Bootstrap 5 for Rails [https://github.com/twbs/bootstrap-rubygem]
-gem 'bootstrap', '~> 5.3.3'
-
 # The Best Pagination Ruby Gem [https://github.com/ddnexus/pagy]
 gem 'pagy', '~> 9.3'
 
