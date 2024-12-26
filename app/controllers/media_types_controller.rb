@@ -6,6 +6,14 @@ class MediaTypesController < ApplicationController
     @pagy, @media_types = pagy(MediaType.all)
   end
 
+  def json_list_for_select_element
+    _, media_types = pagy(MediaType.ransack(name_cont: params[:keyword]).result)
+    media_types = media_types.map do |media_type|
+      { value: media_type.id, label: media_type.name }
+    end
+    render json: media_types
+  end
+
   # GET /media_types/1 or /media_types/1.json
   def show
   end

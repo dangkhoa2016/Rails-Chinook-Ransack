@@ -1,13 +1,35 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  resources :tracks
+  resources :tracks do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
+
   resources :playlists
   resources :playlist_tracks
-  resources :media_types
-  resources :invoices
+
+  resources :invoices do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
+
   resources :invoice_lines
-  resources :genres
+
+  resources :media_types do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
+
+  resources :genres do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
+
   resources :employees do
     collection do
       get :json_list_for_select_element

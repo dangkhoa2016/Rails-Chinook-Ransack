@@ -4,10 +4,13 @@
   </div>
 
   <div class='card-body'>
-    <p>
-      <strong>Customer:</strong>
-      <%= link_to invoice.customer.full_name, customer_path(invoice.customer) %>
-    </p>
+    <% if invoice.customer %>
+      <p><strong>Customer:</strong> <%= link_to invoice.customer.full_name, invoice.customer %></p>
+    <% elsif invoice.customer_id.present? %>
+      <p><strong>Customer:</strong> <%= invoice.customer_id %></p>
+    <% else %>
+      <p><strong>Customer:</strong> Missing customer</p>
+    <% end %>
 
     <p>
       <strong>Invoice Date:</strong>
@@ -43,6 +46,8 @@
       <strong>Total:</strong>
       <%= number_to_currency(invoice.total) %>
     </p>
+    
+    <p><strong>Invoice Lines Count:</strong> <%= invoice.invoice_lines_count ? invoice.invoice_lines_count : invoice.invoice_lines.count %></p>
   </div>
 
   <div class='card-footer text-body-secondary'>

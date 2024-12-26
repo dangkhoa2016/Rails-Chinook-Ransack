@@ -1,20 +1,43 @@
-<p style='color: green'><%= notice %></p>
 
-<div class='d-flex justify-content-between align-items-center mb-4'>
-  <h1 class='mb-0'>Invoices</h1>
-  <%= link_to 'New', new_invoice_path, class: 'btn btn-primary' %>
+<div style='color: green'><%= notice %></div>
+
+<div class='d-flex justify-content-between align-items-center'>
+  <div>
+    <h1 class='d-inline mb-0'>Invoices</h1>
+    <span class='text-muted'>(
+      <%= @filters.present? ? 'filtered: ' : 'all: ' %>
+      <%= pluralize(@pagy.count, 'record') %>
+    )</span>
+  </div>
+  <div>
+    <%= link_to 'New', new_invoice_path, class: 'btn btn-primary' %>
+    <div class='btn-group' role='group'>
+      <button type='button' class='btn btn-success' title='Click to change display mode to table'>
+        <i class='bi bi-list'></i>
+        <span class='visually-hidden'>Table</span>
+      </button>
+      <button type='button' class='btn btn-secondary' title='Click to change display mode to card'>
+        <i class='bi bi-grid'></i>  
+        <span class='visually-hidden'>Card</span>
+      </button>
+    </div>
+  </div>
 </div>
 
-<div id='invoices' class='my-4 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4'>
-  <% @invoices.each do |invoice| %>
-    <div class='col'>
-      <%= render invoice %>
+<%= render 'shared/filter_form', filter_model: 'Invoice' %>
+
+<div id='invoices' class='py-4'>
+  <% if @pagy.count.zero? %>
+    <div class='alert alert-warning' role='alert'>
+      No invoices found
+    </div>
+  <% else %>
+    <%= render 'invoices/table' %>
+
+    <div class='pagination'>
+      <%== pagy_bootstrap_nav(@pagy) %>
     </div>
   <% end %>
-</div>
-
-<div class='pagination'>
-  <%== pagy_bootstrap_nav(@pagy) %>
 </div>
 
 <%= link_to 'New invoice', new_invoice_path %>

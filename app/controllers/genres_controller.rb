@@ -6,6 +6,14 @@ class GenresController < ApplicationController
     @pagy, @genres = pagy(Genre.all)
   end
 
+  def json_list_for_select_element
+    _, genres = pagy(Genre.ransack(name_cont: params[:keyword]).result)
+    genres = genres.map do |genre|
+      { value: genre.id, label: genre.name }
+    end
+    render json: genres
+  end
+
   # GET /genres/1 or /genres/1.json
   def show
   end
