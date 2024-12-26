@@ -68,6 +68,38 @@ en:
 
     artist:
       model_fields: "Artist fields"
+      name: "Name"
+      ids: "Artist IDs"
+      select_artists: "Select artists"
+      number_of_albums_between: "Number of albums between"
+      number_of_albums_from: "Number of albums from"
+      number_of_albums_to: "Number of albums to"
+      number_of_albums: "Number of albums"
+      has_albums: "Has albums"
+
+      template:
+        by_artist_id_118_test: "By artist with id: 118 - Pearl Jam (test)"
+        artists_have_more_than_or_equal_to_10_albums: "Artists that have more than or equal to 10 albums"
+        artists_have_fewer_than_or_equal_to_1_albums: "Artists that have fewer than or equal to 1 album"
+        artists_with_no_albums: "Artists with no albums"
+
+    genre:
+      model_fields: "Genre fields"
+      name: "Name"
+      ids: "Genre IDs"
+      select_genres: "Select genres"
+      number_of_tracks_between: "Number of tracks between"
+      number_of_tracks_from: "Number of tracks from"
+      number_of_tracks_to: "Number of tracks to"
+      number_of_tracks: "Number of tracks"
+      has_tracks: "Has tracks"
+
+      template:
+        genre_name_contains_nova_test: "Genre name contains: Nova (test)"
+        by_genre_id_2_test: "By genre id: 2 - Jazz (test)"
+        genres_have_more_than_or_equal_to_100_tracks: "Genres that have more than or equal to 100 tracks"
+        genres_have_fewer_than_or_equal_to_30_tracks: "Genres that have fewer than or equal to 30 tracks"
+        genres_with_no_tracks: "Genres with no tracks"
 
     customer:
       model_fields: "Customer fields"

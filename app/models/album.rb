@@ -41,6 +41,29 @@ class Album < ApplicationRecord
     end
   }
 
+  scope :with_album_count_by_artist_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
+    return {} if min_value.nil? && max_value.nil?
+
+    column_name = 'artist_id'
+    query = Album.select(column_name).group(column_name)
+
+    if min_value.present? && max_value.present?
+      if min_value > max_value
+        return {}
+      elsif min_value == max_value
+        query = query.having('COUNT(id) = ?', min_value)
+      else
+        query = query.having('COUNT(id) BETWEEN ? AND ?', min_value, max_value)
+      end
+    elsif min_value.nil? && max_value.present?
+      query = query.having('COUNT(id) <= ?', max_value)
+    elsif min_value.present? && max_value.nil?
+      query = query.having('COUNT(id) >= ?', min_value)
+    end
+
+    query
+  }
+
 
   class << self
     def ransackable_attributes(auth_object = nil)
@@ -49,6 +72,15 @@ class Album < ApplicationRecord
 
     def ransackable_associations(auth_object = nil)
       ['artist', 'tracks', 'genres', 'media_types', 'invoice_lines', 'invoices', 'customers', 'playlist_tracks', 'playlists', 'support_reps']
+    end
+
+    def count_by_artist_ids(ids)
+      column_name = 'artist_id'
+      if column_names.include?(column_name)
+        Album.where(column_name => ids).group(column_name).count('id')
+      else
+        {}
+      end
     end
 
     def artist_ids_with_most_albums(has_more_than_albums = 5)

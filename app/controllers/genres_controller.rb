@@ -1,9 +1,26 @@
 class GenresController < ApplicationController
+  include Filterable
   before_action :set_genre, only: %i[ show edit update destroy ]
 
   # GET /genres or /genres.json
   def index
-    @pagy, @genres = pagy(Genre.all)
+    begin
+      @pagy, @genres = process_filters(Genre)
+    rescue => e
+      if e.is_a?(Pagy::OverflowError)
+        @pagy = Pagy.new(count: 0)
+        @genres = Genre.none
+      else
+        raise e
+      end
+    end
+
+    if @genres.present?
+      tracks_count = Track.count_by_model_ids(:genre, @genres.pluck(:id))
+      @genres.each do |genre|
+        genre.tracks_count = tracks_count[genre.id] || 0
+      end
+    end
   end
 
   def json_list_for_select_element
@@ -74,5 +91,9 @@ class GenresController < ApplicationController
     # Only allow a list of trusted parameters through.
     def genre_params
       params.require(:genre).permit(:name)
+    end
+
+    def default_ransack_params
+      :name_cont
     end
 end

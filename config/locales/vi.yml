@@ -72,6 +72,38 @@ vi:
 
     artist:
       model_fields: "Các trường của nghệ sĩ"
+      name: "Tên nghệ sĩ"
+      ids: "ID nghệ sĩ"
+      select_artists: "Chọn nghệ sĩ"
+      number_of_albums_between: "Số bộ sưu tập trong khoảng"
+      number_of_albums_from: "Số bộ sưu tập từ"
+      number_of_albums_to: "Số bộ sưu tập đến"
+      number_of_albums: "Tổng số bộ sưu tập"
+      has_albums: "Có bộ sưu tập"
+
+      template:
+        by_artist_id_118_test: "Bởi nghệ sĩ có id: 118 - Pearl Jam (test)"
+        artists_have_more_than_or_equal_to_10_albums: "Nghệ sĩ có từ 10 bộ sưu tập trở lên"
+        artists_have_fewer_than_or_equal_to_1_albums: "Các nghệ sĩ có từ 1 bộ sưu tập trở xuống"
+        artists_with_no_albums: "Các nghệ sĩ không có bộ sưu tập nào"
+
+    genre:
+      model_fields: "Các trường của thể loại"
+      name: "Tên thể loại"
+      ids: "ID thể loại"
+      select_genres: "Chọn thể loại"
+      number_of_tracks_between: "Số bài hát trong khoảng"
+      number_of_tracks_from: "Số bài hát từ"
+      number_of_tracks_to: "Số bài hát đến"
+      number_of_tracks: "Tổng số bài hát"
+      has_tracks: "Có bài hát"
+
+      template:
+        genre_name_contains_nova_test: "Tên thể loại chứa: Nova (test)"
+        by_genre_id_2_test: "Thể loại có id: 2 - Jazz (test)"
+        genres_have_more_than_or_equal_to_100_tracks: "Các thể loại có từ 100 bài hát trở lên"
+        genres_have_fewer_than_or_equal_to_30_tracks: "Các thể loại có từ 30 bài hát trở xuống"
+        genres_with_no_tracks: "Các thể loại không có bài hát nào"
 
     customer:
       model_fields: "Các trường của khách hàng"

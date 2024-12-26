@@ -1,11 +1,12 @@
 <div id='<%= dom_id artist %>' class='card'>
   <div class='card-header'>
-    <%= artist.name %>
+    <%= link_to artist.name, artist %>
   </div>
   
   <div class='card-body'>
     <h4 class='card-title'>More info</h4>
 
+    <p><strong>Albums Count:</strong> <%= artist.albums_count ? artist.albums_count : artist.albums.count %></p>
     <p><strong>Created at:</strong> <%= artist.created_at %></p>
     <p><strong>Updated at:</strong> <%= artist.updated_at %></p>
   </div>

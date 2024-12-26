@@ -1,9 +1,26 @@
 class ArtistsController < ApplicationController
+  include Filterable
   before_action :set_artist, only: %i[ show edit update destroy ]
 
   # GET /artists or /artists.json
   def index
-    @pagy, @artists = pagy(Artist.all)
+    begin
+      @pagy, @artists = process_filters(Artist)
+    rescue => e
+      if e.is_a?(Pagy::OverflowError)
+        @pagy = Pagy.new(count: 0)
+        @artists = Artist.none
+      else
+        raise e
+      end
+    end
+
+    if @artists.present?
+      albums_count = Album.count_by_artist_ids(@artists.pluck(:id))
+      @artists.each do |artist|
+        artist.albums_count = albums_count[artist.id] || 0
+      end
+    end
   end
 
   def json_list_for_select_element
@@ -74,5 +91,9 @@ class ArtistsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def artist_params
       params.require(:artist).permit(:name)
+    end
+    
+    def default_ransack_params
+      :name_cont
     end
 end

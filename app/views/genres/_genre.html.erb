@@ -1,11 +1,12 @@
 <div id='<%= dom_id(genre) %>' class='card'>
   <div class='card-header'>
-    <%= genre.name %>
+    <%= link_to genre.name, genre %>
   </div>
   
   <div class='card-body'>
     <h4 class='card-title'>More info</h4>
 
+    <p><strong>Tracks Count:</strong> <%= genre.tracks_count ? genre.tracks_count : genre.tracks.count %></p>
     <p><strong>Created at:</strong> <%= genre.created_at %></p>
     <p><strong>Updated at:</strong> <%= genre.updated_at %></p>
   </div>
