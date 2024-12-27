@@ -16,7 +16,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :invoice_lines
+  resources :invoice_lines do
+    collection do
+      get :json_list_for_select_element
+    end
+  end
 
   resources :media_types do
     collection do

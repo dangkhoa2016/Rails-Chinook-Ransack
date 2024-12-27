@@ -18,3 +18,5 @@ test url:
 /filters?template=by_artist_id_118&model=Album&target=%5Bdata-filter-model-value%3D%27Album%27%5D+form+%3E+.filter-holder+%3E+.loading
 
 /albums?number_of_tracks_between=5%2C10
+
+/invoice_lines?invoice_ids=5%2C12&created_at_between=2024-01-01%2C2024-12-31&ids=29%2C229%2C28%2C280&customer_ids=1%2C2%2C3&by_customer_name=leon

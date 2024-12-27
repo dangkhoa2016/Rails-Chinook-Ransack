@@ -1,0 +1,114 @@
+<style>
+  .invoice-lines-table {
+    min-height: 300px;
+  }
+  .track-name {
+    min-width: 300px;
+  }
+</style>
+
+<div class='mb-4 invoice-lines-table table-responsive'>
+  <table class='table table-bordered table-striped table-hover'>
+    <thead class='thead-light'>
+      <tr>
+        <th class='text-nowrap'>
+          <%= build_sort_link('invoice_line', 'id') %>
+        </th>
+        <th class='text-nowrap'>
+          <%= build_sort_link('invoice_line', 'invoice_id') %>
+        </th>
+        <th class='text-nowrap'>
+          <%= build_sort_link('invoice_line', 'track') %>
+        </th>
+        <th class='text-nowrap'>
+          <%= build_sort_link('invoice_line', 'total_price') %>
+        </th>
+        <th class='text-center'>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoice_lines.each do |invoice_line| %>
+        <tr>
+          <td>
+            <%= link_to invoice_line.id, invoice_line %>
+          </td>
+          <td>
+            <div class='dropdown'>
+              <button class='btn btn-link text-dark btn-sm dropdown-toggle text-decoration-none px-0'
+                type='button' id='dropdownInvoice<%= "#{invoice_line.id}" %>'
+                data-bs-toggle='dropdown' aria-expanded='false' data-bs-auto-close='outside'>
+                <%= invoice_line.invoice_id %>
+              </button>
+              <ul class='dropdown-menu' aria-labelledby='dropdownInvoice<%= "#{invoice_line.id}" %>'>
+                <li class='px-3 text-nowrap'><strong>Invoice ID:</strong> <%= invoice_line.invoice_id %></li>
+                <li class='px-3 text-nowrap'><strong>Customer Name: </strong> <%= invoice_line.invoice&.customer&.full_name %></li>
+                <li class='px-3 text-nowrap'><strong><%= link_to 'Go to Invoice', invoice_line.invoice %></strong></li>
+              </ul>
+            </div>
+          </td>
+          <td class='track-name'>
+            <div class='dropdown'>
+              <button class='btn btn-link text-dark btn-sm dropdown-toggle text-decoration-none px-0'
+                type='button' id='dropdownTrack<%= "#{invoice_line.id}" %>'
+                data-bs-toggle='dropdown' aria-expanded='false' data-bs-auto-close='outside'>
+                <%= invoice_line.track&.name %>
+              </button>
+              <ul class='dropdown-menu' aria-labelledby='dropdownTrack<%= "#{invoice_line.id}" %>'>
+                <li class='px-3 text-nowrap'><strong>Track Name:</strong> <%= invoice_line.track&.name %></li>
+                <li class='px-3 text-nowrap'><strong>Album:</strong> <%= invoice_line.track&.album&.title %></li>
+                <li class='px-3 text-nowrap'><strong>Artist:</strong> <%= invoice_line.track&.album&.artist&.name %></li>
+                <li class='px-3 text-nowrap'><strong>Genre:</strong> <%= invoice_line.track&.genre&.name %></li>
+                <li class='px-3 text-nowrap'><strong>Media Type:</strong> <%= invoice_line.track&.media_type&.name %></li>
+                <li class='px-3 text-nowrap'><strong>Composer:</strong> <%= invoice_line.track&.composer %></li>
+                <li class='px-3 text-nowrap'><strong><%= link_to 'Go to Track', invoice_line.track %></strong></li>
+              </ul>
+            </div>
+          </td>
+          <td>
+            <div class='dropdown'>
+              <button class='btn btn-link text-dark btn-sm dropdown-toggle text-decoration-none px-0'
+                type='button' id='dropdownTotal<%= "#{invoice_line.id}" %>'
+                data-bs-toggle='dropdown' aria-expanded='false' data-bs-auto-close='outside'>
+                <%= number_to_currency(invoice_line.total_price) %>
+              </button>
+              <ul class='dropdown-menu' aria-labelledby='dropdownTotal<%= "#{invoice_line.id}" %>'>
+                <li class='px-3 text-nowrap'><strong>Quantity:</strong> <%= invoice_line.quantity %></li>
+                <li class='px-3 text-nowrap'><strong>Unit Price: </strong> <%= invoice_line.unit_price %></li>
+                <li class='px-3 text-nowrap'><strong>Total Price: </strong> <%= number_to_currency(invoice_line.total_price) %></li>
+                <li class='px-3 text-nowrap'><strong><%= link_to 'Go to Invoice Line', invoice_line %></strong></li>
+              </ul>
+            </div>
+          </td>
+          <td class='text-center'>
+            <div class='dropdown'>
+              <button class='btn btn-secondary btn-sm dropdown-toggle'
+                type='button' id='dropdownActions<%= invoice_line.id %>'
+                data-bs-toggle='dropdown' aria-expanded='false'>
+                Actions
+              </button>
+              <ul class='dropdown-menu' aria-labelledby='dropdownActions<%= invoice_line.id %>'>
+                <li>
+                  <%= link_to invoice_line, class: 'dropdown-item' do %>
+                    <i class='bi bi-eye'></i> View
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to edit_invoice_line_path(invoice_line), class: 'dropdown-item text-warning' do %>
+                    <i class='bi bi-pencil'></i> Edit
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to invoice_line, method: :delete,
+                    data: { turbo_method: 'delete', turbo_confirm: 'Are you sure?' },
+                    class: 'dropdown-item text-danger' do %>
+                    <i class='bi bi-trash'></i> Delete
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

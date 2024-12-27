@@ -220,6 +220,42 @@ en:
         tracks_with_no_composers: "Tracks with no composers"
         tracks_by_composers_steve_harris_or_robert_plant: "Tracks by composers: Steve Harris or Robert Plant"
 
+    invoice_line:
+      model_fields: "Invoice line fields"
+      track_fields: "Track fields"
+      customer_fields: "Customer fields"
+      invoice_fields: "Invoice fields"
+      by_track_name: "Track name"
+      track_composer: "Track composer"
+      invoice_ids: "Invoice IDs"
+      track_ids: "Track IDs"
+      select_invoices: "Select invoices"
+      select_tracks: "Select tracks"
+      ids: "Invoice line IDs"
+      select_invoice_lines: "Select invoice lines"
+      customer_name: "Customer name"
+      by_customer_ids: "By customer IDs"
+      select_customers: "Select customers"
+      by_track_ids: "By tracks"
+      track_bytes_between: "Track bytes between"
+      track_bytes_from: "Track bytes from"
+      track_bytes_to: "Track bytes to"
+      track_bytes: "Track bytes"
+      track_milliseconds_between: "Track milliseconds between"
+      track_milliseconds_from: "Track milliseconds from"
+      track_milliseconds_to: "Track milliseconds to"
+      track_milliseconds: "Track milliseconds"
+      by_invoices: "By invoices"
+      track_unit_price_between: "Track unit price between"
+      track_unit_price_from: "Track unit price from"
+      track_unit_price_to: "Track unit price to"
+      track_unit_price: "Track unit price"
+
+      template:
+        track_name_contains_nova_test: "Track name contains: Nova (test)"
+        by_invoice_id_5_and_12_and_created_at_this_year_test: "By invoice id: 5 and 12 and created at this year (test)"
+        by_cusomer_kara_nielsen_test: "By customer: Kara Nielsen (test)"
+
     common:
       timestamp_fields: "Timestamp fields"
 

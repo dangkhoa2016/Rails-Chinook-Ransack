@@ -224,6 +224,42 @@ vi:
         tracks_with_no_composers: "Các bài hát không có nhạc sĩ nào"
         tracks_by_composers_steve_harris_or_robert_plant: "Các bài hát bởi nhạc sĩ: Steve Harris hoặc Robert Plant"
 
+    invoice_line:
+      model_fields: "Các trường của dòng hóa đơn"
+      track_fields: "Các trường của bài hát"
+      customer_fields: "Các trường của khách hàng"
+      invoice_fields: "Các trường của hóa đơn"
+      by_track_name: "Tên bài hát"
+      track_composer: "Nhạc sĩ"
+      invoice_ids: "ID hóa đơn"
+      track_ids: "ID bài hát"
+      select_invoices: "Chọn hóa đơn"
+      select_tracks: "Chọn bài hát"
+      ids: "ID dòng hóa đơn"
+      select_invoice_lines: "Chọn dòng hóa đơn"
+      by_customer_name: "Bởi tên khách hàng"
+      by_customer_ids: "Bởi ID khách hàng"
+      select_customers: "Chọn khách hàng"
+      by_track_ids: "Bởi bài hát"
+      track_bytes_between: "Kích thước bài hát trong khoảng"
+      track_bytes_from: "Kích thước bài hát từ"
+      track_bytes_to: "Kích thước bài hát đến"
+      track_bytes: "Kích thước bài hát"
+      track_milliseconds_between: "Thời lượng bài hát trong khoảng"
+      track_milliseconds_from: "Thời lượng bài hát từ"
+      track_milliseconds_to: "Thời lượng bài hát đến"
+      track_milliseconds: "Thời lượng bài hát"
+      by_invoices: "Bởi hóa đơn"
+      track_unit_price_between: "Đơn giá bài hát trong khoảng"
+      track_unit_price_from: "Đơn giá bài hát từ"
+      track_unit_price_to: "Đơn giá bài hát đến"
+      track_unit_price: "Đơn giá bài hát"
+
+      template:
+        track_name_contains_nova_test: "Tên bài hát chứa: Nova (test)"
+        by_invoice_id_5_and_12_and_created_at_this_year_test: "Bởi hóa đơn có id: 5 và 12 và được tạo trong năm nay (test)"
+        by_cusomer_kara_nielsen_test: "Bởi khách hàng: Kara Nielsen (test)"
+
     common:
       timestamp_fields: "Các trường thời gian"
 

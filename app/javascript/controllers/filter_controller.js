@@ -212,7 +212,9 @@ export default class extends Controller {
 
     const keys = ['created_at_or_updated_at_between', 'created_at_between', 'updated_at_between',
       'number_of_tracks_between', 'number_of_invoices_between', 'number_of_invoice_lines_between',
-      'bytes_between', 'milliseconds_between', 'unit_price_between', 'number_of_albums_between',
+      'track_bytes_between', 'track_milliseconds_between', 'track_unit_price_between',
+      'bytes_between', 'milliseconds_between', 'unit_price_between',
+      'number_of_albums_between',
     ];
 
     keys.forEach(field => {
