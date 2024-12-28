@@ -1,12 +1,13 @@
 
 <div id='<%= dom_id(media_type) %>' class='card'>
   <div class='card-header'>
-    <%= media_type.name %>
+    <%= link_to media_type.name, media_type %>
   </div>
   
   <div class='card-body'>
     <h4 class='card-title'>More info</h4>
 
+    <p><strong>Tracks Count:</strong> <%= media_type.tracks_count ? media_type.tracks_count : media_type.tracks.count %></p>
     <p><strong>Created at:</strong> <%= media_type.created_at %></p>
     <p><strong>Updated at:</strong> <%= media_type.updated_at %></p>
   </div>

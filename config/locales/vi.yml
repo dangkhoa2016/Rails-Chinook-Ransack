@@ -305,6 +305,23 @@ vi:
         by_invoice_id_5_and_12_and_created_at_this_year_test: "Bởi hóa đơn có id: 5 và 12 và được tạo trong năm nay (test)"
         by_cusomer_kara_nielsen_test: "Bởi khách hàng: Kara Nielsen (test)"
 
+    media_type:
+      model_fields: "Các trường của loại phương tiện"
+      name: "Tên"
+      ids: "ID loại phương tiện"
+      select_media_types: "Chọn loại phương tiện"
+      number_of_tracks_between: "Số bài hát trong khoảng"
+      number_of_tracks_from: "Số bài hát từ"
+      number_of_tracks_to: "Số bài hát đến"
+      number_of_tracks: "Tổng số bài hát"
+      has_tracks: "Có bài hát"
+
+      template:
+        by_name_mpeg_audio_file_test: "Loại phương tiện có tên: MPEG Audio File (test)"
+        media_types_have_more_than_or_equal_to_500_tracks: "Loại phương tiện có từ 500 bài hát trở lên"
+        media_types_have_fewer_than_or_equal_to_250_tracks: "Loại phương tiện có từ 250 bài hát trở xuống"
+        media_types_with_no_tracks: "Loại phương tiện không có bài hát nào"
+
     common:
       timestamp_fields: "Các trường thời gian"
 

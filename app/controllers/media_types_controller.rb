@@ -1,9 +1,26 @@
 class MediaTypesController < ApplicationController
+  include Filterable
   before_action :set_media_type, only: %i[ show edit update destroy ]
 
   # GET /media_types or /media_types.json
   def index
-    @pagy, @media_types = pagy(MediaType.all)
+    begin
+      @pagy, @media_types = process_filters(MediaType)
+    rescue => e
+      if e.is_a?(Pagy::OverflowError)
+        @pagy = Pagy.new(count: 0)
+        @media_types = MediaType.none
+      else
+        raise e
+      end
+    end
+
+    if @media_types.present?
+      tracks_count = Track.count_by_model_ids(:media_type, @media_types.pluck(:id))
+      @media_types.each do |media_type|
+        media_type.tracks_count = tracks_count[media_type.id] || 0
+      end
+    end
   end
 
   def json_list_for_select_element
@@ -74,5 +91,9 @@ class MediaTypesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def media_type_params
       params.require(:media_type).permit(:name)
+    end
+
+    def default_ransack_params
+      :name_cont
     end
 end
