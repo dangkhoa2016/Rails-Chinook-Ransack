@@ -26,11 +26,19 @@ class Track < ApplicationRecord
     with_track_count_by_model_in_range_for_use_as_sub_query(:media_type, min_value, max_value)
   }
 
+  scope :with_track_count_by_playlist_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
+    with_track_count_by_model_in_range_for_use_as_sub_query(:playlist, min_value, max_value)
+  }
+
   scope :with_track_count_by_model_in_range_for_use_as_sub_query, ->(model, min_value, max_value = nil) {
     return {} if min_value.nil? && max_value.nil?
 
-    column_name = "#{model.to_s.singularize}_id"
-    query = Track.select(column_name).group(column_name)
+    query = if model.to_s.downcase == 'playlist'
+      PlaylistTrack.select('playlist_id').group('playlist_id')
+    else
+      column_name = "#{model.to_s.singularize}_id"
+      Track.select(column_name).group(column_name)
+    end
 
     if min_value.present? && max_value.present?
       if min_value > max_value
@@ -80,6 +88,8 @@ class Track < ApplicationRecord
       column_name = "#{model.to_s.singularize}_id"
       if column_names.include?(column_name)
         Track.where(column_name => ids).group(column_name).count('id')
+      elsif model.to_s == 'playlist'
+        PlaylistTrack.where(playlist_id: ids).group(:playlist_id).count('id')
       else
         {}
       end

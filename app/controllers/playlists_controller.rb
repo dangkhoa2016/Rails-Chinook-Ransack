@@ -1,9 +1,26 @@
 class PlaylistsController < ApplicationController
+  include Filterable
   before_action :set_playlist, only: %i[ show edit update destroy ]
 
   # GET /playlists or /playlists.json
   def index
-    @pagy, @playlists = pagy(Playlist.all)
+    begin
+      @pagy, @playlists = process_filters(Playlist)
+    rescue => e
+      if e.is_a?(Pagy::OverflowError)
+        @pagy = Pagy.new(count: 0)
+        @playlists = Playlist.none
+      else
+        raise e
+      end
+    end
+
+    if @playlists.present?
+      tracks_count = Track.count_by_model_ids(:playlist, @playlists.pluck(:id))
+      @playlists.each do |playlist|
+        playlist.tracks_count = tracks_count[playlist.id] || 0
+      end
+    end
   end
 
   # GET /playlists/1 or /playlists/1.json
@@ -66,5 +83,9 @@ class PlaylistsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def playlist_params
       params.require(:playlist).permit(:name)
+    end
+
+    def default_ransack_params
+      :name_cont
     end
 end

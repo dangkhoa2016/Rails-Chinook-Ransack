@@ -318,6 +318,24 @@ en:
         media_types_have_fewer_than_or_equal_to_250_tracks: "Media types that have fewer than or equal to 250 tracks"
         media_types_with_no_tracks: "Media types with no tracks"
 
+    playlist:
+      model_fields: "Playlist fields"
+      name: "Name"
+      ids: "Playlist IDs"
+      select_playlists: "Select playlists"
+      number_of_tracks_between: "Number of tracks between"
+      number_of_tracks_from: "Number of tracks from"
+      number_of_tracks_to: "Number of tracks to"
+      number_of_tracks: "Number of tracks"
+      has_tracks: "Has tracks"
+
+      template:
+        name_contains_deep_cuts_test: "Playlist name contains: Deep Cuts (test)"
+        by_playlist_id_3_test: "By playlist id: 3 - TV Shows (test)"
+        playlists_have_more_than_or_equal_to_200_tracks: "Playlists that have more than or equal to 200 tracks"
+        playlists_have_fewer_than_or_equal_to_30_tracks: "Playlists that have fewer than or equal to 30 tracks"
+        playlists_with_no_tracks: "Playlists with no tracks"
+
     common:
       timestamp_fields: "Timestamp fields"
 

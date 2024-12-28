@@ -322,6 +322,24 @@ vi:
         media_types_have_fewer_than_or_equal_to_250_tracks: "Loại phương tiện có từ 250 bài hát trở xuống"
         media_types_with_no_tracks: "Loại phương tiện không có bài hát nào"
 
+    playlist:
+      model_fields: "Các trường của danh sách phát"
+      name: "Tên"
+      ids: "ID danh sách phát"
+      select_playlists: "Chọn danh sách phát"
+      number_of_tracks_between: "Số bài hát trong khoảng"
+      number_of_tracks_from: "Số bài hát từ"
+      number_of_tracks_to: "Số bài hát đến"
+      number_of_tracks: "Tổng số bài hát"
+      has_tracks: "Có bài hát"
+
+      template:
+        name_contains_deep_cuts_test: "Danh sách phát có tên chứa: Deep Cuts (test)"
+        by_playlist_id_3_test: "Bởi danh sách phát có id: 3 - TV Shows (test)"
+        playlists_have_more_than_or_equal_to_200_tracks: "Danh sách phát có từ 200 bài hát trở lên"
+        playlists_have_fewer_than_or_equal_to_30_tracks: "Danh sách phát có từ 30 bài hát trở xuống"
+        playlists_with_no_tracks: "Danh sách phát không có bài hát nào"
+
     common:
       timestamp_fields: "Các trường thời gian"
 
