@@ -1,9 +1,28 @@
 class EmployeesController < ApplicationController
+  include Filterable
   before_action :set_employee, only: %i[ show edit update destroy ]
 
   # GET /employees or /employees.json
   def index
-    @pagy, @employees = pagy(Employee.all)
+    begin
+      @pagy, @employees = process_filters(model_query)
+    rescue => e
+      if e.is_a?(Pagy::OverflowError)
+        @pagy = Pagy.new(count: 0)
+        @employees = Employee.none
+      else
+        raise e
+      end
+    end
+
+    if @employees.present?
+      customers_count = Customer.count_by_employee_ids(@employees.pluck(:id))
+      subordinates_count = Employee.count_by_manager_ids(@employees.pluck(:id))
+      @employees.each do |employee|
+        employee.customers_count = customers_count[employee.id] || 0
+        employee.subordinates_count = subordinates_count[employee.id] || 0
+      end
+    end
   end
 
   def json_list_for_select_element
@@ -74,5 +93,34 @@ class EmployeesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def employee_params
       params.require(:employee).permit(:last_name, :first_name, :email, :title, :reports_to, :birth_date, :hire_date, :address, :city, :state, :country, :postal_code, :phone, :fax)
+    end
+    
+    def default_ransack_params
+      :first_name_or_last_name_or_address_or_phone_or_email_cont
+    end
+
+    def model_query
+      if is_sort_by_reporting_to?
+        Employee.left_joins(:reporting_to).preload(:reporting_to)
+      else
+        Employee.includes(:reporting_to)
+      end
+    end
+
+    def is_sort_by_reporting_to?
+      @is_sort_by_reporting_to ||= (params[:sort]&.downcase == 'reporting_to')
+    end
+
+    def sorting_params
+      if is_sort_by_reporting_to?
+        sort_direction = params[:direction] || 'desc'
+
+        {
+          'reporting_tos_employees.first_name' => sort_direction,
+          'reporting_tos_employees.last_name' => sort_direction
+        }
+      else
+        super
+      end
     end
 end

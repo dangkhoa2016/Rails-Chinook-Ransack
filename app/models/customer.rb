@@ -22,6 +22,28 @@ class Customer < ApplicationRecord
     end
   }
 
+  scope :with_record_count_by_employee_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
+    return Customer.none if min_value.nil? && max_value.nil?
+
+    query = Customer.select(:support_rep_id).group(:support_rep_id)
+
+    if min_value.present? && max_value.present?
+      if min_value > max_value
+        return Customer.none
+      elsif min_value == max_value
+        query = query.having('COUNT(id) = ?', min_value)
+      else
+        query = query.having('COUNT(id) BETWEEN ? AND ?', min_value, max_value)
+      end
+    elsif min_value.nil? && max_value.present?
+      query = query.having('COUNT(id) <= ?', max_value)
+    elsif min_value.present? && max_value.nil?
+      query = query.having('COUNT(id) >= ?', min_value)
+    end
+
+    query
+  }
+
   scope :has_invoices, -> (has_invoices = true) {
     sub_query = Invoice.select('1').where('invoices.customer_id = customers.id')
     if has_invoices
@@ -45,5 +67,15 @@ class Customer < ApplicationRecord
     def ransackable_associations(auth_object = nil)
       ['support_rep', 'invoices', 'invoice_lines', 'tracks', 'albums', 'artists', 'genres', 'media_types', 'playlist_tracks', 'playlists']
     end
+
+    def count_by_employee_ids(ids)
+      column_name = 'support_rep_id'
+      if column_names.include?(column_name)
+        Customer.where(column_name => ids).group(column_name).count
+      else
+        {}
+      end
+    end
+
   end
 end
