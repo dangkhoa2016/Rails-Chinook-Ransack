@@ -17,13 +17,6 @@ Rails.application.routes.draw do
   end
   resources :albums
 
-  resources :languages, only: [] do
-    collection do
-      get 'vietnamese' => 'languages#vietnamese'
-      get 'english' => 'languages#english'
-    end
-  end
-
   resources :filters, only: [:index], controller: 'tools/filters'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
