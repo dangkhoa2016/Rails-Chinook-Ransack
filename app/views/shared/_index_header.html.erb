@@ -1,0 +1,35 @@
+<%
+  display_mode = defined?(locals) ? locals[:mode] : (defined?(mode) ? mode : 'card')
+  active_class = 'btn-success'
+  buttons = [
+    {
+      mode: 'table', icon: 'bi-list', text: translate('base.table'),
+      title: translate('base.switch_display_table')
+    },
+    {
+      mode: 'card', icon: 'bi-grid', text: translate('base.card'),
+      title: translate('base.switch_display_card')
+    }
+  ]
+%>
+
+<div class='d-flex justify-content-between align-items-center'>
+  <div>
+    <h1 class='d-inline mb-0'><%= controller_name.classify.constantize.model_name.human %></h1>
+    <span class='text-muted'>(
+      <%= @filters.present? ? translate('base.filtered') : translate('base.all') %>
+      <%= pluralize(@pagy.count, translate('base.record')) %>
+    )</span>
+  </div>
+  <div>
+    <%= link_to translate('actions.create_new'), new_polymorphic_path(controller_name.singularize), class: 'btn btn-primary' %>
+    <div class='btn-group' role='group'>
+      <% buttons.each do |button| %>
+        <button type='button' class='btn <%= display_mode == button[:mode] ? active_class : 'btn-secondary' %>' title="<%= button[:title] %>">
+          <i class='bi <%= button[:icon] %>'></i>
+          <span class='visually-hidden'><%= button[:text] %></span>
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>

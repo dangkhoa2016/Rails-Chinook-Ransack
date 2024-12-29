@@ -1,0 +1,364 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+
+  filters:
+    album:
+      model_fields: Album fields
+      artist_fields: Artist fields
+      album_or_artist_contains: Album title or artist name contains
+      title: Album title
+      artist_name: Artist name
+      select_artists: Select artists
+      belong_to_artists: Belong to artists
+      number_of_tracks: Number of tracks
+      number_of_tracks_between: Number of tracks between
+      number_of_tracks_from: Number of tracks from
+      number_of_tracks_to: Number of tracks to
+      ids: Album IDs
+      select_albums: Select albums
+      has_tracks: Has tracks
+
+      template:
+        by_artist_name_accept_test: "By artist with name: Accept (test)"
+        by_artist_pearl_jam_test: "By artist with id: 118 - Pearl Jam (test)"
+        by_artist_name_accept_and_created_at_this_year_test: "By artist name: Accept and created at this year (test)"
+        artists_who_have_10_or_more_albums: Artists who have 10 or more albums
+        artists_who_have_2_or_fewer_albums: Artists who have 2 or fewer albums
+        albums_that_have_25_or_more_tracks: Albums that have 25 or more tracks
+        albums_that_have_2_or_fewer_tracks: Albums that have 2 or fewer tracks
+        albums_with_no_tracks: Albums with no tracks
+
+    artist:
+      model_fields: Artist fields
+      name: Name
+      ids: Artist IDs
+      select_artists: Select artists
+      number_of_albums_between: Number of albums between
+      number_of_albums_from: Number of albums from
+      number_of_albums_to: Number of albums to
+      number_of_albums: Number of albums
+      has_albums: Has albums
+
+      template:
+        by_artist_id_118_test: "By artist with id: 118 - Pearl Jam (test)"
+        artists_have_more_than_or_equal_to_10_albums: Artists that have more than or equal to 10 albums
+        artists_have_fewer_than_or_equal_to_1_albums: Artists that have fewer than or equal to 1 album
+        artists_with_no_albums: Artists with no albums
+
+    genre:
+      model_fields: Genre fields
+      name: Name
+      ids: Genre IDs
+      select_genres: Select genres
+      number_of_tracks_between: Number of tracks between
+      number_of_tracks_from: Number of tracks from
+      number_of_tracks_to: Number of tracks to
+      number_of_tracks: Number of tracks
+      has_tracks: Has tracks
+
+      template:
+        genre_name_contains_nova_test: "Genre name contains: Nova (test)"
+        by_genre_id_2_test: "By genre id: 2 - Jazz (test)"
+        genres_have_more_than_or_equal_to_100_tracks: Genres that have more than or equal to 100 tracks
+        genres_have_fewer_than_or_equal_to_30_tracks: Genres that have fewer than or equal to 30 tracks
+        genres_with_no_tracks: Genres with no tracks
+
+    customer:
+      model_fields: Customer fields
+      support_rep_fields: Support rep fields
+      first_name_or_last_name_contains: First name or last name contains
+      first_name: First name
+      last_name: Last name
+      company: Company
+      address: Address
+      city: City
+      state: State
+      country: Country
+      postal_code: Postal code
+      phone: Phone
+      fax: Fax
+      email: Email address
+      city_or_state_or_country_contains: City or state or country contains
+      support_rep_name: Support rep name
+      by_support_rep: By support rep
+      select_employee: Select employee
+      number_of_invoices: Number of invoices
+      number_of_invoices_between: Number of invoices between
+      number_of_invoices_from: Number of invoices from
+      number_of_invoices_to: Number of invoices to
+      ids: Customer IDs
+      select_customers: Select customers
+      has_invoices: Has invoices
+
+      template:
+        support_by_employee_name_peacok_jane_test: "Support by employee: Peacock Jane"
+        customers_have_more_than_or_equal_to_7_invoices: Customers that have more than or equal to 7 invoices
+        customers_have_fewer_than_or_equal_to_4_invoices: Customers that have fewer than or equal to 4 invoices
+        customers_in_brazil: Customers in Brazil
+        customers_in_brazil_or_usa: Customers in Brazil or USA
+        customers_with_no_invoices: Customers with no invoices
+
+    invoice:
+      model_fields: Invoice fields
+      billing_address: Billing address
+      billing_city: Billing city
+      billing_state: Billing state
+      billing_country: Billing country
+      billing_postal_code: Billing postal code
+      billing_address_or_billing_country_contains: Billing address or billing country contains
+      billing_city_or_billing_postal_code_contains: Billing city or billing postal code contains
+      number_of_invoice_lines_between: Number of invoice lines between
+      total_between: Total between
+      customer_name: Customer name
+      by_customers: By customers
+      select_customers: Select customers
+      ids: Invoice IDs
+      customer_fields: Customer fields
+      number_of_invoice_lines_between: Number of invoice lines between
+      number_of_invoice_lines_from: Number of invoice lines from
+      number_of_invoice_lines_to: Number of invoice lines to
+      select_invoices: Select invoices
+
+      template:
+        by_customer_leonie_khler_test: "By customer: Leonie Köhler (test)"
+        invoices_more_than_or_equal_to_10_tracks: Invoices that have 10 or more tracks
+        invoices_fewer_than_or_equal_to_2_tracks: Invoices that have 2 or fewer tracks
+        top_10_invoices_with_highest_total_price: Top invoices with the highest total price
+        top_10_invoices_with_lowest_total_price: Top 10 invoices with the lowest total price
+        customers_have_more_than_or_equal_to_7_invoices: Customers that have more than or equal to 7 invoices
+        customers_have_fewer_than_or_equal_to_4_invoices: Customers that have fewer than or equal to 4 invoices
+
+    track:
+      model_fields: Track fields
+      album_fields: Album fields
+      genre_fields: Genre fields
+      media_type_fields: Media type fields
+      name: Name
+      composer: Composer
+      milliseconds: Milliseconds
+      bytes: Bytes
+      unit_price: Unit price
+      unit_price_between: Unit price between
+      unit_price_from: Unit price from
+      unit_price_to: Unit price to
+      album_title: Album title
+      genre_name: Genre name
+      media_type_name: Media type name
+      album_or_genre_or_media_type_contains: Album title or genre name or media type name contains
+      ids: Track IDs
+      name_or_composer_contains: Name or composer contains
+      by_albums: By albums
+      by_genres: By genres
+      by_media_types: By media types
+      select_albums: Select albums
+      select_genres: Select genres
+      select_media_types: Select media types
+      select_tracks: Select tracks
+      milliseconds_between: Milliseconds between
+      milliseconds_from: Milliseconds from
+      milliseconds_to: Milliseconds to
+      bytes_between: Bytes between
+      bytes_from: Bytes from
+      bytes_to: Bytes to
+      has_invoices: Has invoices
+      has_composers: Has composers
+
+      template:
+        album_title_contains_rock_test: "Album title contains: Rock (test)"
+        album_ids_141_2_and_genre_ids_2_test: "Album: 'Greatest Hits and Balls to the Wall', genre: 'Jazz' (test)"
+        top_10_tracks_with_most_orders: Top 10 tracks with most orders
+        top_10_tracks_with_fewest_orders: Top 10 tracks with fewest orders
+        albums_that_have_25_or_more_tracks: Albums that have 25 or more tracks
+        albums_that_have_2_or_fewer_tracks: Albums that have 2 or fewer tracks
+        genres_that_have_25_or_more_tracks: Genres that have 25 or more tracks
+        genres_that_have_15_or_fewer_tracks: Genres that have 15 or fewer tracks
+        media_type_that_have_250_or_more_tracks: Media types that have 250 or more tracks
+        media_type_that_have_10_or_fewer_tracks: Media types that have 10 or fewer tracks
+        top_10_tracks_with_longest_duration: Top 10 tracks with longest duration
+        top_10_tracks_with_shortest_duration: Top 10 tracks with shortest duration
+        top_10_tracks_with_most_bytes: Top 10 tracks with most bytes
+        top_10_tracks_with_fewest_bytes: Top 10 tracks with fewest bytes
+        tracks_with_no_invoices: Tracks with no invoices
+        tracks_with_no_composers: Tracks with no composers
+        tracks_by_composers_steve_harris_or_robert_plant: "Tracks by composers: Steve Harris or Robert Plant"
+
+    employee:
+      model_fields: Employee fields
+      reporting_to_fields: Reporting to fields
+      first_name_or_last_name_contains: First name or last name contains
+      first_name: First name
+      last_name: Last name
+      title: Title
+      reports_to: Reports to
+      birth_date: Birth date
+      hire_date: Hire date
+      address: Address
+      city: City
+      state: State
+      country: Country
+      postal_code: Postal code
+      phone: Phone
+      fax: Fax
+      email: Email
+      city_or_state_or_country_contains: City or state or country contains
+      ids: Employee IDs
+      select_employees: Select employees
+      number_of_customers: Number of customers
+      number_of_customers_between: Number of customers between
+      number_of_customers_from: Number of customers from
+      number_of_customers_to: Number of customers to
+      has_customers: Has customers
+      number_of_subordinates: Number of subordinates
+      number_of_subordinates_between: Number of subordinates between
+      number_of_subordinates_from: Number of subordinates from
+      number_of_subordinates_to: Number of subordinates to
+      has_subordinates: Has subordinates
+      name_of_report_to: Name of report to
+      ids_of_report_to: Report to IDs
+
+      template:
+        reporting_to_manager_name_peacok_nancy_test: "Reporting to manager name: Peacock Nancy (test)"
+        employees_have_more_than_or_equal_to_3_subordinates: Employees that have more than or equal to 3 subordinates
+        employees_have_fewer_than_or_equal_to_2_subordinates: Employees that have fewer than or equal to 2 subordinates
+        employees_have_more_than_or_equal_to_21_customers: Employees that have more than or equal to 21 customers
+        employees_have_fewer_than_or_equal_to_20_customers: Employees that have fewer than or equal to 20 customers
+        employees_with_no_customers: Employees with no customers
+        employees_with_no_subordinates: Employees with no subordinates
+        employees_in_calgary_city: Employees in Calgary city
+        employees_in_edmonton_or_lethbridge_city: Employees in Edmonton or Lethbridge city
+
+    invoice_line:
+      model_fields: Invoice line fields
+      track_fields: Track fields
+      customer_fields: Customer fields
+      invoice_fields: Invoice fields
+      by_track_name: Track name
+      track_composer: Track composer
+      invoice_ids: Invoice IDs
+      track_ids: Track IDs
+      select_invoices: Select invoices
+      select_tracks: Select tracks
+      ids: Invoice line IDs
+      select_invoice_lines: Select invoice lines
+      customer_name: Customer name
+      by_customer_ids: By customer IDs
+      select_customers: Select customers
+      by_track_ids: By tracks
+      track_bytes_between: Track bytes between
+      track_bytes_from: Track bytes from
+      track_bytes_to: Track bytes to
+      track_bytes: Track bytes
+      track_milliseconds_between: Track milliseconds between
+      track_milliseconds_from: Track milliseconds from
+      track_milliseconds_to: Track milliseconds to
+      track_milliseconds: Track milliseconds
+      by_invoices: By invoices
+      track_unit_price_between: Track unit price between
+      track_unit_price_from: Track unit price from
+      track_unit_price_to: Track unit price to
+      track_unit_price: Track unit price
+
+      template:
+        track_name_contains_nova_test: "Track name contains: Nova (test)"
+        by_invoice_id_5_and_12_and_created_at_this_year_test: "By invoice id: 5 and 12 and created at this year (test)"
+        by_cusomer_kara_nielsen_test: "By customer: Kara Nielsen (test)"
+
+    media_type:
+      model_fields: Media type fields
+      name: Name
+      ids: Media type IDs
+      select_media_types: Select media types
+      number_of_tracks_between: Number of tracks between
+      number_of_tracks_from: Number of tracks from
+      number_of_tracks_to: Number of tracks to
+      number_of_tracks: Number of tracks
+      has_tracks: Has tracks
+
+      template:
+        by_name_mpeg_audio_file_test: "By name: MPEG audio file (test)"
+        media_types_have_more_than_or_equal_to_500_tracks: Media types that have more than or equal to 500 tracks
+        media_types_have_fewer_than_or_equal_to_250_tracks: Media types that have fewer than or equal to 250 tracks
+        media_types_with_no_tracks: Media types with no tracks
+
+    playlist:
+      model_fields: Playlist fields
+      name: Name
+      ids: Playlist IDs
+      select_playlists: Select playlists
+      number_of_tracks_between: Number of tracks between
+      number_of_tracks_from: Number of tracks from
+      number_of_tracks_to: Number of tracks to
+      number_of_tracks: Number of tracks
+      has_tracks: Has tracks
+
+      template:
+        name_contains_deep_cuts_test: "Playlist name contains: Deep Cuts (test)"
+        by_playlist_id_3_test: "By playlist id: 3 - TV Shows (test)"
+        playlists_have_more_than_or_equal_to_200_tracks: Playlists that have more than or equal to 200 tracks
+        playlists_have_fewer_than_or_equal_to_30_tracks: Playlists that have fewer than or equal to 30 tracks
+        playlists_with_no_tracks: Playlists with no tracks
+
+    common:
+      timestamp_fields: Timestamp fields
+
+      created_at_between: Created at between
+      created_at_from: Created at from
+      created_at_to: Created at to
+      created_at: Created at
+
+      updated_at_between: Updated at between
+      updated_at_from: Updated at from
+      updated_at_to: Updated at to
+      updated_at: Updated at
+
+      created_at_or_updated_at_between: Created at or updated at between
+      created_at_or_updated_at_from: Created at or updated at from
+      created_at_or_updated_at_to: Created at or updated at to
+      created_at_or_updated_at: Created at or updated at
+      "yes": "Yes"
+      "no": "No"
+      "select": "Select"
+
+      template:
+        created_at_this_year: Created at this year
+        created_at_this_month: Created at this month
+        created_at_this_week: Created at this week
+        created_at_today: Created at today
+
+        updated_at_this_year: Updated at this year
+        updated_at_this_month: Updated at this month
+        updated_at_this_week: Updated at this week
+        updated_at_today: Updated at today
+
+        created_at_this_year_and_updated_at_this_month: Created at this year and updated at this month
+        created_at_this_month_and_updated_at_this_week: Created at this month and updated at this week
+        created_at_this_week_and_updated_at_today: Created at this week and updated at today
+        created_at_today_and_updated_at_today: Created at today and updated at today

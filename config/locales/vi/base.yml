@@ -1,0 +1,125 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# Vietnamese, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     vi:
+#       "yes": Đồng ý
+#       enabled: "ON"
+
+vi:
+
+  nav:
+    home: Trang chủ
+    music: Âm nhạc
+    albums: Bộ sưu tập
+    artists: Nghệ sĩ
+    genres: Thể loại
+    media_types: Loại phương tiện
+    tracks: Bài hát
+    playlists: Danh sách phát
+    store: Cửa hàng
+    invoices: Hóa đơn
+    invoice_lines: Chi tiết hóa đơn
+    employees: Nhân viên
+    customers: Khách hàng
+    settings: Cài đặt
+    languages: Ngôn ngữ
+    vietnamese: Tiếng Việt
+    english: Tiếng Anh
+
+  base:
+    record: bản ghi
+    filtered: "đã lọc: "
+    all: "tất cả: "
+    switch_display_table: Bấm vào để chuyển chế độ hiển thị sang dạng bảng
+    switch_display_card: Bấm vào để chuyển chế độ hiển thị sang dạng thẻ
+    table: Bảng
+    card: Thẻ
+    no_records_found: Không tìm thấy %{model} nào
+    new_record: Tạo mới %{model}
+
+  actions:
+    edit: Chỉnh sửa
+    delete: Xóa
+    show: Hiển thị
+    new: Mới
+    create_new: Tạo mới
+    back: Quay lại
+    save: Lưu
+    cancel: Hủy
+    submit: Gửi
+    search: Tìm kiếm
+    filter: Lọc
+    clear: Xóa
+    reset: Đặt lại
+    download: Tải xuống
+    upload: Tải lên
+    add: Thêm
+    remove: Xóa
+    select: Chọn
+    deselect: Bỏ chọn
+    copy: Sao chép
+    paste: Dán
+    cut: Cắt
+    undo: Hoàn tác
+    redo: Làm lại
+    refresh: Làm mới
+    close: Đóng
+    open: Mở
+    next: Tiếp theo
+    previous: Trước
+    first: Đầu tiên
+    last: Cuối cùng
+    more: Thêm
+    less: Ít hơn
+    expand: Mở rộng
+    collapse: Thu gọn
+    save_and_close: Lưu và Đóng
+    save_and_continue: Lưu và Tiếp tục
+    save_and_add_another: Lưu và Thêm một cái nữa
+    save_and_edit: Lưu và Chỉnh sửa
+    save_and_new: Lưu và Tạo mới
+    save_and_back: Lưu và Quay lại
+    save_and_show: Lưu và Hiển thị
+    save_and_list: Lưu và Danh sách
+    save_and_filter: Lưu và Lọc
+    save_and_search: Lưu và Tìm kiếm
+    save_and_download: Lưu và Tải xuống
+    save_and_upload: Lưu và Tải lên
+    save_and_remove: Lưu và Xóa
+    save_and_select: Lưu và Chọn
+    save_and_deselect: Lưu và Bỏ chọn
+    save_and_copy: Lưu và Sao chép
+    save_and_paste: Lưu và Dán
+    save_and_cut: Lưu và Cắt
+    save_and_undo: Lưu và Hoàn tác
+    save_and_redo: Lưu và Làm lại
+    save_and_refresh: Lưu và Làm mới
+    save_and_open: Lưu và Mở
+    save_and_next: Lưu và Tiếp theo
+    save_and_previous: Lưu và Trước
+    save_and_first: Lưu và Đầu tiên
+    save_and_last: Lưu và Cuối cùng
+    save_and_more: Lưu và Thêm
+    save_and_less: Lưu và Ít hơn

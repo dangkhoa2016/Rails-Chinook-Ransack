@@ -1,49 +1,10 @@
 
 <div style='color: green'><%= notice %></div>
 
-<div class='d-flex justify-content-between align-items-center'>
-  <div>
-    <h1 class='d-inline mb-0'>Genres</h1>
-    <span class='text-muted'>(
-      <%= @filters.present? ? 'filtered: ' : 'all: ' %>
-      <%= pluralize(@pagy.count, 'record') %>
-    )</span>
-  </div>
-  <div>
-    <%= link_to 'New', new_genre_path, class: 'btn btn-primary' %>
-    <div class='btn-group' role='group'>
-      <button type='button' class='btn btn-secondary' title='Click to change display mode to table'>
-        <i class='bi bi-list'></i>
-        <span class='visually-hidden'>Table</span>
-      </button>
-      <button type='button' class='btn btn-success' title='Click to change display mode to card'>
-        <i class='bi bi-grid'></i>  
-        <span class='visually-hidden'>Card</span>
-      </button>
-    </div>
-  </div>
-</div>
+<%= render 'shared/index_header', mode: 'card' %>
 
 <%= render 'shared/filter_form', filter_model: 'Genre' %>
 
-<div id='genres' class='py-4'>
-  <% if @pagy.count.zero? %>
-    <div class='alert alert-warning' role='alert'>
-      No genres found
-    </div>
-  <% else %>
-    <div class='mb-4 row row-cols-1 row-cols-sm-2 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 g-4'>
-      <% @genres.each do |genre| %>
-        <div class='col'>
-          <%= render genre %>
-        </div>
-      <% end %>
-    </div>
+<%= render 'shared/index_records', mode: 'card' %>
 
-    <div class='pagination'>
-      <%== pagy_bootstrap_nav(@pagy) %>
-    </div>
-  <% end %>
-</div>
-
-<%= link_to 'New genre', new_genre_path %>
+<%= link_to translate('base.new_record', model: Genre.model_name.human.downcase), new_genre_path, class: 'btn btn-primary' %>

@@ -1,0 +1,126 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+
+  nav:
+    home: Home
+    music: Music
+    albums: Albums
+    artists: Artists
+    genres: Genres
+    media_types: Media Types
+    tracks: Tracks
+    playlists: Playlists
+    store: Store
+    invoices: Invoices
+    invoice_lines: Invoice Lines
+    employees: Employees
+    customers: Customers
+    settings: Settings
+    languages: Languages
+    vietnamese: Vietnamese
+    english: English
+
+  base:
+    record: record
+    filtered: "filtered: "
+    all: "all: "
+    switch_display_table: Click to change display mode to table
+    switch_display_card: Click to change display mode to card
+    table: Table
+    card: Card
+    no_records_found: No %{model} found
+    new_record: Create new %{model}
+
+  actions:
+    edit: Edit
+    delete: Delete
+    show: Show
+    new: New
+    create_new: Create new
+    back: Back
+    save: Save
+    cancel: Cancel
+    submit: Submit
+    search: Search
+    filter: Filter
+    clear: Clear
+    reset: Reset
+    download: Download
+    upload: Upload
+    add: Add
+    remove: Remove
+    select: Select
+    deselect: Deselect
+    copy: Copy
+    paste: Paste
+    cut: Cut
+    undo: Undo
+    redo: Redo
+    refresh: Refresh
+    close: Close
+    open: Open
+    next: Next
+    previous: Previous
+    first: First
+    last: Last
+    more: More
+    less: Less
+    expand: Expand
+    collapse: Collapse
+    save_and_close: Save and Close
+    save_and_continue: Save and Continue
+    save_and_add_another: Save and Add Another
+    save_and_edit: Save and Edit
+    save_and_new: Save and New
+    save_and_back: Save and Back
+    save_and_show: Save and Show
+    save_and_list: Save and List
+    save_and_filter: Save and Filter
+    save_and_search: Save and Search
+    save_and_download: Save and Download
+    save_and_upload: Save and Upload
+    save_and_remove: Save and Remove
+    save_and_select: Save and Select
+    save_and_deselect: Save and Deselect
+    save_and_copy: Save and Copy
+    save_and_paste: Save and Paste
+    save_and_cut: Save and Cut
+    save_and_undo: Save and Undo
+    save_and_redo: Save and Redo
+    save_and_refresh: Save and Refresh
+    save_and_open: Save and Open
+    save_and_close: Save and Close
+    save_and_next: Save and Next
+    save_and_previous: Save and Previous
+    save_and_first: Save and First
+    save_and_last: Save and Last
+    save_and_more: Save and More
+    save_and_less: Save and Less
