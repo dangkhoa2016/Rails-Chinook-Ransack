@@ -12,6 +12,7 @@ class Customer < ApplicationRecord
 
   attr_accessor :invoices_count
 
+
   scope :with_invoices_count_in_range, -> (min_value, max_value = nil) {
     # use the sub query from Invoice model
     query = Invoice.with_record_count_by_customer_in_range_for_use_as_sub_query(min_value, max_value)
@@ -56,6 +57,10 @@ class Customer < ApplicationRecord
 
   def full_name
     [first_name, last_name].join(' ')
+  end
+
+  def to_s
+    full_name
   end
   
 

@@ -50,6 +50,10 @@ class Invoice < ApplicationRecord
     invoice_lines.pluck(:unit_price).sum
   end
 
+  def to_s
+    "#{self.class.human_attribute_name('id')}: #{id}"
+  end
+
 
   class << self
     def ransackable_attributes(auth_object = nil)

@@ -28,6 +28,11 @@ class Genre < ApplicationRecord
   }
 
 
+  def to_s
+    name
+  end
+
+
   class << self
     def ransackable_attributes(auth_object = nil)
       ['id', 'name', 'created_at', 'updated_at']

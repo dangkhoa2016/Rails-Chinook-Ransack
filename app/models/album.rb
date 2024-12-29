@@ -12,6 +12,7 @@ class Album < ApplicationRecord
 
   attr_accessor :tracks_count
 
+
   scope :with_tracks_count_in_range_1, -> (min_value, max_value = nil) {
     # Create a sub query to get the albums with track count in the specified range
     sub_query = Album.joins(:tracks)
@@ -63,6 +64,11 @@ class Album < ApplicationRecord
 
     query
   }
+
+
+  def to_s
+    title
+  end
 
 
   class << self

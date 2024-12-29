@@ -58,8 +58,28 @@ vi:
     card: Thẻ
     no_records_found: Không tìm thấy %{model} nào
     new_record: Tạo mới %{model}
+    search_placeholder: Nhập từ khóa...
+    search_button: Tìm kiếm
+    search_label: Tìm kiếm
+    tools_group_label: Công cụ
+    spinner_label: Đang tải...
+    available_filters: Bộ lọc có sẵn
+    select_filters: Chọn bộ lọc...
+    template_filters: Bộ lọc mẫu
+    select_a_template: Chọn một mẫu...
+    no_filters_selected: Bạn chưa chọn bộ lọc nào cả
 
   actions:
+    toggle_navigation: Đóng/mở điều hướng
+    add_selected: Thêm
+    remove_selected: Xóa
+    toggle_advanced_search: Tìm kiếm nâng cao
+    toggle_simple_search: Tìm kiếm đơn giản
+    toggle_filter_cards: Đóng/mở các thẻ lọc
+    clear_filters: Xóa bộ lọc
+    clear_inputs: Xóa các giá trị nhập
+    add_filters: Thêm bộ lọc
+    view_detail: Xem chi tiết
     edit: Chỉnh sửa
     delete: Xóa
     show: Hiển thị

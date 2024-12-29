@@ -1,0 +1,17 @@
+<div id='<%= dom_id(record) %>' class='card p-0'>
+  <div class='card-header'>
+    <% if action_name == 'index' %>
+      <%= link_to record %>
+    <% else %>
+      <%= record.to_s %>
+    <% end %>
+  </div>
+  
+  <div class='card-body'>
+   <%= yield %>
+  </div>
+
+  <div class='card-footer text-body-secondary'>
+    <%= link_to translate('actions.view_detail'), record %>
+  </div>
+</div>

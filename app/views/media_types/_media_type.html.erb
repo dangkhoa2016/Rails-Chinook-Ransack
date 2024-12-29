@@ -1,18 +1,5 @@
-
-<div id='<%= dom_id(media_type) %>' class='card'>
-  <div class='card-header'>
-    <%= link_to media_type.name, media_type %>
-  </div>
-  
-  <div class='card-body'>
-    <h4 class='card-title'>More info</h4>
-
-    <p><strong>Tracks Count:</strong> <%= media_type.tracks_count ? media_type.tracks_count : media_type.tracks.count %></p>
-    <p><strong>Created at:</strong> <%= media_type.created_at %></p>
-    <p><strong>Updated at:</strong> <%= media_type.updated_at %></p>
-  </div>
-
-  <div class='card-footer text-body-secondary'>
-    <%= link_to 'Show this media type', media_type %>
-  </div>
-</div>
+<%= render 'shared/display_record', record: media_type do %>
+  <p><strong>Tracks Count:</strong> <%= media_type.tracks_count ? media_type.tracks_count : media_type.tracks.count %></p>
+  <p><strong>Created at:</strong> <%= media_type.created_at %></p>
+  <p><strong>Updated at:</strong> <%= media_type.updated_at %></p>
+<% end %>

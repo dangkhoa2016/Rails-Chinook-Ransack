@@ -75,6 +75,10 @@ class Employee < ApplicationRecord
     [first_name, last_name].join(' ')
   end
 
+  def to_s
+    full_name
+  end
+
 
   class << self
     def ransackable_attributes(auth_object = nil)

@@ -1,35 +1,23 @@
-<div id='<%= dom_id customer %>' class='card'>
-  <div class='card-header'>
-    <%= customer.full_name %>
-  </div>
+<%= render 'shared/display_record', record: customer do %>
+  <p><strong>Company:</strong> <%= customer.company %></p>
+  <p><strong>Address:</strong> <%= customer.address %></p>
+  <p><strong>City:</strong> <%= customer.city %></p>
+  <p><strong>State:</strong> <%= customer.state %></p>
+  <p><strong>Country:</strong> <%= customer.country %></p>
+  <p><strong>Postal code:</strong> <%= customer.postal_code %></p>
+  <p><strong>Phone:</strong> <%= customer.phone %></p>
+  <p><strong>Fax:</strong> <%= customer.fax %></p>
+  <p><strong>Email:</strong> <%= customer.email %></p>
 
-  <div class='card-body'>
-    <h4 class='card-title'>Details</h4>
-    
-    <p><strong>Company:</strong> <%= customer.company %></p>
-    <p><strong>Address:</strong> <%= customer.address %></p>
-    <p><strong>City:</strong> <%= customer.city %></p>
-    <p><strong>State:</strong> <%= customer.state %></p>
-    <p><strong>Country:</strong> <%= customer.country %></p>
-    <p><strong>Postal code:</strong> <%= customer.postal_code %></p>
-    <p><strong>Phone:</strong> <%= customer.phone %></p>
-    <p><strong>Fax:</strong> <%= customer.fax %></p>
-    <p><strong>Email:</strong> <%= customer.email %></p>
+  <p><strong>Invoices Count:</strong> <%= customer.invoices_count ? customer.invoices_count : customer.invoices.count %></p>
+  <% if customer.support_rep %>
+    <p><strong>Support rep:</strong> <%= link_to customer.support_rep.full_name, customer.support_rep %></p>
+  <% elsif customer.support_rep_id.present? %>
+    <p><strong>Support rep:</strong> <%= customer.support_rep_id %></p>
+  <% else %>
+    <p><strong>Support rep:</strong> No support rep assigned</p>
+  <% end %>
 
-    <p><strong>Invoices Count:</strong> <%= customer.invoices_count ? customer.invoices_count : customer.invoices.count %></p>
-
-    <% if customer.support_rep %>
-      <p><strong>Support rep:</strong> <%= link_to customer.support_rep.full_name, customer.support_rep %></p>
-    <% elsif customer.support_rep_id.present? %>
-      <p><strong>Support rep:</strong> <%= customer.support_rep_id %></p>
-    <% else %>
-      <p><strong>Support rep:</strong> No support rep assigned</p>
-    <% end %>
-    <p><strong>Created at:</strong> <%= customer.created_at %></p>
-    <p><strong>Updated at:</strong> <%= customer.updated_at %></p>
-  </div>
-
-  <div class='card-footer text-body-secondary'>
-    <%= link_to 'Show this customer', customer %>
-  </div>
-</div>
+  <p><strong>Created at:</strong> <%= customer.created_at %></p>
+  <p><strong>Updated at:</strong> <%= customer.updated_at %></p>
+<% end %>

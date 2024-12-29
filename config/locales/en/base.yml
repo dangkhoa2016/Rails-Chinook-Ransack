@@ -58,8 +58,28 @@ en:
     card: Card
     no_records_found: No %{model} found
     new_record: Create new %{model}
+    search_placeholder: Enter keyword...
+    search_button: Search
+    search_label: Search
+    tools_group_label: Tools
+    spinner_label: Loading...
+    available_filters: Available filters
+    select_filters: Select filters...
+    template_filters: Template filters
+    select_a_template: Select a template...
+    no_filters_selected: You haven't selected any filters yet
 
   actions:
+    toggle_navigation: Toggle navigation
+    add_selected: Add
+    remove_selected: Remove
+    toggle_advanced_search: Advanced search
+    toggle_simple_search: Simple search
+    toggle_filter_cards: Toggle filter cards
+    clear_filters: Clear filters
+    clear_inputs: Clear inputs
+    add_filters: Add filters
+    view_detail: View detail
     edit: Edit
     delete: Delete
     show: Show

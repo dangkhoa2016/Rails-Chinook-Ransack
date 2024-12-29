@@ -1,18 +1,6 @@
-<div id='<%= dom_id album %>' class='card'>
-  <div class='card-header'>
-    <%= link_to album.title, album %>
-  </div>
-  
-  <div class='card-body'>
-    <h4 class='card-title'>More info</h4>
-    
-    <p><strong>Artist:</strong> <%= link_to album.artist.name, album.artist %></p>
-    <p><strong>Tracks Count:</strong> <%= album.tracks_count ? album.tracks_count : album.tracks.count %></p>
-    <p><strong>Created at:</strong> <%= album.created_at %></p>
-    <p><strong>Updated at:</strong> <%= album.updated_at %></p>
-  </div>
-
-  <div class='card-footer text-body-secondary'>
-    <%= link_to 'Show this album', album %>
-  </div>
-</div>
+<%= render 'shared/display_record', record: album do %>
+  <p><strong>Artist:</strong> <%= link_to album.artist.name, album.artist %></p>
+  <p><strong>Tracks Count:</strong> <%= album.tracks_count ? album.tracks_count : album.tracks.count %></p>
+  <p><strong>Created at:</strong> <%= album.created_at %></p>
+  <p><strong>Updated at:</strong> <%= album.updated_at %></p>
+<% end %>

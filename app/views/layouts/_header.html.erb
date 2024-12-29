@@ -6,14 +6,18 @@
       <% end %>
       <%= image_tag('/favicon.png', alt: 'Rails', class: 'ms-2', width: '50', height: '50') %>
     </div>
-    <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#header-nav' aria-controls='header-nav' aria-expanded='true' aria-label='Toggle navigation'>
+    <button class='navbar-toggler' type='button' data-bs-toggle='collapse'
+      data-bs-target='#header-nav' aria-controls='header-nav' aria-expanded='true'
+      aria-label='<%= translate("actions.toggle_navigation") %>'>
       <span class='navbar-toggler-icon'></span>
     </button>
-    <div class='navbar-collapse flex-wrap justify-content-center justify-content-md-between collapse show' id='header-nav' style=''>
+    <div class='navbar-collapse flex-wrap justify-content-center justify-content-xl-between collapse show' id='header-nav' style=''>
       <%= render 'layouts/menus' %>
       <form class='d-flex justify-content-center' role='search'>
-        <input class='form-control me-2' type='search' placeholder='Search' aria-label='Search'>
-        <button class='btn btn-outline-light' type='submit'>Search</button>
+        <input class='form-control me-2' type='search'
+          placeholder='<%= translate("base.search_placeholder") %>'
+          aria-label='<%= translate("base.search_label") %>'>
+        <button class='btn btn-outline-light' type='submit'><%= translate("actions.search") %></button>
       </form>
     </div>
   </div>

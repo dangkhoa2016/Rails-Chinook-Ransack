@@ -1,22 +1,12 @@
-<div id='<%= dom_id(track) %>' class='card'>
-  <div class='card-header'>
-    <%= link_to track.name, track %>
-  </div>
-
-  <div class='card-body'>
-    <p><strong>Album:</strong> <%= track.album ? link_to(track.album.title, album_path(track.album)) : nil %></p>
-    <p><strong>Media Type:</strong> <%= track.media_type ? link_to(track.media_type.name, media_type_path(track.media_type)) : nil %></p>
-    <p><strong>Genre:</strong> <%= track.genre ? link_to(track.genre.name, genre_path(track.genre)) : nil %></p>
-    <p><strong>Composer:</strong> <%= track.composer %></p>
-    <p><strong>Milliseconds:</strong> <%= track.milliseconds %></p>
-    <p><strong>Bytes:</strong> <%= track.bytes %></p>
-    <p><strong>Unit Price:</strong> $<%= track.unit_price %></p>
-    <p><strong>Invoices Count:</strong> <%= track.invoices_count ? track.invoices_count : track.invoices.count %></p>
-    <p><strong>Created at:</strong> <%= track.created_at %></p>
-    <p><strong>Updated at:</strong> <%= track.updated_at %></p>
-  </div>
-
-  <div class='card-footer text-body-secondary'>
-    <%= link_to 'Show this track', track %>
-  </div>
-</div>
+<%= render 'shared/display_record', record: track do %>
+  <p><strong>Album:</strong> <%= track.album ? link_to(track.album.title, album_path(track.album)) : nil %></p>
+  <p><strong>Media Type:</strong> <%= track.media_type ? link_to(track.media_type.name, media_type_path(track.media_type)) : nil %></p>
+  <p><strong>Genre:</strong> <%= track.genre ? link_to(track.genre.name, genre_path(track.genre)) : nil %></p>
+  <p><strong>Composer:</strong> <%= track.composer %></p>
+  <p><strong>Milliseconds:</strong> <%= track.milliseconds %></p>
+  <p><strong>Bytes:</strong> <%= track.bytes %></p>
+  <p><strong>Unit Price:</strong> $<%= track.unit_price %></p>
+  <p><strong>Invoices Count:</strong> <%= track.invoices_count ? track.invoices_count : track.invoices.count %></p>
+  <p><strong>Created at:</strong> <%= track.created_at %></p>
+  <p><strong>Updated at:</strong> <%= track.updated_at %></p>
+<% end %>

@@ -1,38 +1,26 @@
-<div id='<%= dom_id employee %>' class='card'>
-  <div class='card-header'>
-    <%= employee.full_name %>
-  </div>
+<%= render 'shared/display_record', record: employee do %>
+  <p><strong>Email:</strong> <%= employee.email %></p>
+  <p><strong>Title:</strong> <%= employee.title %></p>
+  <p><strong>Reports to:</strong> <%= employee.reports_to %></p>
+  <p><strong>Birth date:</strong> <%= employee.birth_date %></p>
+  <p><strong>Hire date:</strong> <%= employee.hire_date %></p>
+  <p><strong>Address:</strong> <%= employee.address %></p>
+  <p><strong>City:</strong> <%= employee.city %></p>
+  <p><strong>State:</strong> <%= employee.state %></p>
+  <p><strong>Country:</strong> <%= employee.country %></p>
+  <p><strong>Postal code:</strong> <%= employee.postal_code %></p>
+  <p><strong>Phone:</strong> <%= employee.phone %></p>
+  <p><strong>Fax:</strong> <%= employee.fax %></p>
+  
+  <p><strong>Customers Count:</strong> <%= employee.customers_count ? employee.customers_count : employee.customers.count %></p>
+  <% if employee.reporting_to %>
+    <p><strong>Managed By:</strong> <%= link_to employee.reporting_to.full_name, employee.reporting_to %></p>
+  <% elsif employee.reports_to.present? %>
+    <p><strong>Manager ID:</strong> <%= employee.reports_to %></p>
+  <% else %>
+    <p><strong>Manager:</strong> No Manager</p>
+  <% end %>
 
-  <div class='card-body'>
-    <h4 class='card-title'>Details</h4>
-    
-    <p><strong>Email:</strong> <%= employee.email %></p>
-    <p><strong>Title:</strong> <%= employee.title %></p>
-    <p><strong>Reports to:</strong> <%= employee.reports_to %></p>
-    <p><strong>Birth date:</strong> <%= employee.birth_date %></p>
-    <p><strong>Hire date:</strong> <%= employee.hire_date %></p>
-    <p><strong>Address:</strong> <%= employee.address %></p>
-    <p><strong>City:</strong> <%= employee.city %></p>
-    <p><strong>State:</strong> <%= employee.state %></p>
-    <p><strong>Country:</strong> <%= employee.country %></p>
-    <p><strong>Postal code:</strong> <%= employee.postal_code %></p>
-    <p><strong>Phone:</strong> <%= employee.phone %></p>
-    <p><strong>Fax:</strong> <%= employee.fax %></p>
-    
-    <p><strong>Customers Count:</strong> <%= employee.customers_count ? employee.customers_count : employee.customers.count %></p>
-
-    <% if employee.reporting_to %>
-      <p><strong>Managed By:</strong> <%= link_to employee.reporting_to.full_name, employee.reporting_to %></p>
-    <% elsif employee.reports_to.present? %>
-      <p><strong>Manager ID:</strong> <%= employee.reports_to %></p>
-    <% else %>
-      <p><strong>Manager:</strong> No Manager</p>
-    <% end %>
-    <p><strong>Created at:</strong> <%= employee.created_at %></p>
-    <p><strong>Updated at:</strong> <%= employee.updated_at %></p>
-  </div>
-
-  <div class='card-footer'>
-    <%= link_to 'Show this employee', employee %>
-  </div>
-</div>
+  <p><strong>Created at:</strong> <%= employee.created_at %></p>
+  <p><strong>Updated at:</strong> <%= employee.updated_at %></p>
+<% end %>

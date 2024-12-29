@@ -81,6 +81,10 @@ class InvoiceLine < ApplicationRecord
     unit_price * quantity
   end
 
+  def to_s
+    "#{self.class.human_attribute_name('id')}: #{id}"
+  end
+
 
   class << self
     def ransackable_attributes(auth_object = nil)
