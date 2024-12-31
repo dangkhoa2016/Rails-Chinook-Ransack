@@ -12,6 +12,8 @@ class Album < ApplicationRecord
 
   attr_accessor :tracks_count
 
+  validates :title, presence: true
+
 
   scope :with_tracks_count_in_range_1, -> (min_value, max_value = nil) {
     # Create a sub query to get the albums with track count in the specified range
@@ -80,6 +82,10 @@ class Album < ApplicationRecord
     def display_columns
       [
         'id',
+        {
+          field: 'title',
+          only_in_form: true
+        },
         {
           field: 'artist',
           type: 'association',

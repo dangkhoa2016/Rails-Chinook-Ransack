@@ -12,6 +12,8 @@ class Customer < ApplicationRecord
 
   attr_accessor :invoices_count
 
+  validates :first_name, :last_name, :address, presence: true
+
 
   scope :with_invoices_count_in_range, -> (min_value, max_value = nil) {
     # use the sub query from Invoice model
@@ -75,7 +77,10 @@ class Customer < ApplicationRecord
         'id', 'first_name', 'last_name',
         'company', 'address', 'city', 'state', 'postal_code', 'country', 'phone', 'fax', 'email',
         'display_invoices_count',
-        'support_rep',
+        {
+          field: 'support_rep',
+          type: 'association',
+        },
         'created_at', 'updated_at'
       ]
     end

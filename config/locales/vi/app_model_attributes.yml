@@ -62,6 +62,7 @@ vi:
         email: Địa chỉ email
         title: Chức vụ
         reports_to: Quản lý bởi
+        reporting_to: Quản lý bởi
         manager_id: ID người quản lý
         birth_date: Ngày sinh
         hire_date: Ngày tuyển dụng

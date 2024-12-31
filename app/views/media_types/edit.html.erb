@@ -1,10 +1,5 @@
-<h1>Editing media type</h1>
+<%= render 'shared/header_form', record: @media_type %>
 
-<%= render 'form', media_type: @media_type %>
+<%= render 'shared/record_form', record: @media_type %>
 
-<br>
-
-<div>
-  <%= link_to 'Show this media type', @media_type %> |
-  <%= link_to 'Back to media types', media_types_path %>
-</div>
+<%= render 'shared/footer_actions', record: @media_type %>

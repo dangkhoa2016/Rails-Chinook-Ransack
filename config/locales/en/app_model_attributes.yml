@@ -62,6 +62,7 @@ en:
         email: Email address
         title: Position
         reports_to: Managed by
+        reporting_to: Managed by
         manager_id: Manager ID
         birth_date: Birth date
         hire_date: Hire date

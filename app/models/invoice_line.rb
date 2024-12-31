@@ -10,6 +10,8 @@ class InvoiceLine < ApplicationRecord
   has_many :playlist_tracks, through: :track
   has_many :playlists, through: :playlist_tracks
 
+  validates :unit_price, :quantity, presence: true
+
 
   scope :with_record_count_by_invoice_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
     return InvoiceLine.none if min_value.nil? && max_value.nil?

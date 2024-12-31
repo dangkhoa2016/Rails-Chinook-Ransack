@@ -1,0 +1,18 @@
+<% model_record = defined?(locals) ? locals[:record] : (defined?(record) ? record : nil) %>
+
+<div class='d-flex align-items-center'>
+  <h2 class='mb-0'>
+    <%= translate("actions.#{action_name}") %> <%= record.class.model_name.human %>
+    (<%= record.class.human_attribute_name('id') %>: <%= model_record.id %>)
+  </h2>
+
+  <div class='btn-group btn-group-sm ms-auto'>
+    <% if action_name == 'edit' %>
+      <%= link_to translate('actions.show'), model_record, data: { turbo_frame: '_top' }, class: 'btn btn-primary' %>
+    <% end %>
+
+    <%= link_to({ controller: controller_name }, data: { turbo_frame: '_top' }, class: 'btn btn-secondary') do %>
+      <%= translate('actions.back') %>
+    <% end %>
+  </div>
+</div>

@@ -1,10 +1,5 @@
-<h1>Editing album</h1>
+<%= render 'shared/header_form', record: @album %>
 
-<%= render 'form', album: @album %>
+<%= render 'shared/record_form', record: @album %>
 
-<br>
-
-<div>
-  <%= link_to 'Show this album', @album %> |
-  <%= link_to 'Back to albums', albums_path %>
-</div>
+<%= render 'shared/footer_actions', record: @album %>

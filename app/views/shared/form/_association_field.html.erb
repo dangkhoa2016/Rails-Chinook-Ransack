@@ -1,0 +1,24 @@
+<%
+  model_record = defined?(locals) ? locals[:record] : (defined?(record) ? record : nil)
+  model_column = defined?(locals) ? locals[:column] : (defined?(column) ? column : nil)
+  if model_record
+    value = model_record.send(model_column)
+    klass = model_record.class
+    select_name = "#{klass.model_name.element}_#{model_column}"
+  end
+%>
+
+<% if klass.present? && model_column.present? %>
+<div class=''
+  data-controller='choices-remote-data'
+  data-choices-remote-data-load-data-on-init-value='false'
+  data-choices-remote-data-fetch-url-value='<%= get_index_url_for_model(model_column, format: :json) %>'>
+  <%= select_tag select_name, options_for_select([[value.to_s, value]], value),
+    class: 'form-control', multiple: false,
+    data: {
+      choices_remote_data_target: 'select',
+      placeholder: translate('placeholders.select', model: klass.model_name.human.downcase)
+    }
+  %>
+</div>
+<% end %>

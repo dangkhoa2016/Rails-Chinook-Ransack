@@ -1,0 +1,29 @@
+<%
+  model_form = defined?(locals) ? locals[:form] : (defined?(form) ? form : nil)
+  model_record = defined?(locals) ? locals[:record] : (defined?(record) ? record : nil)
+  model_column = defined?(locals) ? locals[:column] : (defined?(column) ? column : nil)
+  if model_record
+    klass = model_record.class
+  end
+
+  column_type = klass.columns_hash[model_column.to_s].type
+%>
+
+<% if klass.present? && model_column.present? && model_form.present? %>
+  <%= model_form.label model_column, class: 'form-label' %>
+
+  <% case column_type %>
+    <% when :datetime %>
+      <%= model_form.datetime_field model_column, class: 'form-control' %>
+    <% when :date %>
+      <%= model_form.date_field model_column, class: 'form-control' %>
+    <% when :string %>
+      <%= model_form.text_field model_column, class: 'form-control' %>
+    <% when :text %>
+      <%= model_form.text_area model_column, class: 'form-control' %>
+    <% when :integer %>
+      <%= model_form.number_field model_column, class: 'form-control' %>
+    <% when :decimal %>
+      <%= model_form.number_field model_column, class: 'form-control', as: :decimal %>
+  <% end %>
+<% end %>

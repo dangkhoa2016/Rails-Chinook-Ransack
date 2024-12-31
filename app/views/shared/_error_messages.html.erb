@@ -1,0 +1,14 @@
+<% model_record = defined?(locals) ? locals[:record] : (defined?(record) ? record : nil) %>
+
+<% if model_record && model_record.errors.any? %>
+  <div id='<%= controller_name.singularize %>-error' class='error-messages alert alert-danger'>
+    <h4 class='alert-heading'>
+      <%= translate 'errors.template.header', count: model_record.errors.count, model: model_record.class.model_name.human.downcase %>:
+    </h4>
+    <ul class='mb-0'>
+      <% model_record.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

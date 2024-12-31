@@ -14,10 +14,10 @@
     <div class='navbar-collapse flex-wrap justify-content-center justify-content-xl-between collapse show' id='header-nav' style=''>
       <%= render 'layouts/menus' %>
       <form class='d-flex justify-content-center' role='search'>
-        <input class='form-control me-2' type='search'
+        <input class='form-control me-2' type='search' name='q'
           placeholder='<%= translate("base.search_placeholder") %>'
           aria-label='<%= translate("base.search_label") %>'>
-        <button class='btn btn-outline-light' type='submit'><%= translate("actions.search") %></button>
+        <button class='btn btn-outline-light' type='submit'><%= translate('actions.search') %></button>
       </form>
     </div>
   </div>

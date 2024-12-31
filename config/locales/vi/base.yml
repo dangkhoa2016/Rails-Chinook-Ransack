@@ -157,3 +157,6 @@ vi:
       create: Tạo %{model}
       submit: Lưu %{model}
       update: Cập nhật %{model}
+
+  placeholders:
+    select: Chọn %{model}

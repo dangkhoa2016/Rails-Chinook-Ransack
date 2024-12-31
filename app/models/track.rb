@@ -13,6 +13,8 @@ class Track < ApplicationRecord
   attr_accessor :invoice_lines_count, :invoices_count, :customers_count, :artists_count,
     :support_reps_count, :playlist_tracks_count, :playlists_count
 
+  validates :name, :composer, :milliseconds, :unit_price, presence: true
+
 
   scope :with_track_count_by_album_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
     with_track_count_by_model_in_range_for_use_as_sub_query(:album, min_value, max_value)
@@ -89,6 +91,10 @@ class Track < ApplicationRecord
     def display_columns
       [
         'id',
+        {
+          field: 'name',
+          only_in_form: true
+        },
         {
           field: 'album',
           type: 'association',

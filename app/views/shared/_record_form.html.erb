@@ -1,0 +1,49 @@
+<%
+  uneditable_columns = ['id', 'created_at', 'updated_at']
+  klass = record.class
+%>
+
+<%= form_with(model: record, class: 'mt-3') do |form| %>
+  <%= render 'shared/error_messages', record: record %>
+
+  <div class='row g-3 row-cols-1 row-cols-md-2'>
+    <% klass.display_columns.each do |column| %>
+      <%
+        is_association = false
+        unless column.is_a?(String)
+          is_association = (column[:type] == 'association')
+          column = column[:field]
+        end
+        next if uneditable_columns.include?(column) && !is_association
+      %>
+
+      <div class='col'>
+        <% if is_association %>
+          <%= form.label column, class: 'form-label' %>
+
+          <%= render 'shared/form/association_field', locals: { record: record, column: column } %>
+        <% else %>
+          <% if klass.column_names.include?(column) %>
+            <%= form_field_for(form: form, record: record, column: column) %>
+          <% else %>
+            <span class='form-label d-block'><%= klass.human_attribute_name(column) %></span>
+            <span class='form-control d-block bg-light'><%= record.send(column) %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class='row my-4 g-3 row-cols-1 row-cols-md-2 row-cols-xxl-3'>
+    <% ['created_at', 'updated_at'].each do |column| %>
+      <div class='col'>
+        <span class='form-label'><%= klass.human_attribute_name(column) %></span>
+        <span class='d-block'><%= record[column] %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.submit(class: 'btn btn-primary') %>
+  </div>
+<% end %>

@@ -1,10 +1,5 @@
-<h1>Editing employee</h1>
+<%= render 'shared/header_form', record: @employee %>
 
-<%= render 'form', employee: @employee %>
+<%= render 'shared/record_form', record: @employee %>
 
-<br>
-
-<div>
-  <%= link_to 'Show this employee', @employee %> |
-  <%= link_to 'Back to employees', employees_path %>
-</div>
+<%= render 'shared/footer_actions', record: @employee %>

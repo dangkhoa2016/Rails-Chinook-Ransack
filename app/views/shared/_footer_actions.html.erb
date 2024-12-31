@@ -22,7 +22,7 @@ data_attributes = {
   end
 
   if action_name != 'index'
-    back_to_list = translate('actions.back_to_list', model: model_record.class.model_name.human.pluralize(I18n.locale))
+    back_to_list = translate('actions.back_to_list', model: model_record.class.model_name.human.pluralize(I18n.locale).downcase)
     actions << link_to(back_to_list, polymorphic_path(model_record.class))
     footer_class = 'mt-4' if action_name != 'show'
   end

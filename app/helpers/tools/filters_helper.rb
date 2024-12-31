@@ -6,6 +6,10 @@ module Tools
       end
 
       model = model.to_s.underscore.pluralize
+      if model == 'support_reps' || model == 'reporting_tos'
+        model = 'employees'
+      end
+
       if format == :json
         path = "json_list_for_select_element_#{model}_path"
       else

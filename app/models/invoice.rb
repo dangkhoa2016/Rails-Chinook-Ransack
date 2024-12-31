@@ -12,6 +12,8 @@ class Invoice < ApplicationRecord
 
   attr_accessor :invoice_lines_count
 
+  validates :invoice_date, :billing_address, :billing_city, :billing_state, :billing_country, :billing_postal_code, presence: true
+
 
   scope :with_record_count_by_customer_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
     return Invoice.none if min_value.nil? && max_value.nil?
@@ -63,7 +65,11 @@ class Invoice < ApplicationRecord
 
     def display_columns
       [
-        'id', 'customer',
+        'id',
+        {
+          field: 'customer',
+          type: 'association',
+        },
         'invoice_date', 'billing_address', 'billing_city', 'billing_state',
         'billing_postal_code', 'billing_country', 'total', 'display_invoice_lines_count',
         'created_at', 'updated_at'

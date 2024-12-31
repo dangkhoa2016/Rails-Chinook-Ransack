@@ -14,6 +14,9 @@ class Employee < ApplicationRecord
 
   attr_accessor :customers_count, :subordinates_count
 
+  validate :reports_to_is_not_self
+  validates :first_name, :last_name, :address, presence: true
+
 
   scope :with_customers_count_in_range, -> (min_value, max_value = nil) {
     # use the sub query from Customer model
@@ -87,6 +90,12 @@ class Employee < ApplicationRecord
     subordinates_count || subordinates.count
   end
 
+  def reports_to_is_not_self
+    if reports_to == self
+      errors.add(:reports_to, 'cannot be self')
+    end
+  end
+
 
   class << self
 
@@ -95,7 +104,11 @@ class Employee < ApplicationRecord
         'id', 'first_name', 'last_name', 'title',
         'address', 'city', 'state', 'postal_code', 'country', 'phone', 'fax', 'email',
         'display_customers_count', 'display_subordinates_count',
-        'reporting_to', 'birth_date', 'hire_date',
+        {
+          field: 'reporting_to',
+          type: 'association',
+        },
+        'birth_date', 'hire_date',
         'created_at', 'updated_at'
       ]
     end

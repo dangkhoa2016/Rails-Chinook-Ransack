@@ -12,6 +12,8 @@ class Artist < ApplicationRecord
 
   attr_accessor :albums_count
 
+  validates :name, presence: true
+
 
   scope :with_albums_count_in_range, -> (min_value, max_value = nil) {
     # use the sub query from Album model
@@ -42,6 +44,10 @@ class Artist < ApplicationRecord
     def display_columns
       [
         'id',
+        {
+          field: 'name',
+          only_in_form: true
+        },
         'display_albums_count', 'created_at', 'updated_at'
       ]
     end

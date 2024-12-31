@@ -1,6 +1,11 @@
 module DisplayHelper
   def render_columns(record)
-    record.class.display_columns.map do |column|
+    columns = record.class.display_columns.select do |column|
+      column = { field: column } if column.is_a?(String)
+      column[:only_in_form] != true
+    end
+
+    columns.map do |column|
       column = { field: column } if column.is_a?(String)
 
       value = record.send(column[:field])

@@ -12,6 +12,8 @@ class MediaType < ApplicationRecord
 
   attr_accessor :tracks_count
 
+  validates :name, presence: true
+
 
   scope :with_tracks_count_in_range, -> (min_value, max_value = nil) {
     # use the sub query from Track model
@@ -42,6 +44,10 @@ class MediaType < ApplicationRecord
     def display_columns
       [
         'id',
+        {
+          field: 'name',
+          only_in_form: true
+        },
         'display_tracks_count', 'created_at', 'updated_at'
       ]
     end

@@ -158,3 +158,6 @@ en:
       create: Create %{model}
       submit: Save %{model}
       update: Update %{model}
+
+  placeholders:
+    select: Select %{model}

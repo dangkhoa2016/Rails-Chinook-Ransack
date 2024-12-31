@@ -1,10 +1,5 @@
-<h1>Editing customer</h1>
+<%= render 'shared/header_form', record: @customer %>
 
-<%= render 'form', customer: @customer %>
+<%= render 'shared/record_form', record: @customer %>
 
-<br>
-
-<div>
-  <%= link_to 'Show this customer', @customer %> |
-  <%= link_to 'Back to customers', customers_path %>
-</div>
+<%= render 'shared/footer_actions', record: @customer %>
