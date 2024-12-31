@@ -79,8 +79,27 @@ class Employee < ApplicationRecord
     full_name
   end
 
+  def display_customers_count
+    customers_count || customers.count
+  end
+
+  def display_subordinates_count
+    subordinates_count || subordinates.count
+  end
+
 
   class << self
+
+    def display_columns
+      [
+        'id', 'first_name', 'last_name', 'title',
+        'address', 'city', 'state', 'postal_code', 'country', 'phone', 'fax', 'email',
+        'display_customers_count', 'display_subordinates_count',
+        'reporting_to', 'birth_date', 'hire_date',
+        'created_at', 'updated_at'
+      ]
+    end
+
     def ransackable_attributes(auth_object = nil)
       ['id', 'first_name', 'last_name', 'title', 'reports_to', 'birth_date', 'hire_date', 'address', 'city', 'state', 'country', 'postal_code', 'phone', 'fax', 'email', 'created_at', 'updated_at']
     end

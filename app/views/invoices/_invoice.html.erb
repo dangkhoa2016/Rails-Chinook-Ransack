@@ -1,49 +1,15 @@
 <%= render 'shared/display_record', record: invoice do %>
-  <% if invoice.customer %>
-    <p><strong>Customer:</strong> <%= link_to invoice.customer.full_name, invoice.customer %></p>
-  <% elsif invoice.customer_id.present? %>
-    <p><strong>Customer:</strong> <%= invoice.customer_id %></p>
-  <% else %>
-    <p><strong>Customer:</strong> Missing customer</p>
+  <%= render_columns(invoice) do |column, value| %>
+    <% if column[:field] == 'customer' %>
+      <% if invoice.customer %>
+        <strong>Customer:</strong> <%= link_to invoice.customer.full_name, invoice.customer %>
+      <% elsif invoice.customer_id.present? %>
+        <strong>Customer:</strong> <%= invoice.customer_id %>
+      <% else %>
+        <strong>Customer:</strong> Missing customer
+      <% end %>
+    <% else %>
+      <% render_default(column, value, invoice) %>
+    <% end %>
   <% end %>
-
-  <p>
-    <strong>Invoice Date:</strong>
-    <%= invoice.invoice_date.strftime('%B %d, %Y') %>
-  </p>
-
-  <p>
-    <strong>Billing Address:</strong>
-    <%= invoice.billing_address %>
-  </p>
-
-  <p>
-    <strong>Billing City:</strong>
-    <%= invoice.billing_city %>
-  </p>
-
-  <p>
-    <strong>Billing State:</strong>
-    <%= invoice.billing_state %>
-  </p>
-
-  <p>
-    <strong>Billing Country:</strong>
-    <%= invoice.billing_country %>
-  </p>
-
-  <p>
-    <strong>Billing Postal Code:</strong>
-    <%= invoice.billing_postal_code %>
-  </p>
-
-  <p>
-    <strong>Total:</strong>
-    <%= number_to_currency(invoice.total) %>
-  </p>
-  
-  <p><strong>Invoice Lines Count:</strong> <%= invoice.invoice_lines_count ? invoice.invoice_lines_count : invoice.invoice_lines.count %></p>
-
-  <p><strong>Created at:</strong> <%= invoice.created_at %></p>
-  <p><strong>Updated at:</strong> <%= invoice.updated_at %></p>
 <% end %>

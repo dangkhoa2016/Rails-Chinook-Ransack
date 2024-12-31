@@ -1,17 +1,22 @@
+<%
+  header_title = record.to_s rescue nil
+  header_title = "() - Id: #{record.id}" if header_title.blank?
+  column_class = action_name == 'index' ? '' : ' row-cols-md-2 row-cols-xxl-3'
+%>
 <div id='<%= dom_id(record) %>' class='card p-0'>
   <div class='card-header'>
     <% if action_name == 'index' %>
-      <%= link_to record %>
+      <%= link_to header_title, record %>
     <% else %>
-      <%= record.to_s %>
+      <%= "#{record.class.model_name.human}: #{header_title}" %>
     <% end %>
   </div>
   
   <div class='card-body'>
-   <%= yield %>
+    <div class='row g-3 row-cols-1<%= column_class %>'>
+      <%= yield %>
+    </div>
   </div>
 
-  <div class='card-footer text-body-secondary'>
-    <%= link_to translate('actions.view_detail'), record %>
-  </div>
+  <%= render 'shared/footer_actions', record: record %>
 </div>

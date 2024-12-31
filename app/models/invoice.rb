@@ -54,8 +54,22 @@ class Invoice < ApplicationRecord
     "#{self.class.human_attribute_name('id')}: #{id}"
   end
 
+  def display_invoice_lines_count
+    invoice_lines_count || invoice_lines.count
+  end
+
 
   class << self
+
+    def display_columns
+      [
+        'id', 'customer',
+        'invoice_date', 'billing_address', 'billing_city', 'billing_state',
+        'billing_postal_code', 'billing_country', 'total', 'display_invoice_lines_count',
+        'created_at', 'updated_at'
+      ]
+    end
+
     def ransackable_attributes(auth_object = nil)
       ['id', 'customer_id', 'invoice_date', 'billing_address', 'billing_city', 'billing_state', 'billing_country', 'billing_postal_code', 'total', 'created_at', 'updated_at']
     end

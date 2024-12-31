@@ -1,5 +1,3 @@
 <%= render 'shared/display_record', record: genre do %>
-  <p><strong>Tracks Count:</strong> <%= genre.tracks_count ? genre.tracks_count : genre.tracks.count %></p>
-  <p><strong>Created at:</strong> <%= genre.created_at %></p>
-  <p><strong>Updated at:</strong> <%= genre.updated_at %></p>
+  <%= render_columns(genre) %>
 <% end %>

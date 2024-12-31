@@ -1,10 +1,3 @@
 <p style='color: green'><%= notice %></p>
 
 <%= render @playlist_track %>
-
-<div>
-  <%= link_to 'Edit this playlist track', edit_playlist_track_path(@playlist_track) %> |
-  <%= link_to 'Back to playlist tracks', playlist_tracks_path %>
-
-  <%= button_to 'Destroy this playlist track', @playlist_track, method: :delete %>
-</div>

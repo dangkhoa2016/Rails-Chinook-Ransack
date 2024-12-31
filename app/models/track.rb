@@ -79,8 +79,34 @@ class Track < ApplicationRecord
     name
   end
 
+  def display_invoice_lines_count
+    invoice_lines_count || invoice_lines.count
+  end
+
 
   class << self
+
+    def display_columns
+      [
+        'id',
+        {
+          field: 'album',
+          type: 'association',
+        },
+        {
+          field: 'genre',
+          type: 'association',
+        },
+        {
+          field: 'media_type',
+          type: 'association',
+        },
+        'composer', 'milliseconds', 'bytes', 'unit_price',
+        'display_invoice_lines_count',
+        'created_at', 'updated_at'
+      ]
+    end
+
     def ransackable_attributes(auth_object = nil)
       ['id', 'name', 'composer', 'milliseconds', 'bytes', 'unit_price', 'created_at', 'updated_at']
     end

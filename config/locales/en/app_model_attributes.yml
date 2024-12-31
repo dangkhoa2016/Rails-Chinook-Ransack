@@ -1,0 +1,131 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+
+  activerecord:
+    models:
+      album: Album
+      artist: Artist
+      genre: Genre
+      customer: Customer
+      invoice: Invoice
+      invoice_line: Invoice Line
+      employee: Employee
+      track: Track
+      media_type: Media Type
+      playlist: Playlist
+
+    attributes:
+      album:
+        title: Title
+        artist: Artist
+      artist:
+        name: Name
+      track:
+        album: Album
+        media_type: Media type
+        genre: Genre
+        composer: Composer
+        milliseconds: Milliseconds
+        bytes: Bytes
+        unit_price: Unit price
+      employee:
+        last_name: Last name
+        first_name: First name
+        email: Email address
+        title: Position
+        reports_to: Managed by
+        manager_id: Manager ID
+        birth_date: Birth date
+        hire_date: Hire date
+        address: Address
+        city: City
+        state: State
+        country: Country
+        postal_code: Postal code
+        phone: Phone
+        fax: Fax
+        title_timestamp: Title/Timestamp
+        view_employee: View employee
+        personal_information: Personal information
+        contact_information: Contact information
+        other_information: Other information
+        no_manager: No manager
+      customer:
+        first_name: First name
+        last_name: Last name
+        company: Company
+        address: Address
+        city: City
+        state: State
+        country: Country
+        postal_code: Postal code
+        phone: Phone
+        fax: Fax
+        email: Email address
+        support_rep: Support rep
+        personal_information: Personal information
+        contact_information: Contact information
+        other_information: Other information
+        company_timestamp: Company/Timestamp
+        view_customer: View customer
+        no_support_rep_assigned: No support rep assigned
+        full_name: Full name
+      genre:
+        name: Name
+      invoice:
+        customer: Customer
+        invoice_date: Invoice date
+        billing_address: Billing address
+        billing_city: Billing city
+        billing_state: Billing state
+        billing_country: Billing country
+        billing_postal_code: Billing postal code
+        total: Total
+        view_invoice: View invoice
+      media_type:
+        name: Name
+      playlist:
+        name: Name
+      playlist_track:
+        playlist: Playlist
+        track: Track
+      invoice_line:
+        invoice: Invoice
+        track: Track
+        unit_price: Unit price
+        quantity: Quantity
+        invoice_id: Invoice ID
+        customer: Customer
+        view_invoice: View invoice
+        view_track: View track
+        total: Total
+        view_invoice_line: View invoice line
+        total_price: Total price

@@ -1,26 +1,15 @@
 <%= render 'shared/display_record', record: employee do %>
-  <p><strong>Email:</strong> <%= employee.email %></p>
-  <p><strong>Title:</strong> <%= employee.title %></p>
-  <p><strong>Reports to:</strong> <%= employee.reports_to %></p>
-  <p><strong>Birth date:</strong> <%= employee.birth_date %></p>
-  <p><strong>Hire date:</strong> <%= employee.hire_date %></p>
-  <p><strong>Address:</strong> <%= employee.address %></p>
-  <p><strong>City:</strong> <%= employee.city %></p>
-  <p><strong>State:</strong> <%= employee.state %></p>
-  <p><strong>Country:</strong> <%= employee.country %></p>
-  <p><strong>Postal code:</strong> <%= employee.postal_code %></p>
-  <p><strong>Phone:</strong> <%= employee.phone %></p>
-  <p><strong>Fax:</strong> <%= employee.fax %></p>
-  
-  <p><strong>Customers Count:</strong> <%= employee.customers_count ? employee.customers_count : employee.customers.count %></p>
-  <% if employee.reporting_to %>
-    <p><strong>Managed By:</strong> <%= link_to employee.reporting_to.full_name, employee.reporting_to %></p>
-  <% elsif employee.reports_to.present? %>
-    <p><strong>Manager ID:</strong> <%= employee.reports_to %></p>
-  <% else %>
-    <p><strong>Manager:</strong> No Manager</p>
+  <%= render_columns(employee) do |column, value| %>
+    <% if column[:field] == 'reporting_to' %>
+      <% if employee.reporting_to %>
+        <strong><%= Employee.human_attribute_name('reports_to') %>:</strong> <%= link_to employee.reporting_to %>
+      <% elsif employee.reports_to.present? %>
+        <strong><%= Employee.human_attribute_name('manager_id') %>:</strong> <%= employee.reports_to %>
+      <% else %>
+        <strong><%= Employee.human_attribute_name('manager_id') %>:</strong> <%= Employee.human_attribute_name('no_manager') %>
+      <% end %>
+    <% else %>
+      <% render_default(column, value, employee) %>
+    <% end %>
   <% end %>
-
-  <p><strong>Created at:</strong> <%= employee.created_at %></p>
-  <p><strong>Updated at:</strong> <%= employee.updated_at %></p>
 <% end %>

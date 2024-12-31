@@ -70,8 +70,24 @@ class Album < ApplicationRecord
     title
   end
 
+  def display_tracks_count
+   tracks_count || tracks.count
+  end
+
 
   class << self
+
+    def display_columns
+      [
+        'id',
+        {
+          field: 'artist',
+          type: 'association',
+        },
+        'display_tracks_count', 'created_at', 'updated_at'
+      ]
+    end
+
     def ransackable_attributes(auth_object = nil)
       ['id', 'title', 'artist_id', 'created_at', 'updated_at']
     end

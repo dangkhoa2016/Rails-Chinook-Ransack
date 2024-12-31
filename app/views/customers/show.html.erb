@@ -1,11 +1,3 @@
 <p style='color: green'><%= notice %></p>
 
 <%= render @customer %>
-
-<div>
-  <%= link_to 'Edit this customer', edit_customer_path(@customer) %> |
-  <%= link_to 'Back to customers', customers_path %>
-
-  <%= button_to 'Destroy this customer', @customer, class: 'btn btn-danger',
-    method: :delete, data: { turbo_method: 'delete', turbo_confirm: 'Are you sure?' } %>
-</div>

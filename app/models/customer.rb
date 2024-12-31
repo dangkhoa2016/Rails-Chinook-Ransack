@@ -62,9 +62,24 @@ class Customer < ApplicationRecord
   def to_s
     full_name
   end
+
+  def display_invoices_count
+    invoices_count || invoices.count
+  end
   
 
   class << self
+
+    def display_columns
+      [
+        'id', 'first_name', 'last_name',
+        'company', 'address', 'city', 'state', 'postal_code', 'country', 'phone', 'fax', 'email',
+        'display_invoices_count',
+        'support_rep',
+        'created_at', 'updated_at'
+      ]
+    end
+
     def ransackable_attributes(auth_object = nil)
       ['id', 'first_name', 'last_name', 'company', 'address', 'city', 'state', 'country', 'postal_code', 'phone', 'fax', 'email', 'created_at', 'updated_at']
     end

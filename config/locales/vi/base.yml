@@ -30,21 +30,21 @@
 vi:
 
   nav:
-    home: Trang chủ
-    music: Âm nhạc
-    albums: Bộ sưu tập
-    artists: Nghệ sĩ
-    genres: Thể loại
-    media_types: Loại phương tiện
-    tracks: Bài hát
-    playlists: Danh sách phát
-    store: Cửa hàng
-    invoices: Hóa đơn
-    invoice_lines: Chi tiết hóa đơn
-    employees: Nhân viên
-    customers: Khách hàng
-    settings: Cài đặt
-    languages: Ngôn ngữ
+    home: Trang Chủ
+    music: Âm Nhạc
+    albums: Bộ Sưu Tập
+    artists: Nghệ Sĩ
+    genres: Thể Loại
+    media_types: Loại Phương Tiện
+    tracks: Bài Hát
+    playlists: Danh Sách Phát
+    store: Cửa Hàng
+    invoices: Hóa Đơn
+    invoice_lines: Chi Tiết Hóa Đơn
+    employees: Nhân Viên
+    customers: Khách Hàng
+    settings: Cài Đặt
+    languages: Ngôn Ngữ
     vietnamese: Tiếng Việt
     english: Tiếng Anh
 
@@ -68,6 +68,7 @@ vi:
     template_filters: Bộ lọc mẫu
     select_a_template: Chọn một mẫu...
     no_filters_selected: Bạn chưa chọn bộ lọc nào cả
+    actions: Hành động
 
   actions:
     toggle_navigation: Đóng/mở điều hướng
@@ -83,6 +84,7 @@ vi:
     edit: Chỉnh sửa
     delete: Xóa
     show: Hiển thị
+    view: Xem
     new: Mới
     create_new: Tạo mới
     back: Quay lại
@@ -143,3 +145,15 @@ vi:
     save_and_last: Lưu và Cuối cùng
     save_and_more: Lưu và Thêm
     save_and_less: Lưu và Ít hơn
+    confirm_destroy:
+      one: Bạn có chắc chắn muốn xóa %{model} này không?
+      other: Bạn có chắc chắn muốn xóa các %{model} này không?
+    back_to_list: Quay Lại danh sách %{model}
+
+  helpers:
+    select:
+      prompt: Vui lòng chọn
+    submit:
+      create: Tạo %{model}
+      submit: Lưu %{model}
+      update: Cập nhật %{model}

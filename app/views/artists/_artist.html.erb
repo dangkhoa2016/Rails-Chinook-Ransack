@@ -1,5 +1,3 @@
 <%= render 'shared/display_record', record: artist do %>
-  <p><strong>Albums Count:</strong> <%= artist.albums_count ? artist.albums_count : artist.albums.count %></p>
-  <p><strong>Created at:</strong> <%= artist.created_at %></p>
-  <p><strong>Updated at:</strong> <%= artist.updated_at %></p>
+  <%= render_columns(artist) %>
 <% end %>

@@ -68,6 +68,7 @@ en:
     template_filters: Template filters
     select_a_template: Select a template...
     no_filters_selected: You haven't selected any filters yet
+    actions: Actions
 
   actions:
     toggle_navigation: Toggle navigation
@@ -83,6 +84,7 @@ en:
     edit: Edit
     delete: Delete
     show: Show
+    view: View
     new: New
     create_new: Create new
     back: Back
@@ -144,3 +146,15 @@ en:
     save_and_last: Save and Last
     save_and_more: Save and More
     save_and_less: Save and Less
+    confirm_destroy:
+      one: Are you sure to delete this %{model} record?
+      other: Are you sure to delete these %{model} records?
+    back_to_list: Back to %{model} list
+
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}

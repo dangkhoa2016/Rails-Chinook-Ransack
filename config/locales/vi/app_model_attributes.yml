@@ -1,0 +1,131 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# Vietnamese, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     vi:
+#       "yes": Đồng ý
+#       enabled: "ON"
+
+vi:
+
+  activerecord:
+    models:
+      album: Bộ sưu tập
+      artist: Nghệ sĩ
+      genre: Thể loại
+      customer: Khách hàng
+      invoice: Hóa đơn
+      invoice_line: Chi tiết hóa đơn
+      employee: Nhân viên
+      track: Bài hát
+      media_type: Loại phương tiện
+      playlist: Danh sách phát
+
+    attributes:
+      album:
+        title: Tiêu đề
+        artist: Nghệ sĩ
+      artist:
+        name: Tên
+      track:
+        album: Bộ sưu tập
+        media_type: Loại phương tiện
+        genre: Thể loại
+        composer: Nhà soạn nhạc
+        milliseconds: Mili giây
+        bytes: Dung lượng
+        unit_price: Đơn giá
+      employee:
+        last_name: Họ
+        first_name: Tên
+        email: Địa chỉ email
+        title: Chức vụ
+        reports_to: Quản lý bởi
+        manager_id: ID người quản lý
+        birth_date: Ngày sinh
+        hire_date: Ngày tuyển dụng
+        address: Địa chỉ
+        city: Thành phố
+        state: Tiểu bang
+        country: Quốc gia
+        postal_code: Mã bưu điện
+        phone: Điện thoại
+        fax: Fax
+        title_timestamp: Chức vụ/Thời gian
+        view_employee: Xem nhân viên
+        personal_information: Thông tin cá nhân
+        contact_information: Thông tin liên hệ
+        other_information: Thông tin khác
+        no_manager: Không có cấp trên
+      customer:
+        first_name: Tên
+        last_name: Họ
+        company: Công ty
+        address: Địa chỉ
+        city: Thành phố
+        state: Tiểu bang
+        country: Quốc gia
+        postal_code: Mã bưu điện
+        phone: Điện thoại
+        fax: Fax
+        email: Địa chỉ email
+        support_rep: Đại diện hỗ trợ
+        personal_information: Thông tin cá nhân
+        contact_information: Thông tin liên hệ
+        other_information: Thông tin khác
+        company_timestamp: Công ty/Thời gian
+        view_customer: Xem khách hàng
+        no_support_rep_assigned: Chưa có đại diện hỗ trợ được phân công
+        full_name: Họ và tên
+      genre:
+        name: Tên
+      invoice:
+        customer: Khách hàng
+        invoice_date: Ngày hóa đơn
+        billing_address: Địa chỉ thanh toán
+        billing_city: Thành phố thanh toán
+        billing_state: Tiểu bang thanh toán
+        billing_country: Quốc gia thanh toán
+        billing_postal_code: Mã bưu điện thanh toán
+        total: Tổng cộng
+        view_invoice: Xem hóa đơn
+      media_type:
+        name: Tên
+      playlist:
+        name: Tên
+      playlist_track:
+        playlist: Danh sách phát
+        track: Bài hát
+      invoice_line:
+        invoice: Hóa đơn
+        track: Bài hát
+        unit_price: Đơn giá
+        quantity: Số lượng
+        invoice_id: ID hóa đơn
+        customer: Khách hàng
+        view_invoice: Xem hóa đơn
+        view_track: Xem bài hát
+        total: Tổng cộng
+        view_invoice_line: Xem chi tiết hóa đơn
+        total_price: Tổng giá

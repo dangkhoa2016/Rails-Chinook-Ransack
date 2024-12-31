@@ -7,38 +7,40 @@
   }
 </style>
 
+<% turbo_confirm = translate('actions.confirm_destroy', model: Employee.model_name.human.downcase, count: 1) %>
+
 <div class='mb-4 employees-table table-responsive'>
   <table class='table table-bordered table-striped table-hover'>
     <thead class='thead-light'>
       <tr>
-        <th colspan='2' class='text-center'>Personal Information</th>
-        <th class='text-center'>Address</th>
-        <th colspan='2' class='text-center'>Contact Information</th>
-        <th colspan='3' class='text-center'>Other Information</th>
+        <th colspan='2' class='text-center'><%= Employee.human_attribute_name('personal_information') %></th>
+        <th class='text-center'><%= Employee.human_attribute_name('address') %></th>
+        <th colspan='2' class='text-center'><%= Employee.human_attribute_name('contact_information') %></th>
+        <th colspan='3' class='text-center'><%= Employee.human_attribute_name('other_information') %></th>
         <th></th>
       </tr>
       <tr>
         <th class='text-nowrap'>
-          <%= build_sort_link('employee', 'first_name') %>
+          <%= build_sort_link('first_name', Employee) %>
         </th>
         <th class='text-nowrap'>
-          <%= build_sort_link('employee', 'last_name') %>
+          <%= build_sort_link('last_name', Employee) %>
         </th>
         <th class='text-nowrap'>
-          <%= build_sort_link('employee', 'address') %>
+          <%= build_sort_link('address', Employee) %>
         </th>
         <th class='text-nowrap'>
-          <%= build_sort_link('employee', 'phone') %>
+          <%= build_sort_link('phone', Employee) %>
         </th>
         <th class='text-nowrap'>
-          <%= build_sort_link('employee', 'email') %>
+          <%= build_sort_link('email', Employee) %>
         </th>
         <th class='text-nowrap'>
-          <%= build_sort_link('employee', 'reporting_to') %>
+          <%= build_sort_link('reporting_to', Employee) %>
         </th>
-        <th class='text-nowrap'>Customers Count</th>
-        <th class='text-nowrap'>Title/Timestamp</th>
-        <th class='text-center'>Actions</th>
+        <th class='text-nowrap'><%= Employee.human_attribute_name('display_customers_count') %></th>
+        <th class='text-nowrap'><%= Employee.human_attribute_name('title_timestamp') %></th>
+        <th class='text-center text-nowrap'><%= translate('base.actions') %></th>
       </tr>
     </thead>
 
@@ -56,11 +58,11 @@
                 <%= employee.address %>
               </button>
               <ul class='dropdown-menu' aria-labelledby='dropdownAddress<%= employee.id %>'>
-                <li class='px-3'><strong>State:</strong> <%= employee.state %></li>
-                <li class='px-3'><strong>City:</strong> <%= employee.city %></li>
-                <li class='px-3'><strong>Country:</strong> <%= employee.country %></li>
-                <li class='px-3'><strong>Postal Code:</strong> <%= employee.postal_code %></li>
-                <li class='px-3'><strong>Address:</strong> <%= employee.address %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('state') %>:</strong> <%= employee.state %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('city') %>:</strong> <%= employee.city %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('postal_code') %>:</strong> <%= employee.postal_code %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('country') %>:</strong> <%= employee.country %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('address') %>:</strong> <%= employee.address %></li>
               </ul>
             </div>
           </td>
@@ -73,19 +75,19 @@
                 <%= employee.phone %>
               </button>
               <ul class='dropdown-menu' aria-labelledby='dropdownPhone<%= employee.id %>'>
-                <li class='px-3 text-nowrap'><strong>Fax:</strong> <%= employee.fax %></li>
-                <li class='px-3 text-nowrap'><strong>Phone:</strong> <%= employee.phone %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('fax') %>:</strong> <%= employee.fax %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('phone') %>:</strong> <%= employee.phone %></li>
               </ul>
             </div>
           </td>
           <td><%= employee.email %></td>
           
           <td class='text-nowrap'>
-						Managed by: <%= employee.reporting_to&.full_name %>
+						<%= Employee.human_attribute_name('reports_to') %>: <%= employee.reporting_to&.full_name %>
 						<br/>
-						Subordinates Count: <%= employee.subordinates_count %>
+						<%= Employee.human_attribute_name('display_subordinates_count') %>: <%= employee.display_subordinates_count %>
 					</td>
-          <td><%= link_to employee.customers_count, employee %></td>
+          <td><%= link_to employee.display_customers_count, employee %></td>
           <td>
             <div class='dropdown'>
               <button class='btn btn-link text-dark btn-sm dropdown-toggle text-decoration-none px-0'
@@ -94,12 +96,12 @@
                 <%= employee.title %>
               </button>
               <ul class='dropdown-menu' aria-labelledby='dropdownOtherInfo<%= employee.id %>'>
-                <li class='px-3 text-nowrap'><strong>Title:</strong> <%= employee.title %></li>
-                <li class='px-3 text-nowrap'><strong>Birth Date:</strong> <%= employee.birth_date %></li>
-                <li class='px-3 text-nowrap'><strong>Hire Date:</strong> <%= employee.hire_date %></li>
-                <li class='px-3 text-nowrap'><strong>Created At:</strong> <%= employee.created_at %></li>
-                <li class='px-3 text-nowrap'><strong>Updated At:</strong> <%= employee.updated_at %></li>
-                <li class='px-3 text-nowrap'><strong><%= link_to 'View employee', employee %></strong></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('title') %>:</strong> <%= employee.title %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('birth_date') %>:</strong> <%= employee.birth_date %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('hire_date') %>:</strong> <%= employee.hire_date %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('created_at') %>:</strong> <%= employee.created_at %></li>
+                <li class='px-3 text-nowrap'><strong><%= Employee.human_attribute_name('updated_at') %>:</strong> <%= employee.updated_at %></li>
+                <li class='px-3 text-nowrap'><strong><%= link_to Employee.human_attribute_name('view_employee'), employee %></strong></li>
               </ul>
             </div>
           </td>
@@ -109,24 +111,24 @@
               <button class='btn btn-secondary btn-sm dropdown-toggle'
                 type='button' id='dropdownActions<%= employee.id %>'
                 data-bs-toggle='dropdown' aria-expanded='false'>
-                Actions
+                <%= translate('base.actions') %>
               </button>
               <ul class='dropdown-menu' aria-labelledby='dropdownActions<%= employee.id %>'>
                 <li>
                   <%= link_to employee, class: 'dropdown-item' do %>
-                    <i class='bi bi-eye'></i> View
+                    <i class='bi bi-eye'></i> <%= translate('actions.view') %>
                   <% end %>
                 </li>
                 <li>
                   <%= link_to edit_employee_path(employee), class: 'dropdown-item text-warning' do %>
-                    <i class='bi bi-pencil'></i> Edit
+                    <i class='bi bi-pencil'></i> <%= translate('actions.edit') %>
                   <% end %>
                 </li>
                 <li>
                   <%= link_to employee, method: :delete,
-                    data: { turbo_method: 'delete', turbo_confirm: 'Are you sure?' },
+                    data: { turbo_method: 'delete', turbo_confirm: turbo_confirm },
                     class: 'dropdown-item text-danger' do %>
-                    <i class='bi bi-trash'></i> Delete
+                    <i class='bi bi-trash'></i> <%= translate('actions.delete') %>
                   <% end %>
                 </li>
               </ul>

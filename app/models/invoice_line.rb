@@ -87,6 +87,23 @@ class InvoiceLine < ApplicationRecord
 
 
   class << self
+
+    def display_columns
+      [
+        'id',
+        {
+          field: 'invoice',
+          type: 'association',
+        },
+        {
+          field: 'track',
+          type: 'association',
+        },
+        'unit_price', 'quantity', 'total_price',
+        'created_at', 'updated_at'
+      ]
+    end
+
     def ransackable_attributes(auth_object = nil)
       ['id', 'invoice_id', 'track_id', 'unit_price', 'quantity', 'created_at', 'updated_at']
     end

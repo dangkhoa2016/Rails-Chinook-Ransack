@@ -32,8 +32,20 @@ class Artist < ApplicationRecord
     name
   end
 
+  def display_albums_count
+    albums_count || albums.count
+  end
+
 
   class << self
+
+    def display_columns
+      [
+        'id',
+        'display_albums_count', 'created_at', 'updated_at'
+      ]
+    end
+
     def ransackable_attributes(auth_object = nil)
       ['id', 'name', 'created_at', 'updated_at']
     end

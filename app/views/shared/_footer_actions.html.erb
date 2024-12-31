@@ -1,0 +1,35 @@
+<%
+model_record = defined?(locals) ? locals[:record] : (defined?(record) ? record : nil)
+
+data_attributes = {
+  turbo_method: 'delete',
+  turbo_confirm: translate('actions.confirm_destroy', model: record.class.model_name.human.downcase, count: 1),
+}
+%>
+
+<%
+  footer_class = 'card-footer'
+  actions = []
+
+  if action_name.in?(%w[index show])
+    if action_name == 'index'
+      actions << link_to(translate('actions.view'), model_record)
+    end
+    actions << link_to(translate('actions.edit'), edit_polymorphic_path(model_record))
+    actions << link_to(translate('actions.delete'), model_record, method: :delete, data: data_attributes)
+  elsif action_name.in?(%w[edit update])
+    actions << link_to(translate('actions.view'), model_record)
+  end
+
+  if action_name != 'index'
+    back_to_list = translate('actions.back_to_list', model: model_record.class.model_name.human.pluralize(I18n.locale))
+    actions << link_to(back_to_list, polymorphic_path(model_record.class))
+    footer_class = 'mt-4' if action_name != 'show'
+  end
+
+  actions
+%>
+
+<div class='<%= footer_class %>'>
+  <%= actions.join(' | ').html_safe %>
+</div>
