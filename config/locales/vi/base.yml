@@ -69,6 +69,7 @@ vi:
     select_a_template: Chọn một mẫu...
     no_filters_selected: Bạn chưa chọn bộ lọc nào cả
     actions: Hành động
+    change: Thay đổi
 
   actions:
     toggle_navigation: Đóng/mở điều hướng
@@ -160,3 +161,4 @@ vi:
 
   placeholders:
     select: Chọn %{model}
+    items_per_page: Hiển thị trên mỗi trang

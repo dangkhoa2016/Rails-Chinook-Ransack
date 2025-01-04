@@ -69,6 +69,7 @@ en:
     select_a_template: Select a template...
     no_filters_selected: You haven't selected any filters yet
     actions: Actions
+    change: Change
 
   actions:
     toggle_navigation: Toggle navigation
@@ -161,3 +162,4 @@ en:
 
   placeholders:
     select: Select %{model}
+    items_per_page: Items per page

@@ -4,7 +4,7 @@ module NavMenuHelper
     if menu.is_a?(String)
       if menu.start_with?('language_path_')
         language = menu.split('language_path_').pop
-        return url_for({ locale: language }.merge(request.query_parameters))
+        return url_for({ locale: language }.merge(request.query_parameters.except(:locale)))
       end
     end
     url = send(menu) rescue nil

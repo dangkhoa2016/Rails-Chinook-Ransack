@@ -91,7 +91,7 @@ module Filterable
       end
     end
 
-    pagy(query.ransack(new_filters).result.order(sorting_params))
+    pagy(query.ransack(new_filters).result.order(sorting_params), limit: page_size)
   end
 
   def sorting_params
@@ -101,5 +101,9 @@ module Filterable
 
   def sort_column
     params[:sort].presence || 'created_at'  # Default to 'created_at' if no param
+  end
+
+  def page_size
+    (cookies[:per_page].presence || Pagy::DEFAULT[:limit]).to_i
   end
 end

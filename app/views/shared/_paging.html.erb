@@ -1,0 +1,13 @@
+<div class='wrap-pagination d-flex justify-content-between align-items-center flex-wrap'>
+  <%== pagy_bootstrap_nav(@pagy, classes: 'pagination mb-0') %>
+  <div class='d-flex align-items-center'>
+    <span class='me-2 d-none change-page-size'><%= translate('base.change') %></span>
+    <%= select_tag :per_page, options_for_select(ApplicationHelper::PAGE_SIZES, @pagy.limit),
+      include_blank: translate('placeholders.items_per_page'),
+      class: 'w-auto form-select', data: { controller: 'change-page-size' } %>
+  </div>
+</div>
+
+<div class='my-3 text-center'>
+  <%== pagy_info(@pagy) %>
+</div>
