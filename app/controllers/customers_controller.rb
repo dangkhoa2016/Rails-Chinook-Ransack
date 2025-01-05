@@ -1,5 +1,6 @@
 class CustomersController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_customer, only: %i[ show edit update destroy ]
 
   # GET /customers or /customers.json
@@ -21,6 +22,8 @@ class CustomersController < ApplicationController
         customer.invoices_count = invoices_count[customer.id] || 0
       end
     end
+
+    render_index('table')
   end
 
   def json_list_for_select_element
@@ -100,23 +103,29 @@ class CustomersController < ApplicationController
     def model_query
       if is_sort_by_support_rep?
         Customer.left_joins(:support_rep).preload(:support_rep)
+      elsif is_sort_by_invoices_count?
+        Customer.includes(:support_rep).left_joins(:invoices).group('customers.id')
       else
         Customer.includes(:support_rep)
       end
     end
 
     def is_sort_by_support_rep?
-      @is_sort_by_support_rep ||= (params[:sort]&.downcase == 'support_rep')
+      @is_sort_by_support_rep ||= (sort_column == 'support_rep')
+    end
+
+    def is_sort_by_invoices_count?
+      @is_sort_by_invoices_count ||= (sort_column == 'invoices_count')
     end
 
     def sorting_params
       if is_sort_by_support_rep?
-        sort_direction = params[:direction] || 'desc'
-
         {
           'employees.first_name' => sort_direction,
           'employees.last_name' => sort_direction
         }
+      elsif is_sort_by_invoices_count?
+        "COUNT(invoices.id) #{sort_direction}"
       else
         super
       end

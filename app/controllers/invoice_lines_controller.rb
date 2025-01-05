@@ -1,5 +1,6 @@
 class InvoiceLinesController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_invoice_line, only: %i[ show edit update destroy ]
 
   # GET /invoice_lines or /invoice_lines.json
@@ -14,6 +15,8 @@ class InvoiceLinesController < ApplicationController
         raise e
       end
     end
+
+    render_index('table')
   end
 
   def json_list_for_select_element
@@ -107,7 +110,7 @@ class InvoiceLinesController < ApplicationController
     end
 
     def is_sort_by_track?
-      @is_sort_by_track ||= (params[:sort]&.downcase == 'track')
+      @is_sort_by_track ||= (sort_column == 'track')
     end
 
     def is_sort_by_total_price?
@@ -116,8 +119,6 @@ class InvoiceLinesController < ApplicationController
 
     def sorting_params
       if is_sort_by_track?
-        sort_direction = params[:direction] || 'desc'
-
         {
           'tracks.name' => sort_direction,
         }

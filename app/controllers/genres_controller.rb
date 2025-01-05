@@ -1,11 +1,12 @@
 class GenresController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_genre, only: %i[ show edit update destroy ]
 
   # GET /genres or /genres.json
   def index
     begin
-      @pagy, @genres = process_filters(Genre)
+      @pagy, @genres = process_filters(model_query)
     rescue => e
       if e.is_a?(Pagy::OverflowError)
         @pagy = Pagy.new(count: 0)
@@ -21,6 +22,8 @@ class GenresController < ApplicationController
         genre.tracks_count = tracks_count[genre.id] || 0
       end
     end
+
+    render_index
   end
 
   def json_list_for_select_element
@@ -95,5 +98,26 @@ class GenresController < ApplicationController
 
     def default_ransack_params
       :name_cont
+    end
+
+    def model_query
+      query = Genre
+      if is_sort_by_tracks_count?
+        query = query.left_joins(:tracks).group('genres.id')
+      end
+
+      query
+    end
+
+    def is_sort_by_tracks_count?
+      @is_sort_by_tracks_count ||= (sort_column == 'tracks_count')
+    end
+
+    def sorting_params
+      if is_sort_by_tracks_count?
+        "COUNT(tracks.id) #{sort_direction}"
+      else
+        super
+      end
     end
 end

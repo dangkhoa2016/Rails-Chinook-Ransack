@@ -1,11 +1,12 @@
 class ArtistsController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_artist, only: %i[ show edit update destroy ]
 
   # GET /artists or /artists.json
   def index
     begin
-      @pagy, @artists = process_filters(Artist)
+      @pagy, @artists = process_filters(model_query)
     rescue => e
       if e.is_a?(Pagy::OverflowError)
         @pagy = Pagy.new(count: 0)
@@ -21,6 +22,8 @@ class ArtistsController < ApplicationController
         artist.albums_count = albums_count[artist.id] || 0
       end
     end
+
+    render_index
   end
 
   def json_list_for_select_element
@@ -95,5 +98,25 @@ class ArtistsController < ApplicationController
     
     def default_ransack_params
       :name_cont
+    end
+
+    def model_query
+      if is_sort_by_albums_count?
+        Artist.left_joins(:albums).group('artists.id')
+      else
+        Artist.includes(:albums)
+      end
+    end
+
+    def is_sort_by_albums_count?
+      @is_sort_by_albums_count ||= (sort_column == 'albums_count')
+    end
+
+    def sorting_params
+      if is_sort_by_albums_count?
+        "COUNT(albums.id) #{sort_direction}"
+      else
+        super
+      end
     end
 end

@@ -3,6 +3,15 @@ module Filterable
 
   included do
     before_action :load_filters, only: [:index]
+    
+    def render_index(mode = 'card')
+      if request.query_parameters['partial_only'] == 'true'
+        request.query_parameters.delete('partial_only')
+        render partial: 'shared/index_records', locals: { mode: mode }
+      else
+        render :index
+      end
+    end
   end
 
   def filter_service
@@ -94,13 +103,10 @@ module Filterable
     pagy(query.ransack(new_filters).result.order(sorting_params), limit: page_size)
   end
 
-  def sorting_params
-    sort_direction = params[:direction].presence || 'desc'
-    { sort_column => sort_direction }
-  end
 
-  def sort_column
-    params[:sort].presence || 'created_at'  # Default to 'created_at' if no param
+
+  def sorting_params
+    { sort_column => sort_direction }
   end
 
   def page_size

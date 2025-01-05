@@ -70,6 +70,12 @@ en:
     no_filters_selected: You haven't selected any filters yet
     actions: Actions
     change: Change
+    display_settings: Display settings
+    display_mode: Display mode
+    sort_by: Sort by
+    sort_asc: Sort ascending
+    sort_desc: Sort descending
+    filter_placeholder: Filter...
 
   actions:
     toggle_navigation: Toggle navigation

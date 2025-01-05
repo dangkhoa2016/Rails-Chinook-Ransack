@@ -1,5 +1,6 @@
 class InvoicesController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_invoice, only: %i[ show edit update destroy ]
 
   # GET /invoices or /invoices.json
@@ -21,6 +22,8 @@ class InvoicesController < ApplicationController
         invoice.invoice_lines_count = invoice_lines_count[invoice.id] || 0
       end
     end
+
+    render_index('table')
   end
 
   def json_list_for_select_element
@@ -108,23 +111,29 @@ class InvoicesController < ApplicationController
     def model_query
       if is_sort_by_customer?
         Invoice.left_joins(:customer).preload(:customer)
+      elsif is_sort_by_invoice_lines_count?
+        Invoice.includes(:customer).left_joins(:invoice_lines).group('invoices.id')
       else
         Invoice.includes(:customer)
       end
     end
 
     def is_sort_by_customer?
-      @is_sort_by_customer ||= (params[:sort]&.downcase == 'customer')
+      @is_sort_by_customer ||= (sort_column == 'customer')
+    end
+
+    def is_sort_by_invoice_lines_count?
+      @is_sort_by_invoice_lines_count ||= (sort_column == 'invoice_lines_count')
     end
 
     def sorting_params
       if is_sort_by_customer?
-        sort_direction = params[:direction] || 'desc'
-
         {
           'customers.first_name' => sort_direction,
           'customers.last_name' => sort_direction
         }
+      elsif is_sort_by_invoice_lines_count?
+        "COUNT(invoice_lines.id) #{sort_direction}"
       else
         super
       end

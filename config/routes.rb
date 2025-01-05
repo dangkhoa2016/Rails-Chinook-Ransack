@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
 
   resources :playlists
+
   resources :playlist_tracks
 
   resources :invoices do

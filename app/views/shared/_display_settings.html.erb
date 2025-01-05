@@ -1,0 +1,44 @@
+<%
+  display_mode = defined?(locals) ? locals[:mode] : (defined?(mode) ? mode : 'card')
+
+  active_class = 'btn-success'
+  buttons = [
+    {
+      mode: 'table', icon: 'bi-list', text: translate('base.table'),
+      title: translate('base.switch_display_table')
+    },
+    {
+      mode: 'card', icon: 'bi-grid', text: translate('base.card'),
+      title: translate('base.switch_display_card')
+    }
+  ]
+%>
+
+<div class='offcanvas offcanvas-end' tabindex='-1' id='display-settings' aria-labelledby='display-settings-label'>
+  <div class='offcanvas-header'>
+    <h5 class='offcanvas-title' id='display-settings-label'><%= translate('base.display_settings') %></h5>
+    <button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='<%= translate("actions.close") %>'></button>
+  </div>
+  <div class='offcanvas-body'>
+    <div class='mt-2'>
+      <h5><%= translate('base.display_mode') %></h5>
+      <div class='btn-group' role='group'>
+        <% buttons.each do |button| %>
+          <button type='button' class='btn <%= display_mode == button[:mode] ? active_class : 'btn-secondary' %>' title="<%= button[:title] %>">
+            <i class='bi <%= button[:icon] %>'></i>
+            <span class='visually-hidden'><%= button[:text] %></span>
+          </button>
+        <% end %>
+      </div>
+    </div>
+
+    <div class='mt-5' data-controller='sorting' data-sorting-model-value='<%= controller_name %>'>
+      <h5 class='d-block'><%= translate('base.sort_by') %></h5>
+
+      <input type='text' class='form-control filter-field' placeholder='<%= translate("base.filter_placeholder") %>'
+        aria-label='filter' aria-describedby='addon-wrapping'>
+
+      <%= render 'shared/sort_fields' %>
+    </div>
+  </div>
+</div>

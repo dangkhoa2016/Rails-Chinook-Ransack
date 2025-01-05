@@ -1,11 +1,12 @@
 class PlaylistsController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_playlist, only: %i[ show edit update destroy ]
 
   # GET /playlists or /playlists.json
   def index
     begin
-      @pagy, @playlists = process_filters(Playlist)
+      @pagy, @playlists = process_filters(model_query)
     rescue => e
       if e.is_a?(Pagy::OverflowError)
         @pagy = Pagy.new(count: 0)
@@ -21,6 +22,8 @@ class PlaylistsController < ApplicationController
         playlist.tracks_count = tracks_count[playlist.id] || 0
       end
     end
+
+    render_index
   end
 
   # GET /playlists/1 or /playlists/1.json
@@ -87,5 +90,26 @@ class PlaylistsController < ApplicationController
 
     def default_ransack_params
       :name_cont
+    end
+
+    def model_query
+      query = Playlist
+      if is_sort_by_tracks_count?
+        query = query.left_joins(:tracks).group('playlists.id')
+      end
+
+      query
+    end
+
+    def is_sort_by_tracks_count?
+      @is_sort_by_tracks_count ||= (sort_column == 'tracks_count')
+    end
+
+    def sorting_params
+      if is_sort_by_tracks_count?
+        "COUNT(tracks.id) #{sort_direction}"
+      else
+        super
+      end
     end
 end

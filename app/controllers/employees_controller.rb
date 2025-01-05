@@ -1,5 +1,6 @@
 class EmployeesController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_employee, only: %i[ show edit update destroy ]
 
   # GET /employees or /employees.json
@@ -23,6 +24,8 @@ class EmployeesController < ApplicationController
         employee.subordinates_count = subordinates_count[employee.id] || 0
       end
     end
+
+    render_index('table')
   end
 
   def json_list_for_select_element
@@ -102,23 +105,37 @@ class EmployeesController < ApplicationController
     def model_query
       if is_sort_by_reporting_to?
         Employee.left_joins(:reporting_to).preload(:reporting_to)
+      elsif is_sort_by_customers_count?
+        Employee.includes(:reporting_to).left_joins(:customers).group('employees.id')
+      elsif is_sort_by_subordinates_count?
+        Employee.includes(:reporting_to).left_joins(:subordinates).group('employees.id')
       else
         Employee.includes(:reporting_to)
       end
     end
 
     def is_sort_by_reporting_to?
-      @is_sort_by_reporting_to ||= (params[:sort]&.downcase == 'reporting_to')
+      @is_sort_by_reporting_to ||= (sort_column == 'reporting_to')
+    end
+
+    def is_sort_by_customers_count?
+      @is_sort_by_customers_count ||= (sort_column == 'customers_count')
+    end
+
+    def is_sort_by_subordinates_count?
+      @is_sort_by_subordinates_count ||= (sort_column == 'subordinates_count')
     end
 
     def sorting_params
       if is_sort_by_reporting_to?
-        sort_direction = params[:direction] || 'desc'
-
         {
           'reporting_tos_employees.first_name' => sort_direction,
           'reporting_tos_employees.last_name' => sort_direction
         }
+      elsif is_sort_by_customers_count?
+        "COUNT(customers.id) #{sort_direction}"
+      elsif is_sort_by_subordinates_count?
+        "COUNT(subordinates_employees.id) #{sort_direction}"
       else
         super
       end

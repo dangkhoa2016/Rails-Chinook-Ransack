@@ -1,11 +1,12 @@
 class MediaTypesController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_media_type, only: %i[ show edit update destroy ]
 
   # GET /media_types or /media_types.json
   def index
     begin
-      @pagy, @media_types = process_filters(MediaType)
+      @pagy, @media_types = process_filters(model_query)
     rescue => e
       if e.is_a?(Pagy::OverflowError)
         @pagy = Pagy.new(count: 0)
@@ -21,6 +22,8 @@ class MediaTypesController < ApplicationController
         media_type.tracks_count = tracks_count[media_type.id] || 0
       end
     end
+
+    render_index
   end
 
   def json_list_for_select_element
@@ -95,5 +98,26 @@ class MediaTypesController < ApplicationController
 
     def default_ransack_params
       :name_cont
+    end
+
+    def model_query
+      query = MediaType
+      if is_sort_by_tracks_count?
+        query = query.left_joins(:tracks).group('media_types.id')
+      end
+
+      query
+    end
+
+    def is_sort_by_tracks_count?
+      @is_sort_by_tracks_count ||= (sort_column == 'tracks_count')
+    end
+
+    def sorting_params
+      if is_sort_by_tracks_count?
+        "COUNT(tracks.id) #{sort_direction}"
+      else
+        super
+      end
     end
 end

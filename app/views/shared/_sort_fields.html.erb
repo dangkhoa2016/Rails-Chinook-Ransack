@@ -1,0 +1,31 @@
+<% klass = get_model_class(controller_name) %>
+
+<div class='mt-2 sort-columns row row-cols-1 g-2'>
+  <% display_columns(klass).each do |column| %>
+    <%
+      field = column[:field].to_s&.downcase
+      if field.start_with?('display_') && field.end_with?('_count') # Remove display_ prefix, example: display_tracks_count
+        field = field.gsub('display_', '')
+      end
+      is_active_group = sort_column == field
+    %>
+
+    <div class='col'>
+      <div class='btn-group' role='group'>
+        <button type='button' class='btn <%= is_active_group && sort_direction == "asc" ? "btn-secondary" : (is_active_group ? "btn-outline-secondary" : "btn-outline-secondary border-dashed") %>'
+          data-action='sorting#sort' data-direction='asc'
+          data-sort='<%= field %>' title='<%= translate("base.sort_asc") %>'>
+          <%= klass.human_attribute_name(column[:field]) %>
+          <i class='bi bi-sort-alpha-up'></i>
+        </button>
+
+        <button type='button' class='btn <%= is_active_group && sort_direction == "desc" ? "btn-secondary" : (is_active_group ? "btn-outline-secondary" : "btn-outline-secondary border-dashed") %>'
+          data-action='sorting#sort' data-direction='desc'
+          data-sort='<%= field %>' title='<%= translate("base.sort_desc") %>'>
+          <i class='bi bi-sort-alpha-down'></i>
+          <span class='visually-hidden'><%= translate('base.sort_desc') %></span>
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>

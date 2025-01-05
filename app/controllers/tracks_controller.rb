@@ -1,11 +1,12 @@
 class TracksController < ApplicationController
   include Filterable
+  include Sortable
   before_action :set_track, only: %i[ show edit update destroy ]
 
   # GET /tracks or /tracks.json
   def index
     begin
-      @pagy, @tracks = process_filters(Track.includes(:album, :media_type, :genre))
+      @pagy, @tracks = process_filters(model_query)
     rescue => e
       if e.is_a?(Pagy::OverflowError)
         @pagy = Pagy.new(count: 0)
@@ -21,6 +22,8 @@ class TracksController < ApplicationController
         track.invoice_lines_count = invoice_lines_count[track.id] || 0
       end
     end
+
+    render_index
   end
 
   def json_list_for_select_element
@@ -95,5 +98,27 @@ class TracksController < ApplicationController
 
     def default_ransack_params
       :name_or_album_title_or_genre_name_or_media_type_name_cont
+    end
+
+    
+    def model_query
+      query = Track.includes(:album, :media_type, :genre)
+      if is_sort_by_invoice_lines_count?
+        query = query.left_joins(:invoice_lines).group('tracks.id')
+      end
+
+      query
+    end
+
+    def is_sort_by_invoice_lines_count?
+      @is_sort_by_invoice_lines_count ||= (sort_column == 'invoice_lines_count')
+    end
+
+    def sorting_params
+      if is_sort_by_invoice_lines_count?
+        "COUNT(invoice_lines.id) #{sort_direction}"
+      else
+        super
+      end
     end
 end

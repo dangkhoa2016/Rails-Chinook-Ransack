@@ -70,6 +70,12 @@ vi:
     no_filters_selected: Bạn chưa chọn bộ lọc nào cả
     actions: Hành động
     change: Thay đổi
+    display_settings: Cài đặt hiển thị
+    display_mode: Chế độ hiển thị
+    sort_by: Sắp xếp theo
+    sort_asc: Sắp xếp tăng dần
+    sort_desc: Sắp xếp giảm dần
+    filter_placeholder: Lọc...
 
   actions:
     toggle_navigation: Đóng/mở điều hướng

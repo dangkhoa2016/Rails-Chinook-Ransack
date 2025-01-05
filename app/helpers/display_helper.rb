@@ -1,13 +1,22 @@
 module DisplayHelper
+  def display_columns(klass)
+    return [] unless klass
+    columns = klass.respond_to?(:display_columns) ? klass.display_columns : klass.column_names
+    columns.map do |column|
+      if column.is_a?(String)
+        { field: column }
+      else
+        column
+      end
+    end
+  end
+
   def render_columns(record)
-    columns = record.class.display_columns.select do |column|
-      column = { field: column } if column.is_a?(String)
+    columns = display_columns(get_model_class(record)).select do |column|
       column[:only_in_form] != true
     end
 
     columns.map do |column|
-      column = { field: column } if column.is_a?(String)
-
       value = record.send(column[:field])
       render_wrapper do
         if block_given?
@@ -30,6 +39,10 @@ module DisplayHelper
   end
 
   def get_model_class(record)
+    if record.is_a?(String)
+      return record.classify.constantize rescue nil
+    end
+
     if record.respond_to?(:class)
       record.class
     elsif record.respond_to?(:klass)
