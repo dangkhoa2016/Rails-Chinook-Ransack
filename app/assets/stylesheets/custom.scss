@@ -16,6 +16,13 @@
   animation: border-animation 1.5s infinite ease-in-out;
 }
 
+.rotate-icon {
+  border: none;
+  --bs-spinner-height: auto;
+  --bs-spinner-width: auto;
+  --bs-spinner-animation-speed: 3s;
+}
+
 @keyframes border-animation {
   0%, 100% {
       box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0); /* No shadow */

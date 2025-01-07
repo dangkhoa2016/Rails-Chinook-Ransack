@@ -15,12 +15,11 @@
       <%= link_to translate('actions.create_new'), new_polymorphic_path(controller_name.singularize), class: 'btn btn-primary' %>
     <% end %>
     <button class='btn btn-dark' type='button'
-      data-bs-toggle='offcanvas' data-bs-target='#display-settings'
+      data-bs-target='#display-settings' data-controller='offcanvas'
+      data-offcanvas-url-value='<%= display_settings_offcanvas_path(mode: display_mode, model: controller_name, sort: sort_column, direction: sort_direction) %>'
       aria-controls='display-settings'>
         <i class='bi bi-gear'></i>
         <span class='visually-hidden'><%= translate('base.display_settings') %></span>
     </button>
   </div>
 </div>
-
-<%= render 'shared/display_settings', mode: display_mode %>

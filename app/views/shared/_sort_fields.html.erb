@@ -1,4 +1,4 @@
-<% klass = get_model_class(controller_name) %>
+<% klass = get_model_class(@model) %>
 
 <div class='mt-2 sort-columns row row-cols-1 g-2'>
   <% display_columns(klass).each do |column| %>
