@@ -46,7 +46,7 @@
 
     <tbody>
       <% @employees.each do |employee| %>
-        <tr>
+        <tr id='<%= dom_id(employee) %>'>
           <td><%= link_to employee.first_name, employee %></td>
           <td><%= link_to employee.last_name, employee %></td>
 

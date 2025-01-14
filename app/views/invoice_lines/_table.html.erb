@@ -30,7 +30,7 @@
     </thead>
     <tbody>
       <% @invoice_lines.each do |invoice_line| %>
-        <tr>
+        <tr id='<%= dom_id(invoice_line) %>'>
           <td>
             <%= link_to invoice_line %>
           </td>

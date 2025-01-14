@@ -12,7 +12,7 @@
     <% if display_mode == 'table' %>
       <%= render "#{controller_name}/table" %>
     <% else %>
-      <div class='mb-4 row row-cols-1 row-cols-sm-2 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 g-4'>
+      <div class='card-list mb-4 row row-cols-1 row-cols-sm-2 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 g-4'>
         <% instance_variable_get("@#{controller_name}").each do |record| %>
           <div class='col'>
             <%= render record %>

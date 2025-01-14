@@ -49,7 +49,7 @@
 
     <tbody>
       <% @customers.each do |customer| %>
-        <tr>
+        <tr id='<%= dom_id(customer) %>'>
           <td><%= link_to customer.first_name, customer %></td>
           <td><%= link_to customer.last_name, customer %></td>
 

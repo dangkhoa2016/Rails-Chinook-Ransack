@@ -38,7 +38,7 @@
 
     <tbody>
       <% @invoices.each do |invoice| %>
-        <tr>
+        <tr id='<%= dom_id(invoice) %>'>
           <td><%= link_to invoice %></td>
           <td><%= link_to invoice.invoice_date, invoice %></td>
           

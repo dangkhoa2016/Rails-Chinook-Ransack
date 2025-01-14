@@ -1,0 +1,53 @@
+<%
+%>
+
+<div class='offcanvas offcanvas-end' tabindex='-1'
+  data-controller='bulk-actions' data-bulk-actions-root-model-value='<%= @model.pluralize %>'
+  id='bulk-actions' aria-labelledby='bulk-actions-label'>
+  <div class='offcanvas-header'>
+    <h5 class='offcanvas-title' id='bulk-actions-label'><%= translate('base.bulk_actions') %></h5>
+    <button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='<%= translate("actions.close") %>'></button>
+  </div>
+  <div class='offcanvas-body'>
+    <div class='mt-2'>
+      <h5><%= translate('base.checkboxes') %></h5>
+      <div class='form-check mb-2 form-switch' data-controller='form-switch'
+        data-true-text='<%= translate("base.display_checkboxes") %>'
+        data-false-text='<%= translate("base.hide_checkboxes") %>'>
+        <input class='form-check-input' type='checkbox' role='switch' id='display-checkboxes'>
+        <label class='form-check-label' role='button' for='display-checkboxes'><%= translate('base.display_checkboxes') %></label>
+      </div>
+
+      <div class='collapse' id='toggle-checkboxes'>
+        <div class=''>
+          <div class='btn-group'>
+            <button type='button' class='btn btn-info border-dashed'><%= translate('base.select_all_checkboxes') %></button>
+            <button type='button' class='btn btn-outline-danger'><%= translate('base.deselect_all_checkboxes') %></button>
+          </div>
+        </div>
+
+        <div class='mt-2'>
+          <div class='form-check form-switch' data-controller='form-switch'
+            data-false-text='<%= translate("base.do_not_clear_checkboxes_on_page_change") %>'
+            data-true-text='<%= translate("base.do_clear_checkboxes_on_page_change") %>'>
+            <input class='form-check-input' type='checkbox' checked='checked' role='switch' id='clear-checkboxes-on-page-change'>
+            <label class='form-check-label' role='button' for='clear-checkboxes-on-page-change'><%= translate('base.do_not_clear_checkboxes_on_page_change') %></label>
+          </div>
+        </div>
+        
+        <div class='alert alert-info mt-2 mb-0' role='alert'>
+          <strong>Selected items:</strong> <span role='button' id='selected-items-count-sidebar'>0</span>
+          <p class='mt-2 d-none mb-0'></p>
+        </div>
+      </div>
+    </div>
+
+    <div class='mt-4'>
+      <h5 class='d-block'><%= translate('base.actions') %></h5>
+      <div class='list-group'>
+        <a href='#' class='list-group-item list-group-item-action'><%= translate('base.bulk_delete') %></a>
+        <%= render "#{@model}/bulk_actions" rescue nil %>
+      </div>
+    </div>
+  </div>
+</div>

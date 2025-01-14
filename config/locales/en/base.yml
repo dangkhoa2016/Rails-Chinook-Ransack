@@ -76,6 +76,15 @@ en:
     sort_asc: Sort ascending
     sort_desc: Sort descending
     filter_placeholder: Filter...
+    bulk_actions: Bulk actions
+    checkboxes: Checkboxes
+    display_checkboxes: Display checkboxes
+    hide_checkboxes: Hide checkboxes
+    bulk_delete: Bulk delete
+    select_all_checkboxes: Select all
+    deselect_all_checkboxes: Deselect all
+    do_not_clear_checkboxes_on_page_change: Do not clear checkboxes on page change
+    do_clear_checkboxes_on_page_change: Clear checkboxes on page change
 
   actions:
     toggle_navigation: Toggle navigation

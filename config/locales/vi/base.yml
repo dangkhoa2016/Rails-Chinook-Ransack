@@ -76,6 +76,15 @@ vi:
     sort_asc: Sắp xếp tăng dần
     sort_desc: Sắp xếp giảm dần
     filter_placeholder: Lọc...
+    bulk_actions: Hành động hàng loạt
+    checkboxes: Các hộp chọn
+    display_checkboxes: Hiển thị các hộp chọn
+    hide_checkboxes: Ẩn các hộp chọn
+    bulk_delete: Xóa hàng loạt
+    select_all_checkboxes: Chọn tất cả
+    deselect_all_checkboxes: Bỏ chọn tất cả
+    do_not_clear_checkboxes_on_page_change: Không xóa các hộp chọn khi chuyển trang
+    do_clear_checkboxes_on_page_change: Xóa các hộp chọn khi chuyển trang
 
   actions:
     toggle_navigation: Đóng/mở điều hướng

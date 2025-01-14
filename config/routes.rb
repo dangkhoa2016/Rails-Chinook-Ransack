@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   resources :offcanvas, only: [], controller: 'tools/offcanvas' do
     collection do
       get :display_settings
+      get :bulk_actions
     end
   end
 

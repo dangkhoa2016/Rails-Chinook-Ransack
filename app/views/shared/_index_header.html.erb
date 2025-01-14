@@ -14,6 +14,13 @@
     <% if policy(controller_name.classify.constantize.new).create? %>
       <%= link_to translate('actions.create_new'), new_polymorphic_path(controller_name.singularize), class: 'btn btn-primary' %>
     <% end %>
+    <button class='btn btn-info' type='button'
+      data-bs-target='#bulk-actions' data-controller='offcanvas'
+      data-offcanvas-url-value='<%= bulk_actions_offcanvas_path(model: controller_name) %>'
+      aria-controls='bulk-actions'>
+        <i class='bi bi-lightning-fill'></i>
+        <span class='visually-hidden'><%= translate('base.bulk_actions') %></span>
+    </button>
     <button class='btn btn-dark' type='button'
       data-bs-target='#display-settings' data-controller='offcanvas'
       data-offcanvas-url-value='<%= display_settings_offcanvas_path(mode: display_mode, model: controller_name, sort: sort_column, direction: sort_direction) %>'

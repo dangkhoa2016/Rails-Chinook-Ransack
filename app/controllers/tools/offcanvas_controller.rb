@@ -5,5 +5,10 @@ module Tools
 			@model = params[:model].presence || ''
 			render partial: 'shared/display_settings', locals: { mode: mode }
 		end
+
+		def bulk_actions
+			@model = params[:model].presence || ''
+			render partial: 'shared/bulk_actions'
+		end
 	end
 end
