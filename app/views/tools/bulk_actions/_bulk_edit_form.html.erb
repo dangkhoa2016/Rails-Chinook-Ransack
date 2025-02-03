@@ -1,0 +1,30 @@
+<%
+  model_record = defined?(locals) ? locals[:record] : (defined?(record) ? record : nil)
+  klass = model_record&.class
+  columns = display_columns(klass)
+  display_fields = defined?(locals) ? locals[:fields] : (defined?(fields) ? fields : [])
+
+  if display_fields.present?
+    display_fields = display_fields.map do |field|
+      columns.find { |c| c[:field] == field }
+    end.compact
+  end
+
+  if display_fields.empty?
+    display_fields = columns
+  end
+%>
+
+<%= form_with(model: model_record) do |form| %>
+  <% display_fields.each do |column| %>
+    <%
+      is_association = false
+      unless column.is_a?(String)
+        is_association = (column[:type] == 'association')
+        column = column[:field]
+      end
+    %>
+
+    <%= render 'shared/form/form_field', form: form, record: model_record, column: column, is_association: is_association %>
+  <% end %>
+<% end %>

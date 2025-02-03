@@ -297,7 +297,7 @@ export default class extends Controller {
 
         this.startLoadingFilter(`[${valueObject.label}] template`);
         const target = encodeURIComponent(`${this.formSelector} > .filter-holder > .loading`);
-        const location = `/filters?template=${valueObject.value}&model=${this.modelValue}&target=${target}`;
+        const location = `/tools/filters?template=${valueObject.value}&model=${this.modelValue}&target=${target}`;
         Turbo.visit(location, {
           acceptsStreamResponse: true
         });

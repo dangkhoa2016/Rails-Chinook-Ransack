@@ -44,8 +44,24 @@
 
     <div class='mt-4'>
       <h5 class='d-block'><%= translate('base.actions') %></h5>
-      <div class='list-group'>
-        <a href='#' class='list-group-item list-group-item-action'><%= translate('base.bulk_delete') %></a>
+      <div class='list-group' data-bulk-actions-target='actionsList'>
+        <%= link_to '#', data: {
+            turbo_frame: 'modal_frame',
+            href: polymorphic_path([:new, :bulk_actions, @model.pluralize.to_sym, :bulk_destroy]),
+            modal_title: translate('base.bulk_delete'),
+          },
+          class: 'list-group-item list-group-item-action' do %>
+          <%= translate('base.bulk_delete') %>
+        <% end %>
+        <%= link_to '#', data: {
+            turbo_frame: 'modal_frame',
+            href: polymorphic_path([:new, :bulk_actions, @model.pluralize.to_sym, :bulk_edit]),
+            modal_title: translate('base.bulk_edit'),
+          },
+          class: 'list-group-item list-group-item-action' do %>
+          <%= translate('base.bulk_edit') %>
+        <% end %>
+
         <%= render "#{@model}/bulk_actions" rescue nil %>
       </div>
     </div>

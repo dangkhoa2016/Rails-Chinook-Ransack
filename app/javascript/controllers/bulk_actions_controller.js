@@ -5,7 +5,7 @@ export default class extends Controller {
   static values = {
     rootModel: String,
   };
-  static targets = ['checkboxes'];
+  static targets = ['checkboxes', 'actionsList'];
 
   get displayCheckboxesElement() {
     return this.element.querySelector('#display-checkboxes');
@@ -29,8 +29,43 @@ export default class extends Controller {
     return this.element.querySelector('#toggle-checkboxes');
   }
 
+  get modalControllers() {
+    return this.application.controllers.filter(controller => controller.identifier === 'modals');
+  }
+
 
   connect() {
+    this.initCheckboxesAction();
+    this.initBulkActions();
+  }
+
+  initBulkActions() {
+    if (!this.actionsListTarget)
+      return;
+
+    const buttons = this.actionsListTarget.querySelectorAll('.list-group-item-action');
+    buttons.forEach(button => {
+      button.addEventListener('click', this.handleBulkAction.bind(this));
+    });
+
+    // this.modalControllers
+  }
+
+  handleBulkAction(event) {
+    const href = event.target.getAttribute('data-href');
+    const ids = this.getSelectedIds();
+
+    let additionalParams = '';
+    if (ids.length === 0)
+      additionalParams = location.search;
+    else
+      additionalParams = '?picked_ids=' + ids.join(',');
+
+    event.target.setAttribute('href', href + additionalParams);
+    this.modalControllers[0].handleTurboClickEvent(event);
+  }
+
+  initCheckboxesAction() {
     if (this.additionActionsCollapseElement) {
       this.additionActionsCollapse = new bootstrap.Collapse(this.additionActionsCollapseElement, {
         toggle: false

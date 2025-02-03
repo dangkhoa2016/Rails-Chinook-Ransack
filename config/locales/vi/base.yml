@@ -81,6 +81,10 @@ vi:
     display_checkboxes: Hiển thị các hộp chọn
     hide_checkboxes: Ẩn các hộp chọn
     bulk_delete: Xóa hàng loạt
+    bulk_edit: Chỉnh sửa hàng loạt
+    playlist_bulk_add_tracks: Thêm bài hát vào các danh sách phát
+    playlist_bulk_remove_tracks: Xóa bài hát khỏi các danh sách phát
+    bulk_destroy_success: Xóa hàng loạt thành công
     select_all_checkboxes: Chọn tất cả
     deselect_all_checkboxes: Bỏ chọn tất cả
     do_not_clear_checkboxes_on_page_change: Không xóa các hộp chọn khi chuyển trang

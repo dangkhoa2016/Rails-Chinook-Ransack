@@ -1,0 +1,9 @@
+<%= link_to '#', data: { turbo_frame: 'modal_frame', href: new_bulk_actions_playlists_bulk_add_tracks_path },
+  class: 'list-group-item list-group-item-action' do %>
+  <%= translate('base.playlist_bulk_add_tracks') %>
+<% end %>
+
+<%= link_to '#', data: { turbo_frame: 'modal_frame', href: new_bulk_actions_playlists_bulk_remove_tracks_path },
+  class: 'list-group-item list-group-item-action' do %>
+  <%= translate('base.playlist_bulk_remove_tracks') %>
+<% end %>

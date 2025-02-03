@@ -1,0 +1,24 @@
+<h3>Bulk edit albums</h3>
+
+<p><%= @records.pluck('id').join(', ') %></p>
+
+<%= form_tag bulk_actions_albums_bulk_edit_index_path, method: :post do %>
+  <%= hidden_field_tag :picked_ids, @records.pluck('id').join(',') %>
+
+  <div class='' data-controller='choices'>
+    <%= select_tag 'fields', options_for_select(@fields),
+      class: 'form-control', multiple: true,
+      data: {
+        choices_target: 'select',
+        placeholder: 'Select fields to edit'
+      }, name: ''
+    %>
+  </div>
+
+  <div data-controller='bulk-edit' data-bulk-edit-model-value='albums'>
+    <button class='btn btn-primary' data-action='bulk-edit#addFields'>Add fields</button>
+    <div id='fields-container' class='row g-3 row-cols-1 row-cols-md-2'></div>
+  </div>
+
+  <%= submit_tag 'Update selected albums' %>
+<% end %>

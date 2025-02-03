@@ -20,3 +20,30 @@ test url:
 /albums?number_of_tracks_between=5%2C10
 
 /invoice_lines?invoice_ids=5%2C12&created_at_between=2024-01-01%2C2024-12-31&ids=29%2C229%2C28%2C280&customer_ids=1%2C2%2C3&by_customer_name=leon
+
+
+rails g controller bulk_actions/albums/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/albums/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/artists/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/artists/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/customers/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/customers/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/employees/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/employees/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/genres/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/genres/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/invoice_lines/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/invoice_lines/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/invoices/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/invoices/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/media_types/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/media_types/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/playlist_tracks/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/playlist_tracks/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/playlists/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/playlists/bulk_edit --no-assets --no-helper
+rails g controller bulk_actions/tracks/bulk_destroy --no-assets --no-helper
+rails g controller bulk_actions/tracks/bulk_edit --no-assets --no-helper
+
+/bulk_actions/albums/bulk_destroy/new
+/bulk_actions/albums/bulk_edit/new

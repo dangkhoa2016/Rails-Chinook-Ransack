@@ -1,0 +1,9 @@
+<h3>Bulk destroy albums</h3>
+
+<p>Are you sure you want to destroy the following albums?</p>
+<p><%= @records.pluck('id').join(', ') %></p>
+
+<%= form_tag bulk_actions_albums_bulk_destroy_index_path, method: :post do %>
+  <%= hidden_field_tag :picked_ids, @records.pluck('id').join(',') %>
+  <%= submit_tag 'Destroy selected albums' %>
+<% end %>

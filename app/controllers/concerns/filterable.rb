@@ -2,7 +2,12 @@ module Filterable
   extend ActiveSupport::Concern
 
   included do
-    before_action :load_filters, only: [:index]
+    before_action do |controller|
+      if controller.class.name.start_with?('BulkActions::') && controller.action_name == 'new' ||
+          controller.respond_to?(:index)
+        load_filters
+      end
+    end
     
     def render_index(mode = 'card')
       if request.query_parameters['partial_only'] == 'true'
@@ -15,7 +20,12 @@ module Filterable
   end
 
   def filter_service
-    "Search::#{controller_name.classify}".constantize rescue nil
+    name = controller_name
+    if params[:controller].start_with?('bulk_actions')
+      name = params[:controller].split('/').second
+    end
+
+    "Search::#{name.classify}".constantize rescue nil
   end
 
   def load_filters

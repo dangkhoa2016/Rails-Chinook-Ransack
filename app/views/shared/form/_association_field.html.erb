@@ -4,11 +4,14 @@
   if model_record
     value = model_record.send(model_column)
     klass = model_record.class
-    select_name = "#{klass.model_name.element}_#{model_column}"
+    select_name = "#{klass.model_name.element}[#{model_column}_id]"
+    association_klass = klass.reflect_on_association(model_column).klass
   end
 %>
 
-<% if klass.present? && model_column.present? %>
+<% if association_klass.present? && model_column.present? %>
+<%= form.label column, class: 'form-label' %>
+
 <div class=''
   data-controller='choices-remote-data'
   data-choices-remote-data-load-data-on-start-value='false'
@@ -17,7 +20,7 @@
     class: 'form-control', multiple: false,
     data: {
       choices_remote_data_target: 'select',
-      placeholder: translate('placeholders.select', model: klass.model_name.human.downcase)
+      placeholder: translate('placeholders.select', model: association_klass.model_name.human.downcase)
     }
   %>
 </div>

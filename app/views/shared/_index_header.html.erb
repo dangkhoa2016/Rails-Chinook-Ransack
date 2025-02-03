@@ -16,14 +16,14 @@
     <% end %>
     <button class='btn btn-info' type='button'
       data-bs-target='#bulk-actions' data-controller='offcanvas'
-      data-offcanvas-url-value='<%= bulk_actions_offcanvas_path(model: controller_name) %>'
+      data-offcanvas-url-value='<%= bulk_actions_tools_offcanvas_path(model: controller_name) %>'
       aria-controls='bulk-actions'>
         <i class='bi bi-lightning-fill'></i>
         <span class='visually-hidden'><%= translate('base.bulk_actions') %></span>
     </button>
     <button class='btn btn-dark' type='button'
       data-bs-target='#display-settings' data-controller='offcanvas'
-      data-offcanvas-url-value='<%= display_settings_offcanvas_path(mode: display_mode, model: controller_name, sort: sort_column, direction: sort_direction) %>'
+      data-offcanvas-url-value='<%= display_settings_tools_offcanvas_path(mode: display_mode, model: controller_name, sort: sort_column, direction: sort_direction) %>'
       aria-controls='display-settings'>
         <i class='bi bi-gear'></i>
         <span class='visually-hidden'><%= translate('base.display_settings') %></span>
