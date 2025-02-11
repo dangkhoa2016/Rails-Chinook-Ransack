@@ -15,7 +15,7 @@
 <%= render 'shared/filter_card', id: id, name: name, template: template do %>
   <div class=''
     data-controller='choices-remote-data'
-    data-choices-remote-data-load-data-on-init-value='false'
+    data-choices-remote-data-load-data-on-start-value='false'
     data-choices-remote-data-fetch-url-value='<%= filter_props[:filter_url] %>'>
     <%= label_tag name, translate(label), class: 'form-label' %>
     <%= select_tag name, options_for_select(filter_props[:collection] || [], value),

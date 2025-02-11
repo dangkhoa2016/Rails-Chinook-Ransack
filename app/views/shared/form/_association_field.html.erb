@@ -11,7 +11,7 @@
 <% if klass.present? && model_column.present? %>
 <div class=''
   data-controller='choices-remote-data'
-  data-choices-remote-data-load-data-on-init-value='false'
+  data-choices-remote-data-load-data-on-start-value='false'
   data-choices-remote-data-fetch-url-value='<%= get_index_url_for_model(model_column, format: :json) %>'>
   <%= select_tag select_name, options_for_select([[value.to_s, value]], value),
     class: 'form-control', multiple: false,

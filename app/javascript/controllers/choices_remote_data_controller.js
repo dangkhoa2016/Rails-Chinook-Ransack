@@ -8,8 +8,9 @@ export default class extends Controller {
     fetchUrl: String,
     itemsPerPage: { type: Number, default: 10 },
     minSearchLength: { type: Number, default: 1 },
-    loadDataOnInit: { type: Boolean, default: true },
+    loadDataOnStart: { type: Boolean, default: true },
     disabled: { type: Boolean, default: false },
+    searchHintClass: String,
   };
 
   // Initialize internal state variables
@@ -18,12 +19,16 @@ export default class extends Controller {
   hasMoreData = true;
   triggerSearch = false;
   keyword = '';
+  previousKeyword = '';
   choices = null;
   cacheSearchHintElement = null;
+  searchHintClass = null;
 
   connect() {
-    // console.log('ChoicesRemoteDataController connected', this, this.element);
+    console.log('ChoicesRemoteDataController connected', this, this.element);
 
+    this.searchHintClass = this.searchHintClassValue || 'search-hint';
+    this.searchHintText = `Enter at least ${this.minSearchLengthValue} character(s)`;
     this.fetchDataFromServer = this.fetchDataFromServer.bind(this);
     this.initializeChoices();
   }
@@ -48,10 +53,14 @@ export default class extends Controller {
           this.hasMoreData = false;
 
         this.isLoading = false;
+        this.triggerSearch = false;
+        this.previousKeyword = this.keyword;
+        const currentSelectedValues = this.choices?.getValue(true) || [];
 
         return data.map(item => ({
           value: item.value,
           label: item.label,
+          disabled: currentSelectedValues.includes(item.value),
         }));
       })
       .catch(error => {
@@ -65,7 +74,7 @@ export default class extends Controller {
     // console.log('fetchUrlValueChanged', this.fetchUrlValue, newVal, oldVal);
 
     if (newVal) {
-      this.triggerSearch = true;
+    this.triggerSearch = true;
       this.hasMoreData = true;
     } else {
       this.triggerSearch = false;
@@ -73,10 +82,10 @@ export default class extends Controller {
     }
 
     this.currentPage = 1;
+    this.keyword = '';
     this.clearSelection(true);
   }
 
-  
   enableSelect() {
     if (this.choices)
       this.choices.enable();
@@ -96,19 +105,16 @@ export default class extends Controller {
 
   clearSelection(clearOptions = false) {
     if (this.choices) {
-      // const values = [].concat(this.choices.getValue(true));
-      // console.log('clearSelection', values, this.choices);
-      // values.forEach(value => {
-      //   this.choices.removeChoice(value);
-      // });
-      this.choices.removeActiveItems();
-
+      const values = [].concat(this.choices.getValue(true));
+      values.forEach(value => {
+        this.choices.removeChoice(value);
+      });
       if (clearOptions)
         this.clearAllOptions();
     }
   }
 
-  // Initialize Choices.js
+  // Initialize the Choices.js select element and bind event listeners
   initializeChoices() {
     if (this.choices) return;
 
@@ -134,9 +140,9 @@ export default class extends Controller {
           return;
         }
 
-        if (controller.loadDataOnInitValue && controller.fetchUrlValue) {
+        if (controller.loadDataOnStartValue && controller.fetchUrlValue) {
           controller.triggerSearch = false;
-          this.setChoices(controller.fetchDataFromServer, 'value', 'label', false);
+          this.setChoices(controller.fetchDataFromServer, 'value', 'label', true);
         }
         else if (controller.fetchUrlValue)
           controller.triggerSearch = true;
@@ -146,21 +152,34 @@ export default class extends Controller {
 
   // Add search hint option to the select element
   addSearchHintOptionToElement(element) {
-    if (!element) return;
+    if (!element)
+      return;
 
     const searchHintOption = document.createElement('option');
-    searchHintOption.classList.add('search-hint');
-    searchHintOption.innerText = `Enter more than ${this.minSearchLengthValue} character(s)`;
-    searchHintOption.setAttribute('data-label-class', 'search-hint');
+    searchHintOption.classList.add(this.searchHintClass);
+    searchHintOption.innerText = this.searchHintText;
+    searchHintOption.setAttribute('data-label-class', this.searchHintClass);
     searchHintOption.setAttribute('disabled', 'disabled');
     element.appendChild(searchHintOption);
   }
 
-  // Handle search functionality
+  // Handle the search functionality
   handleSearchInput(event) {
     this.keyword = event.target.value;
     if (this.keyword.length === 0) {
+      // check if user press backspace key or delete key
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        // console.log('backspace or delete key pressed', event.keyCode);
+        if (this.previousKeyword) {
+          this.previousKeyword = '';
+        }
+        else {
+          return;
+        }
+      }
+
       this.hideSearchHintMessage();
+
       this.currentPage = 1;
       this.hasMoreData = true;
       this.triggerSearch = false;
@@ -168,9 +187,9 @@ export default class extends Controller {
       return;
     }
 
-    if (this.keyword.length <= this.minSearchLengthValue) {
+    if (this.keyword.length < this.minSearchLengthValue) {
       this.toggleSelectableItemsVisibility('none');
-      this.displaySearchHint(`Enter more than ${this.minSearchLengthValue} characters`);
+      this.displaySearchHint(this.searchHintText);
       return;
     }
 
@@ -181,7 +200,8 @@ export default class extends Controller {
   }
 
   handleKeyUpInput = (event) => {
-    if (this.handleKeyUpInput.timeout) clearTimeout(this.handleKeyUpInput.timeout);
+    if (this.handleKeyUpInput.timeout)
+      clearTimeout(this.handleKeyUpInput.timeout);
 
     this.handleKeyUpInput.timeout = setTimeout(() => {
       this.handleSearchInput(event);
@@ -191,14 +211,28 @@ export default class extends Controller {
   // Initialize choices callback to handle scroll and search hint
   initializeChoicesCallback(choicesInstance) {
     choicesInstance.choiceList.element.addEventListener('scroll', this.checkIfDropdownScrolledToBottom.bind(this));
+
     choicesInstance.passedElement.element.addEventListener('hideDropdown', () => {
       choicesInstance.choiceList.scrollToTop();
+    });
+
+    choicesInstance.passedElement.element.addEventListener('removeItem', (ev) => {
+      // this.choices.refresh();
+      var removedItemIndex = this.choices._store._state.choices.findIndex(item => item.value === ev.detail.value);
+      if (removedItemIndex === -1)
+        return;
+
+      this.choices._store._state.choices[removedItemIndex].disabled = false;
+      if (this.choices._store._state.choices[removedItemIndex].choiceEl) {
+        this.choices._store._state.choices[removedItemIndex].choiceEl.remove();
+        delete this.choices._store._state.choices[removedItemIndex].choiceEl;
+      }
     });
 
     choicesInstance.passedElement.element.addEventListener('change', () => {
       if (this.keyword) {
         this.currentPage = 1;
-        this.keyword = null;
+        this.keyword = this.choices.input.element.value;
         this.triggerSearch = true;
         this.hasMoreData = true;
       }
@@ -211,6 +245,9 @@ export default class extends Controller {
     });
 
     choicesInstance.passedElement.element.addEventListener('showDropdown', () => {
+      if (this.keyword.length > 0 && this.keyword.length < this.minSearchLengthValue)
+        return;
+
       if (this.triggerSearch) {
         this.triggerSearch = false;
         this.loadOptionItemsWithSearchHint();
@@ -220,14 +257,14 @@ export default class extends Controller {
     choicesInstance.input.element.addEventListener('keyup', this.handleKeyUpInput);
 
     this.choices = choicesInstance;
-    const searchHintOption = choicesInstance._store.state.choices.find(item => item.labelClass?.includes('search-hint'));
-    if (searchHintOption)
-      this.cacheSearchHintElement = searchHintOption.choiceEl;
+    this.cacheSearchHintElement = choicesInstance._store.state.choices.find(item => item.labelClass?.includes(this.searchHintClass)).choiceEl;
   }
 
-  // Check if dropdown is scrolled to the bottom and load more data
+  // Check if the dropdown is scrolled to the bottom and load more data
   checkIfDropdownScrolledToBottom() {
-    if (!this.hasMoreData) return;
+    if (!this.hasMoreData) {
+      return;
+    }
 
     const scrollableElement = this.choices.choiceList.element;
     const scrollPosition = (scrollableElement.scrollHeight - scrollableElement.scrollTop - scrollableElement.clientHeight);
@@ -235,49 +272,62 @@ export default class extends Controller {
     if (bottomOfDropdown && !this.isLoading) {
       this.isLoading = true;
       this.currentPage++;
-      this.choices.setChoices(this.fetchDataFromServer, 'value', 'label', false);
+
+      this.choices.setChoices(this.fetchDataFromServer, 'value', 'label', false).then(() => {
+        this.choices.input.element.focus();
+      });
     }
   }
 
-  // Display search hint
+  // Show the search hint message
   displaySearchHint(message) {
-    let hintElement = this.choices.choiceList.element.querySelector(`[data-label-class='search-hint']`);
+    let hintElement = this.choices.choiceList.element.querySelector(`[data-label-class='${this.searchHintClass}']`);
     if (!hintElement) {
       this.choices.choiceList.element.children[0].style.display = 'none';
       this.choices.choiceList.element.appendChild(this.cacheSearchHintElement);
-      hintElement = this.choices.choiceList.element.querySelector(`[data-label-class='search-hint']`);
+      hintElement = this.choices.choiceList.element.querySelector(`[data-label-class='${this.searchHintClass}']`);
     }
 
-    const hintText = hintElement.querySelector('.search-hint');
+    const hintText = hintElement.querySelector(`.${this.searchHintClass}`);
     hintElement.style.display = 'block';
     hintText.innerText = message;
+    hintText.style.display = 'block';
   }
 
-  // Hide search hint message
+  // Hide the search hint message
   hideSearchHintMessage() {
-    const hintElement = this.choices.choiceList.element.querySelector(`[data-label-class='search-hint']`);
-    if (hintElement) hintElement.style.display = 'none';
+    const hintElement = this.choices.choiceList.element.querySelector(`[data-label-class='${this.searchHintClass}']`);
+    if (hintElement)
+      hintElement.style.display = 'none';
   }
 
-  // Toggle visibility of selectable items
+  // Toggle the visibility of selectable items
   toggleSelectableItemsVisibility(displayStyle) {
-    const items = this.choices.choiceList.element.querySelectorAll('[data-choice-selectable]');
-    if (!items) return;
+    const items = this.choices.choiceList.element.querySelectorAll(`:not([data-label-class='${this.searchHintClass}']`);
+    if (!items)
+      return;
 
     items.forEach(item => {
       item.style.display = displayStyle;
     });
   }
 
-  // Load option items with search hint
+  // Load option items with search hint in the dropdown
   loadOptionItemsWithSearchHint(displaySearchHint = false) {
-    this.choices._store._state.choices = this.choices._store._state.choices.filter(item => item.labelClass?.includes('search-hint'));
-    this.choices.passedElement.element.querySelectorAll(`:not([data-label-class='search-hint'],[selected])`).forEach(item => item.remove());
+    this.choices._store._state.choices = this.choices._store._state.choices.filter(item => item.labelClass?.includes(this.searchHintClass));
+    this.choices.passedElement.element.querySelectorAll(`:not([data-label-class='${this.searchHintClass}'],[selected])`).forEach(item => item.remove());
     this.toggleSelectableItemsVisibility('none');
-    this.displaySearchHint(displaySearchHint ? `Searching for "${this.keyword}"...` : 'Loading...');
+    setTimeout(() => {
+      this.displaySearchHint(displaySearchHint ? `Searching for "${this.keyword}"...` : 'Loading...');
+    }, 0);
 
-    this.choices.setChoices(this.fetchDataFromServer, 'value', 'label', false).then(() => {
+    this.choices.setChoices(this.fetchDataFromServer, 'value', 'label', displaySearchHint ? false : true).then(() => {
       this.hideSearchHintMessage();
+      if (displaySearchHint && this.choices._isSelectMultipleElement) {
+        this.choices.itemList.element.replaceChildren('');
+        this.choices._render();
+      }
+      this.choices.input.element.focus();
     });
   }
 }

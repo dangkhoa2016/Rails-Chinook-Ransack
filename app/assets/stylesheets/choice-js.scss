@@ -261,7 +261,7 @@ $choices-z-index: 1 !default;
   }
 
   .is-flipped & {
-    top: auto;
+    top: auto !important;
     @extend .bottom-100, .mt-0;
     margin-bottom: -1px;
     border-radius: var(--bs-border-radius-sm) var(--bs-border-radius-sm) 0 0;
@@ -390,3 +390,7 @@ $choices-z-index: 1 !default;
 }
 
 /* =====  End of Choices  ====== */
+
+[data-label-class='search-hint'] {
+  display: none;
+}
