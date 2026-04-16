@@ -1,9 +1,15 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+black_album:
+  title: Black Album
+  artist: metallica
 
-one:
-  title: MyString
-  artist: one
+master_of_puppets:
+  title: Master of Puppets
+  artist: metallica
 
-two:
-  title: MyString
-  artist: two
+led_zeppelin_iv:
+  title: Led Zeppelin IV
+  artist: led_zeppelin
+
+back_in_black:
+  title: Back in Black
+  artist: ac_dc

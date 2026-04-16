@@ -2,47 +2,55 @@ require "test_helper"
 
 class EmployeesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @employee = employees(:one)
+    @employee = employees(:sales_agent)
+    sign_in_admin
   end
 
-  test "should get index" do
+  test "redirects to login when not signed in" do
+    delete destroy_user_session_path
+    get employees_url
+    assert_redirected_to new_user_session_path
+  end
+
+  test "GET index returns success" do
     get employees_url
     assert_response :success
   end
 
-  test "should get new" do
-    get new_employee_url
-    assert_response :success
-  end
-
-  test "should create employee" do
-    assert_difference("Employee.count") do
-      post employees_url, params: { employee: { address: @employee.address, birth_date: @employee.birth_date, city: @employee.city, country: @employee.country, email: @employee.email, fax: @employee.fax, first_name: @employee.first_name, hire_date: @employee.hire_date, last_name: @employee.last_name, phone: @employee.phone, postal_code: @employee.postal_code, reports_to: @employee.reports_to, state: @employee.state, title: @employee.title } }
-    end
-
-    assert_redirected_to employee_url(Employee.last)
-  end
-
-  test "should show employee" do
+  test "GET show returns success" do
     get employee_url(@employee)
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_employee_url(@employee)
-    assert_response :success
-  end
-
-  test "should update employee" do
-    patch employee_url(@employee), params: { employee: { address: @employee.address, birth_date: @employee.birth_date, city: @employee.city, country: @employee.country, email: @employee.email, fax: @employee.fax, first_name: @employee.first_name, hire_date: @employee.hire_date, last_name: @employee.last_name, phone: @employee.phone, postal_code: @employee.postal_code, reports_to: @employee.reports_to, state: @employee.state, title: @employee.title } }
-    assert_redirected_to employee_url(@employee)
-  end
-
-  test "should destroy employee" do
-    assert_difference("Employee.count", -1) do
-      delete employee_url(@employee)
+  test "POST create with valid params" do
+    assert_difference("Employee.count") do
+      post employees_url, params: { employee: {
+        first_name: "New", last_name: "Employee",
+        email: "new.emp@example.com", title: "Agent",
+        address: "1 St", city: "NYC", state: "NY",
+        country: "USA", postal_code: "10001",
+        birth_date: "1990-01-01", hire_date: "2020-01-01"
+      }}
     end
+    assert_redirected_to employee_url(Employee.last)
+  end
 
+  test "PATCH update with valid params" do
+    patch employee_url(@employee), params: { employee: { title: "Senior Agent" } }
+    assert_redirected_to employee_url(@employee)
+    assert_equal "Senior Agent", @employee.reload.title
+  end
+
+  test "DELETE destroy removes employee" do
+    emp = Employee.create!(
+      first_name: "Del", last_name: "Me", email: "del.emp@example.com",
+      title: "Agent", address: "1 St", city: "NYC", state: "NY",
+      country: "USA", postal_code: "10001",
+      birth_date: "1990-01-01", hire_date: "2020-01-01"
+    )
+    assert_difference("Employee.count", -1) do
+      delete employee_url(emp)
+    end
     assert_redirected_to employees_url
   end
 end

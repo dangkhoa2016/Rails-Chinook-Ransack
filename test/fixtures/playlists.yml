@@ -1,7 +1,8 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+rock_classics:
+  name: Rock Classics
 
-one:
-  name: MyString
+metal_hits:
+  name: Metal Hits
 
-two:
-  name: MyString
+empty_playlist:
+  name: Empty Playlist

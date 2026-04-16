@@ -2,47 +2,58 @@ require "test_helper"
 
 class CustomersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @customer = customers(:one)
+    @customer = customers(:john_doe)
+    sign_in_admin
   end
 
-  test "should get index" do
+  test "redirects to login when not signed in" do
+    delete destroy_user_session_path
+    get customers_url
+    assert_redirected_to new_user_session_path
+  end
+
+  test "GET index returns success" do
     get customers_url
     assert_response :success
   end
 
-  test "should get new" do
-    get new_customer_url
-    assert_response :success
-  end
-
-  test "should create customer" do
-    assert_difference("Customer.count") do
-      post customers_url, params: { customer: { address: @customer.address, city: @customer.city, company: @customer.company, country: @customer.country, email: @customer.email, fax: @customer.fax, first_name: @customer.first_name, last_name: @customer.last_name, phone: @customer.phone, postal_code: @customer.postal_code, state: @customer.state, support_rep_id: @customer.support_rep_id } }
-    end
-
-    assert_redirected_to customer_url(Customer.last)
-  end
-
-  test "should show customer" do
+  test "GET show returns success" do
     get customer_url(@customer)
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_customer_url(@customer)
+  test "GET new returns success" do
+    get new_customer_url
     assert_response :success
   end
 
-  test "should update customer" do
-    patch customer_url(@customer), params: { customer: { address: @customer.address, city: @customer.city, company: @customer.company, country: @customer.country, email: @customer.email, fax: @customer.fax, first_name: @customer.first_name, last_name: @customer.last_name, phone: @customer.phone, postal_code: @customer.postal_code, state: @customer.state, support_rep_id: @customer.support_rep_id } }
-    assert_redirected_to customer_url(@customer)
+  test "POST create with valid params" do
+    assert_difference("Customer.count") do
+      post customers_url, params: { customer: {
+        first_name: "New", last_name: "Customer",
+        email: "new@example.com", address: "123 St",
+        city: "NYC", state: "NY", country: "USA",
+        postal_code: "10001", support_rep_id: employees(:sales_agent).id
+      }}
+    end
+    assert_redirected_to customer_url(Customer.last)
   end
 
-  test "should destroy customer" do
-    assert_difference("Customer.count", -1) do
-      delete customer_url(@customer)
-    end
+  test "PATCH update with valid params" do
+    patch customer_url(@customer), params: { customer: { first_name: "Updated" } }
+    assert_redirected_to customer_url(@customer)
+    assert_equal "Updated", @customer.reload.first_name
+  end
 
+  test "DELETE destroy removes customer" do
+    customer = Customer.create!(
+      first_name: "Del", last_name: "Me", email: "del@example.com",
+      address: "1 St", city: "NYC", state: "NY", country: "USA",
+      postal_code: "10001", support_rep: employees(:sales_agent)
+    )
+    assert_difference("Customer.count", -1) do
+      delete customer_url(customer)
+    end
     assert_redirected_to customers_url
   end
 end

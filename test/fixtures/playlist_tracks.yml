@@ -1,9 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+pt_enter_sandman:
+  playlist: metal_hits
+  track: enter_sandman
 
-one:
-  playlist: one
-  track: one
+pt_nothing_else:
+  playlist: metal_hits
+  track: nothing_else_matters
 
-two:
-  playlist: two
-  track: two
+pt_stairway:
+  playlist: rock_classics
+  track: stairway_to_heaven

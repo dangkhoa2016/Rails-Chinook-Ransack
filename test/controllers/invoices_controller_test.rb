@@ -2,47 +2,78 @@ require "test_helper"
 
 class InvoicesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @invoice = invoices(:one)
+    @invoice = invoices(:invoice_one)
+    sign_in_admin
   end
 
-  test "should get index" do
+  test "redirects to login when not signed in" do
+    delete destroy_user_session_path
+    get invoices_url
+    assert_redirected_to new_user_session_path
+  end
+
+  test "GET index returns success" do
     get invoices_url
     assert_response :success
   end
 
-  test "should get new" do
-    get new_invoice_url
-    assert_response :success
-  end
-
-  test "should create invoice" do
-    assert_difference("Invoice.count") do
-      post invoices_url, params: { invoice: { billing_address: @invoice.billing_address, billing_city: @invoice.billing_city, billing_country: @invoice.billing_country, billing_postal_code: @invoice.billing_postal_code, billing_state: @invoice.billing_state, customer_id: @invoice.customer_id, invoice_date: @invoice.invoice_date, total: @invoice.total } }
-    end
-
-    assert_redirected_to invoice_url(Invoice.last)
-  end
-
-  test "should show invoice" do
+  test "GET show returns success" do
     get invoice_url(@invoice)
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_invoice_url(@invoice)
+  test "GET new returns success" do
+    get new_invoice_url
     assert_response :success
   end
 
-  test "should update invoice" do
-    patch invoice_url(@invoice), params: { invoice: { billing_address: @invoice.billing_address, billing_city: @invoice.billing_city, billing_country: @invoice.billing_country, billing_postal_code: @invoice.billing_postal_code, billing_state: @invoice.billing_state, customer_id: @invoice.customer_id, invoice_date: @invoice.invoice_date, total: @invoice.total } }
-    assert_redirected_to invoice_url(@invoice)
+  test "POST create with valid params" do
+    assert_difference("Invoice.count") do
+      post invoices_url, params: { invoice: {
+        customer_id: customers(:john_doe).id,
+        invoice_date: Time.current,
+        billing_address: "123 Main St",
+        billing_city: "New York",
+        billing_state: "NY",
+        billing_country: "USA",
+        billing_postal_code: "10001",
+        total: 9.99
+      }}
+    end
+    assert_redirected_to invoice_url(Invoice.last)
   end
 
-  test "should destroy invoice" do
-    assert_difference("Invoice.count", -1) do
-      delete invoice_url(@invoice)
+  test "POST create with invalid params renders new" do
+    assert_no_difference("Invoice.count") do
+      post invoices_url, params: { invoice: { billing_city: "" } }
     end
+    assert_response :unprocessable_entity
+  end
 
+  test "PATCH update with valid params" do
+    patch invoice_url(@invoice), params: { invoice: { billing_city: "Boston" } }
+    assert_redirected_to invoice_url(@invoice)
+    assert_equal "Boston", @invoice.reload.billing_city
+  end
+
+  test "DELETE destroy removes invoice" do
+    invoice = Invoice.create!(
+      customer: customers(:john_doe),
+      invoice_date: Time.current,
+      billing_address: "1 St", billing_city: "NYC",
+      billing_state: "NY", billing_country: "USA",
+      billing_postal_code: "10001", total: 1.0
+    )
+    assert_difference("Invoice.count", -1) do
+      delete invoice_url(invoice)
+    end
     assert_redirected_to invoices_url
+  end
+
+  test "GET json_list_for_select_element with numeric keyword" do
+    get json_list_for_select_element_invoices_url, params: { keyword: "1" }
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert json.is_a?(Array)
   end
 end

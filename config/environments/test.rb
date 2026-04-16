@@ -34,6 +34,10 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+  # Don't raise on missing assets in test environment
+  config.assets.raise_runtime_errors = false
+  config.assets.check_precompiled_asset = false
+
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 

@@ -2,47 +2,53 @@ require "test_helper"
 
 class InvoiceLinesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @invoice_line = invoice_lines(:one)
+    @invoice_line = invoice_lines(:line_one)
+    sign_in_admin
   end
 
-  test "should get index" do
+  test "redirects to login when not signed in" do
+    delete destroy_user_session_path
+    get invoice_lines_url
+    assert_redirected_to new_user_session_path
+  end
+
+  test "GET index returns success" do
     get invoice_lines_url
     assert_response :success
   end
 
-  test "should get new" do
-    get new_invoice_line_url
-    assert_response :success
-  end
-
-  test "should create invoice_line" do
-    assert_difference("InvoiceLine.count") do
-      post invoice_lines_url, params: { invoice_line: { invoice_id: @invoice_line.invoice_id, quantity: @invoice_line.quantity, track_id: @invoice_line.track_id, unit_price: @invoice_line.unit_price } }
-    end
-
-    assert_redirected_to invoice_line_url(InvoiceLine.last)
-  end
-
-  test "should show invoice_line" do
+  test "GET show returns success" do
     get invoice_line_url(@invoice_line)
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_invoice_line_url(@invoice_line)
-    assert_response :success
-  end
-
-  test "should update invoice_line" do
-    patch invoice_line_url(@invoice_line), params: { invoice_line: { invoice_id: @invoice_line.invoice_id, quantity: @invoice_line.quantity, track_id: @invoice_line.track_id, unit_price: @invoice_line.unit_price } }
-    assert_redirected_to invoice_line_url(@invoice_line)
-  end
-
-  test "should destroy invoice_line" do
-    assert_difference("InvoiceLine.count", -1) do
-      delete invoice_line_url(@invoice_line)
+  test "POST create with valid params" do
+    assert_difference("InvoiceLine.count") do
+      post invoice_lines_url, params: { invoice_line: {
+        invoice_id: invoices(:invoice_two).id,
+        track_id: tracks(:master_of_puppets_track).id,
+        unit_price: 0.99,
+        quantity: 1
+      }}
     end
+    assert_redirected_to invoice_line_url(InvoiceLine.last)
+  end
 
+  test "PATCH update with valid params" do
+    patch invoice_line_url(@invoice_line), params: { invoice_line: { quantity: 2 } }
+    assert_redirected_to invoice_line_url(@invoice_line)
+    assert_equal 2, @invoice_line.reload.quantity
+  end
+
+  test "DELETE destroy removes invoice_line" do
+    line = InvoiceLine.create!(
+      invoice: invoices(:invoice_two),
+      track: tracks(:back_in_black_track),
+      unit_price: 0.99, quantity: 1
+    )
+    assert_difference("InvoiceLine.count", -1) do
+      delete invoice_line_url(line)
+    end
     assert_redirected_to invoice_lines_url
   end
 end

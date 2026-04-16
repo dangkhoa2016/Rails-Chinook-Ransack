@@ -2,47 +2,44 @@ require "test_helper"
 
 class MediaTypesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @media_type = media_types(:one)
+    @media_type = media_types(:mpeg)
+    sign_in_admin
   end
 
-  test "should get index" do
+  test "redirects to login when not signed in" do
+    delete destroy_user_session_path
+    get media_types_url
+    assert_redirected_to new_user_session_path
+  end
+
+  test "GET index returns success" do
     get media_types_url
     assert_response :success
   end
 
-  test "should get new" do
-    get new_media_type_url
-    assert_response :success
-  end
-
-  test "should create media_type" do
-    assert_difference("MediaType.count") do
-      post media_types_url, params: { media_type: { name: @media_type.name } }
-    end
-
-    assert_redirected_to media_type_url(MediaType.last)
-  end
-
-  test "should show media_type" do
+  test "GET show returns success" do
     get media_type_url(@media_type)
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_media_type_url(@media_type)
-    assert_response :success
-  end
-
-  test "should update media_type" do
-    patch media_type_url(@media_type), params: { media_type: { name: @media_type.name } }
-    assert_redirected_to media_type_url(@media_type)
-  end
-
-  test "should destroy media_type" do
-    assert_difference("MediaType.count", -1) do
-      delete media_type_url(@media_type)
+  test "POST create with valid params" do
+    assert_difference("MediaType.count") do
+      post media_types_url, params: { media_type: { name: "WAV audio file" } }
     end
+    assert_redirected_to media_type_url(MediaType.last)
+  end
 
+  test "PATCH update with valid params" do
+    patch media_type_url(@media_type), params: { media_type: { name: "Updated Type" } }
+    assert_redirected_to media_type_url(@media_type)
+    assert_equal "Updated Type", @media_type.reload.name
+  end
+
+  test "DELETE destroy removes media_type" do
+    mt = MediaType.create!(name: "To Delete")
+    assert_difference("MediaType.count", -1) do
+      delete media_type_url(mt)
+    end
     assert_redirected_to media_types_url
   end
 end

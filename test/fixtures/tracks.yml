@@ -1,21 +1,49 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+enter_sandman:
+  name: Enter Sandman
+  album: black_album
+  media_type: mpeg
+  genre: metal
+  composer: Metallica
+  milliseconds: 331180
+  bytes: 10852985
+  unit_price: 0.99
 
-one:
-  name: MyString
-  album: one
-  media_type: one
-  genre: one
-  composer: MyString
-  milliseconds: 1
-  bytes: 1
-  unit_price: 1
+nothing_else_matters:
+  name: Nothing Else Matters
+  album: black_album
+  media_type: mpeg
+  genre: metal
+  composer: Metallica
+  milliseconds: 388008
+  bytes: 12631291
+  unit_price: 0.99
 
-two:
-  name: MyString
-  album: two
-  media_type: two
-  genre: two
-  composer: MyString
-  milliseconds: 1
-  bytes: 1
-  unit_price: 1
+master_of_puppets_track:
+  name: Master of Puppets
+  album: master_of_puppets
+  media_type: mpeg
+  genre: metal
+  composer: Metallica
+  milliseconds: 515239
+  bytes: 16686626
+  unit_price: 0.99
+
+stairway_to_heaven:
+  name: Stairway to Heaven
+  album: led_zeppelin_iv
+  media_type: mpeg
+  genre: rock
+  composer: Jimmy Page
+  milliseconds: 482830
+  bytes: 15591746
+  unit_price: 0.99
+
+back_in_black_track:
+  name: Back in Black
+  album: back_in_black
+  media_type: mpeg
+  genre: rock
+  composer: AC/DC
+  milliseconds: 255320
+  bytes: 8331286
+  unit_price: 0.99

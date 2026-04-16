@@ -1,29 +1,27 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+john_doe:
+  first_name: John
+  last_name: Doe
+  company: Acme Corp
+  address: 123 Main St
+  city: New York
+  state: NY
+  country: USA
+  postal_code: "10001"
+  phone: "+1 (212) 555-0100"
+  fax: "+1 (212) 555-0101"
+  email: john.doe@example.com
+  support_rep: sales_agent
 
-one:
-  first_name: MyString
-  last_name: MyString
-  company: MyString
-  address: MyString
-  city: MyString
-  state: MyString
-  country: MyString
-  postal_code: MyString
-  phone: MyString
-  fax: MyString
-  email: MyString
-  support_rep: one
-
-two:
-  first_name: MyString
-  last_name: MyString
-  company: MyString
-  address: MyString
-  city: MyString
-  state: MyString
-  country: MyString
-  postal_code: MyString
-  phone: MyString
-  fax: MyString
-  email: MyString
-  support_rep: two
+jane_smith:
+  first_name: Jane
+  last_name: Smith
+  company: Tech Inc
+  address: 456 Oak Ave
+  city: Los Angeles
+  state: CA
+  country: USA
+  postal_code: "90001"
+  phone: "+1 (310) 555-0200"
+  fax: "+1 (310) 555-0201"
+  email: jane.smith@example.com
+  support_rep: sales_agent

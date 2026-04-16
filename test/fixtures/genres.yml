@@ -1,7 +1,8 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+rock:
+  name: Rock
 
-one:
-  name: MyString
+metal:
+  name: Metal
 
-two:
-  name: MyString
+jazz:
+  name: Jazz

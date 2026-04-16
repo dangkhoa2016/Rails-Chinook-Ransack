@@ -1,7 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+metallica:
+  name: Metallica
 
-one:
-  name: MyString
+led_zeppelin:
+  name: Led Zeppelin
 
-two:
-  name: MyString
+ac_dc:
+  name: AC/DC
+
+no_albums_artist:
+  name: Unknown Artist
