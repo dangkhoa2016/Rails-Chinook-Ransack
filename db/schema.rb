@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_05_095242) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_16_092645) do
   create_table "albums", force: :cascade do |t|
     t.string "title"
     t.integer "artist_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["artist_id", "created_at"], name: "index_albums_on_artist_id_and_created_at"
     t.index ["artist_id"], name: "index_albums_on_artist_id"
     t.index ["created_at"], name: "index_albums_on_created_at"
     t.index ["title"], name: "index_albums_on_title"
@@ -91,6 +92,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_095242) do
     t.index ["last_name"], name: "index_employees_on_last_name"
     t.index ["phone"], name: "index_employees_on_phone"
     t.index ["postal_code"], name: "index_employees_on_postal_code"
+    t.index ["reports_to", "hire_date"], name: "index_employees_on_reports_to_and_hire_date"
     t.index ["reports_to"], name: "index_employees_on_reports_to"
     t.index ["state"], name: "index_employees_on_state"
     t.index ["title"], name: "index_employees_on_title"
@@ -114,6 +116,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_095242) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_invoice_lines_on_created_at"
+    t.index ["invoice_id", "track_id"], name: "index_invoice_lines_on_invoice_id_and_track_id"
     t.index ["invoice_id"], name: "index_invoice_lines_on_invoice_id"
     t.index ["quantity"], name: "index_invoice_lines_on_quantity"
     t.index ["track_id"], name: "index_invoice_lines_on_track_id"
@@ -138,6 +141,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_095242) do
     t.index ["billing_postal_code"], name: "index_invoices_on_billing_postal_code"
     t.index ["billing_state"], name: "index_invoices_on_billing_state"
     t.index ["created_at"], name: "index_invoices_on_created_at"
+    t.index ["customer_id", "invoice_date"], name: "index_invoices_on_customer_id_and_invoice_date"
+    t.index ["customer_id", "total"], name: "index_invoices_on_customer_id_and_total"
     t.index ["customer_id"], name: "index_invoices_on_customer_id"
     t.index ["invoice_date"], name: "index_invoices_on_invoice_date"
     t.index ["total"], name: "index_invoices_on_total"
@@ -158,6 +163,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_095242) do
     t.integer "track_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["playlist_id", "track_id"], name: "index_playlist_tracks_on_playlist_id_and_track_id"
     t.index ["playlist_id"], name: "index_playlist_tracks_on_playlist_id"
     t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
@@ -182,6 +188,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_095242) do
     t.decimal "unit_price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["album_id", "genre_id"], name: "index_tracks_on_album_id_and_genre_id"
+    t.index ["album_id", "media_type_id"], name: "index_tracks_on_album_id_and_media_type_id"
     t.index ["album_id"], name: "index_tracks_on_album_id"
     t.index ["bytes"], name: "index_tracks_on_bytes"
     t.index ["composer"], name: "index_tracks_on_composer"
@@ -192,6 +200,30 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_095242) do
     t.index ["name"], name: "index_tracks_on_name"
     t.index ["unit_price"], name: "index_tracks_on_unit_price"
     t.index ["updated_at"], name: "index_tracks_on_updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.string "role", default: "user", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role"], name: "index_users_on_role"
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
   add_foreign_key "albums", "artists"

@@ -15627,3 +15627,24 @@ InvoiceLine.create!([
   {invoice_id: 411, track_id: 3163, unit_price: "0.99", quantity: 1},
   {invoice_id: 412, track_id: 3177, unit_price: "1.99", quantity: 1}
 ])
+
+# ============================================================
+# Seed Users
+# ============================================================
+puts "Creating admin user..."
+User.find_or_create_by!(email: 'admin@example.com') do |user|
+  user.name = 'Admin'
+  user.password = 'password123'
+  user.password_confirmation = 'password123'
+  user.role = 'admin'
+end
+
+puts "Creating regular user..."
+User.find_or_create_by!(email: 'user@example.com') do |user|
+  user.name = 'Regular User'
+  user.password = 'password123'
+  user.password_confirmation = 'password123'
+  user.role = 'user'
+end
+
+puts "Done! Login with admin@example.com / password123"

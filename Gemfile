@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.2.6"
+ruby "3.2.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.5"
@@ -34,6 +34,9 @@ gem 'pagy', '~> 9.3'
 
 # Ransack will help you easily add searching to your Rails application, without any additional dependencies [https://github.com/activerecord-hackery/ransack]
 gem "ransack", "~> 4.2"
+
+# Authentication [https://github.com/heartcombo/devise]
+gem "devise", "~> 4.9"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

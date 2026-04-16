@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
   before_action :set_locale, :set_page_size
+  before_action :authenticate_user!
 
   rescue_from Pagy::OverflowError, with: :handle_pagy_overflow
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
