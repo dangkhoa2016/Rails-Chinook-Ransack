@@ -12,7 +12,8 @@ class Album < ApplicationRecord
 
   attr_accessor :tracks_count
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { maximum: 160 }
+  validates :artist_id, presence: true
 
 
   scope :with_tracks_count_in_range_1, -> (min_value, max_value = nil) {
@@ -112,7 +113,10 @@ class Album < ApplicationRecord
     end
 
     def artist_ids_with_most_albums(has_more_than_albums = 5)
-      Album.group(:artist_id).having("count_id >= #{has_more_than_albums}").order('count_id desc').count('id')
+      Album.group(:artist_id)
+           .having('COUNT(id) >= ?', has_more_than_albums.to_i)
+           .order('COUNT(id) DESC')
+           .count('id')
     end
 
     def first_of_artist_ids_with_most_albums(has_more_than_albums = 5)
@@ -124,7 +128,10 @@ class Album < ApplicationRecord
     end
 
     def artist_ids_with_fewest_albums(has_less_than_albums = 5)
-      Album.group(:artist_id).having("count_id <= #{has_less_than_albums}").order('count_id desc').count('id')
+      Album.group(:artist_id)
+           .having('COUNT(id) <= ?', has_less_than_albums.to_i)
+           .order('COUNT(id) DESC')
+           .count('id')
     end
 
     def first_of_artist_ids_with_fewest_albums(has_more_than_albums = 5)
@@ -137,7 +144,11 @@ class Album < ApplicationRecord
 
 
     def album_ids_with_most_tracks(has_more_than_tracks = 5)
-      Album.joins(:tracks).group('albums.id').having("count_tracks_id >= #{has_more_than_tracks}").order('count_tracks_id desc').count('tracks.id')
+      Album.joins(:tracks)
+           .group('albums.id')
+           .having('COUNT(tracks.id) >= ?', has_more_than_tracks.to_i)
+           .order('COUNT(tracks.id) DESC')
+           .count('tracks.id')
     end
 
     def first_of_album_ids_with_most_tracks(has_more_than_tracks = 5)
@@ -149,7 +160,11 @@ class Album < ApplicationRecord
     end
 
     def album_ids_with_fewest_tracks(has_less_than_tracks = 5)
-      Album.joins(:tracks).group('albums.id').having("count_tracks_id <= #{has_less_than_tracks}").order('count_tracks_id desc').count('tracks.id')
+      Album.joins(:tracks)
+           .group('albums.id')
+           .having('COUNT(tracks.id) <= ?', has_less_than_tracks.to_i)
+           .order('COUNT(tracks.id) DESC')
+           .count('tracks.id')
     end
 
     def first_of_album_ids_with_fewest_tracks(has_less_than_tracks = 5)

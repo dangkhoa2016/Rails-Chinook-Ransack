@@ -5,16 +5,7 @@ class InvoicesController < ApplicationController
 
   # GET /invoices or /invoices.json
   def index
-    begin
-      @pagy, @invoices = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @invoices = Invoice.none
-      else
-        raise e
-      end
-    end
+    @pagy, @invoices = process_filters(model_query)
 
     if @invoices.present?
       invoice_lines_count = InvoiceLine.count_by_model_ids(:invoice, @invoices.pluck(:id))
@@ -104,6 +95,10 @@ class InvoicesController < ApplicationController
     end
 
 
+    def sortable_columns
+      %w[id invoice_date billing_address billing_city billing_state billing_country billing_postal_code total created_at updated_at customer invoice_lines_count]
+    end
+
     def default_ransack_params
       :billing_address_or_billing_postal_code_or_customer_first_name_or_customer_last_name_cont
     end
@@ -133,7 +128,7 @@ class InvoicesController < ApplicationController
           'customers.last_name' => sort_direction
         }
       elsif is_sort_by_invoice_lines_count?
-        "COUNT(invoice_lines.id) #{sort_direction}"
+        Arel.sql("COUNT(invoice_lines.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       else
         super
       end

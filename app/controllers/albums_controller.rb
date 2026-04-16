@@ -5,16 +5,7 @@ class AlbumsController < ApplicationController
 
   # GET /albums or /albums.json
   def index
-    begin
-      @pagy, @albums = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @albums = Album.none
-      else
-        raise e
-      end
-    end
+    @pagy, @albums = process_filters(model_query)
 
     if @albums.present?
       tracks_count = Track.count_by_model_ids(:album, @albums.pluck(:id))
@@ -96,6 +87,10 @@ class AlbumsController < ApplicationController
       params.require(:album).permit(:title, :artist_id)
     end
 
+    def sortable_columns
+      %w[id title created_at updated_at tracks_count]
+    end
+
     def default_ransack_params
       :title_or_artist_name_cont
     end
@@ -115,7 +110,7 @@ class AlbumsController < ApplicationController
 
     def sorting_params
       if is_sort_by_tracks_count?
-        "COUNT(tracks.id) #{sort_direction}"
+        Arel.sql("COUNT(tracks.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       else
         super
       end

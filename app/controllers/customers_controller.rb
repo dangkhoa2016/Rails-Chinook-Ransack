@@ -5,16 +5,7 @@ class CustomersController < ApplicationController
 
   # GET /customers or /customers.json
   def index
-    begin
-      @pagy, @customers = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @customers = Customer.none
-      else
-        raise e
-      end
-    end
+    @pagy, @customers = process_filters(model_query)
 
     if @customers.present?
       invoices_count = Invoice.count_by_model_ids(:customer, @customers.pluck(:id))
@@ -96,6 +87,10 @@ class CustomersController < ApplicationController
       params.require(:customer).permit(:first_name, :last_name, :company, :address, :city, :state, :country, :postal_code, :phone, :fax, :email, :support_rep_id)
     end
 
+    def sortable_columns
+      %w[id first_name last_name company email city state country postal_code phone fax created_at updated_at support_rep invoices_count]
+    end
+
     def default_ransack_params
       :first_name_or_last_name_or_address_or_phone_or_email_cont
     end
@@ -125,7 +120,7 @@ class CustomersController < ApplicationController
           'employees.last_name' => sort_direction
         }
       elsif is_sort_by_invoices_count?
-        "COUNT(invoices.id) #{sort_direction}"
+        Arel.sql("COUNT(invoices.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       else
         super
       end

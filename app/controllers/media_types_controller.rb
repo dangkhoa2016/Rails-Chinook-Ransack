@@ -5,16 +5,7 @@ class MediaTypesController < ApplicationController
 
   # GET /media_types or /media_types.json
   def index
-    begin
-      @pagy, @media_types = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @media_types = MediaType.none
-      else
-        raise e
-      end
-    end
+    @pagy, @media_types = process_filters(model_query)
 
     if @media_types.present?
       tracks_count = Track.count_by_model_ids(:media_type, @media_types.pluck(:id))
@@ -96,6 +87,10 @@ class MediaTypesController < ApplicationController
       params.require(:media_type).permit(:name)
     end
 
+    def sortable_columns
+      %w[id name created_at updated_at tracks_count]
+    end
+
     def default_ransack_params
       :name_cont
     end
@@ -115,7 +110,7 @@ class MediaTypesController < ApplicationController
 
     def sorting_params
       if is_sort_by_tracks_count?
-        "COUNT(tracks.id) #{sort_direction}"
+        Arel.sql("COUNT(tracks.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       else
         super
       end

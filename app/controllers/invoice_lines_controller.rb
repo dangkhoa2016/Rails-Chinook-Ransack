@@ -5,17 +5,7 @@ class InvoiceLinesController < ApplicationController
 
   # GET /invoice_lines or /invoice_lines.json
   def index
-    begin
-      @pagy, @invoice_lines = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @invoice_lines = InvoiceLine.none
-      else
-        raise e
-      end
-    end
-
+    @pagy, @invoice_lines = process_filters(model_query)
     render_index('table')
   end
 
@@ -96,6 +86,10 @@ class InvoiceLinesController < ApplicationController
       params.require(:invoice_line).permit(:invoice_id, :track_id, :unit_price, :quantity)
     end
 
+
+    def sortable_columns
+      %w[id invoice_id track_id unit_price quantity created_at updated_at track total_price]
+    end
 
     def default_ransack_params
       :track_name_or_invoice_customer_first_name_or_invoice_customer_last_name_cont

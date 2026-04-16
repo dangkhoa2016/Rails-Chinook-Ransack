@@ -10,6 +10,10 @@ class PlaylistTrack < ApplicationRecord
   has_many :customers, through: :invoices
   has_many :support_reps, through: :customers
 
+  validates :playlist_id, presence: true
+  validates :track_id, presence: true
+  validates :track_id, uniqueness: { scope: :playlist_id, message: "already exists in this playlist" }
+
 
   scope :with_record_count_by_model_in_range_for_use_as_sub_query, ->(model, min_value, max_value = nil) {
     return PlaylistTrack.none if min_value.nil? && max_value.nil?

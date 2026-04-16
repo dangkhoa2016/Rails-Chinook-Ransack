@@ -5,16 +5,7 @@ class TracksController < ApplicationController
 
   # GET /tracks or /tracks.json
   def index
-    begin
-      @pagy, @tracks = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @tracks = Track.none
-      else
-        raise e
-      end
-    end
+    @pagy, @tracks = process_filters(model_query)
 
     if @tracks.present?
       invoice_lines_count = Track.count_invoice_lines_by_ids(@tracks.pluck(:id))
@@ -96,6 +87,10 @@ class TracksController < ApplicationController
       params.require(:track).permit(:name, :album_id, :media_type_id, :genre_id, :composer, :milliseconds, :bytes, :unit_price)
     end
 
+    def sortable_columns
+      %w[id name composer milliseconds bytes unit_price created_at updated_at invoice_lines_count]
+    end
+
     def default_ransack_params
       :name_or_album_title_or_genre_name_or_media_type_name_cont
     end
@@ -116,7 +111,7 @@ class TracksController < ApplicationController
 
     def sorting_params
       if is_sort_by_invoice_lines_count?
-        "COUNT(invoice_lines.id) #{sort_direction}"
+        Arel.sql("COUNT(invoice_lines.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       else
         super
       end

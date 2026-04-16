@@ -1,9 +1,17 @@
 module Sortable
   SORT_DIRECTIONS = %w[asc desc].freeze
 
-
   def sort_column
-    @sort_column ||= (params[:sort].presence || 'created_at').downcase  # Default to 'created_at' if no param
+    @sort_column ||= begin
+      requested = params[:sort].presence&.downcase || 'created_at'
+      allowed = sortable_columns
+      allowed.include?(requested) ? requested : 'created_at'
+    end
+  end
+
+  # Override in each controller to declare allowed sort columns
+  def sortable_columns
+    []
   end
 
   def sort_direction

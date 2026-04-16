@@ -5,16 +5,7 @@ class EmployeesController < ApplicationController
 
   # GET /employees or /employees.json
   def index
-    begin
-      @pagy, @employees = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @employees = Employee.none
-      else
-        raise e
-      end
-    end
+    @pagy, @employees = process_filters(model_query)
 
     if @employees.present?
       customers_count = Customer.count_by_employee_ids(@employees.pluck(:id))
@@ -98,6 +89,10 @@ class EmployeesController < ApplicationController
       params.require(:employee).permit(:last_name, :first_name, :email, :title, :reports_to, :birth_date, :hire_date, :address, :city, :state, :country, :postal_code, :phone, :fax)
     end
     
+    def sortable_columns
+      %w[id first_name last_name title email hire_date birth_date city state country created_at updated_at reporting_to customers_count subordinates_count]
+    end
+
     def default_ransack_params
       :first_name_or_last_name_or_address_or_phone_or_email_cont
     end
@@ -133,9 +128,9 @@ class EmployeesController < ApplicationController
           'reporting_tos_employees.last_name' => sort_direction
         }
       elsif is_sort_by_customers_count?
-        "COUNT(customers.id) #{sort_direction}"
+        Arel.sql("COUNT(customers.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       elsif is_sort_by_subordinates_count?
-        "COUNT(subordinates_employees.id) #{sort_direction}"
+        Arel.sql("COUNT(subordinates_employees.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       else
         super
       end

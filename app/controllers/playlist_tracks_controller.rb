@@ -67,4 +67,8 @@ class PlaylistTracksController < ApplicationController
     def playlist_track_params
       params.require(:playlist_track).permit(:playlist_id, :track_id)
     end
+
+    def sortable_columns
+      %w[id playlist_id track_id created_at updated_at]
+    end
 end

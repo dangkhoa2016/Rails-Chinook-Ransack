@@ -5,16 +5,7 @@ class PlaylistsController < ApplicationController
 
   # GET /playlists or /playlists.json
   def index
-    begin
-      @pagy, @playlists = process_filters(model_query)
-    rescue => e
-      if e.is_a?(Pagy::OverflowError)
-        @pagy = Pagy.new(count: 0)
-        @playlists = Playlist.none
-      else
-        raise e
-      end
-    end
+    @pagy, @playlists = process_filters(model_query)
 
     if @playlists.present?
       tracks_count = Track.count_by_model_ids(:playlist, @playlists.pluck(:id))
@@ -88,6 +79,10 @@ class PlaylistsController < ApplicationController
       params.require(:playlist).permit(:name)
     end
 
+    def sortable_columns
+      %w[id name created_at updated_at tracks_count]
+    end
+
     def default_ransack_params
       :name_cont
     end
@@ -107,7 +102,7 @@ class PlaylistsController < ApplicationController
 
     def sorting_params
       if is_sort_by_tracks_count?
-        "COUNT(tracks.id) #{sort_direction}"
+        Arel.sql("COUNT(tracks.id) #{sort_direction == 'asc' ? 'ASC' : 'DESC'}")
       else
         super
       end
