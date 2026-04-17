@@ -61,9 +61,13 @@ class Artist < ApplicationRecord
     end
 
     def artist_ids_with_most_albums(has_more_than_albums = 5)
-      Artist.joins(:albums).group(:artist_id).having("count_id >= #{has_more_than_albums}").order('count_id desc').count('id')
+      Artist.joins(:albums)
+            .group('artists.id')
+            .having('COUNT(albums.id) >= ?', has_more_than_albums.to_i)
+            .order('COUNT(albums.id) DESC')
+            .count('albums.id')
     end
-    
+
     def first_of_artist_ids_with_most_albums(has_more_than_albums = 5)
       artist_ids_with_most_albums(has_more_than_albums)&.keys.first
     end
@@ -73,15 +77,19 @@ class Artist < ApplicationRecord
     end
 
     def artist_ids_with_fewest_albums(has_less_than_albums = 5)
-      Artist.joins(:albums).group(:artist_id).having("count_id <= #{has_less_than_albums}").order('count_id desc').count('id')
+      Artist.joins(:albums)
+            .group('artists.id')
+            .having('COUNT(albums.id) <= ?', has_less_than_albums.to_i)
+            .order('COUNT(albums.id) DESC')
+            .count('albums.id')
     end
 
-    def first_of_artist_ids_with_fewest_albums(has_more_than_albums = 5)
-      artist_ids_with_fewest_albums(has_more_than_albums)&.keys.first
+    def first_of_artist_ids_with_fewest_albums(has_less_than_albums = 5)
+      artist_ids_with_fewest_albums(has_less_than_albums)&.keys.first
     end
 
-    def last_of_artist_ids_with_fewest_albums(has_more_than_albums = 5)
-      artist_ids_with_fewest_albums(has_more_than_albums)&.keys.last
+    def last_of_artist_ids_with_fewest_albums(has_less_than_albums = 5)
+      artist_ids_with_fewest_albums(has_less_than_albums)&.keys.last
     end
   end
 end

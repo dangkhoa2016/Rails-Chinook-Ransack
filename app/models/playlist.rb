@@ -65,7 +65,10 @@ class Playlist < ApplicationRecord
 
     
     def playlist_ids_with_most_tracks(has_more_than_tracks = 5)
-      PlaylistTrack.group(:playlist_id).having("count_id >= #{has_more_than_tracks}").order('count_id desc').count('id')
+      PlaylistTrack.group(:playlist_id)
+                   .having('COUNT(id) >= ?', has_more_than_tracks.to_i)
+                   .order('COUNT(id) DESC')
+                   .count('id')
     end
 
     def first_of_playlist_ids_with_most_tracks(has_more_than_tracks = 5)
@@ -78,7 +81,10 @@ class Playlist < ApplicationRecord
 
 
     def playlist_ids_with_fewest_tracks(has_fewer_than_tracks = 5)
-      PlaylistTrack.group(:playlist_id).having("count_id <= #{has_fewer_than_tracks}").order('count_id desc').count('id')
+      PlaylistTrack.group(:playlist_id)
+                   .having('COUNT(id) <= ?', has_fewer_than_tracks.to_i)
+                   .order('COUNT(id) DESC')
+                   .count('id')
     end
 
     def first_of_playlist_ids_with_fewest_tracks(has_more_than_tracks = 5)

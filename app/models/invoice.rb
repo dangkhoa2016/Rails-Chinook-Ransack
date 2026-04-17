@@ -98,7 +98,10 @@ class Invoice < ApplicationRecord
     end
 
     def customers_ids_with_most_invoices(has_more_than_invoices_or_equal_to = 7)
-      Invoice.group(:customer_id).having("count_id >= #{has_more_than_invoices_or_equal_to}").order('count_id desc').count('id')
+      Invoice.group(:customer_id)
+             .having('COUNT(id) >= ?', has_more_than_invoices_or_equal_to.to_i)
+             .order('COUNT(id) DESC')
+             .count('id')
     end
 
     def first_of_most_invoiced_customer_id(has_more_than_invoices_or_equal_to = 7)
@@ -111,7 +114,10 @@ class Invoice < ApplicationRecord
 
 
     def customers_ids_with_fewest_invoices(has_less_than_invoices_or_equal_to = 5)
-      Invoice.group(:customer_id).having("count_id <= #{has_less_than_invoices_or_equal_to}").order('count_id desc').count('id')
+      Invoice.group(:customer_id)
+             .having('COUNT(id) <= ?', has_less_than_invoices_or_equal_to.to_i)
+             .order('COUNT(id) DESC')
+             .count('id')
     end
 
     def first_of_fewest_invoiced_customer_id(has_less_than_invoices_or_equal_to = 5)
@@ -124,10 +130,11 @@ class Invoice < ApplicationRecord
 
 
     def invoice_ids_with_most_tracks(has_more_than_tracks_or_equal_to = 5)
-      Invoice.joins(:invoice_lines).group('invoices.id').
-        having("count_invoice_lines_id >= #{has_more_than_tracks_or_equal_to}").
-        order('count_invoice_lines_id desc').
-        count('invoice_lines.id')
+      Invoice.joins(:invoice_lines)
+             .group('invoices.id')
+             .having('COUNT(invoice_lines.id) >= ?', has_more_than_tracks_or_equal_to.to_i)
+             .order('COUNT(invoice_lines.id) DESC')
+             .count('invoice_lines.id')
     end
 
     def first_of_most_tracks_invoice_id(has_more_than_tracks_or_equal_to = 5)
@@ -140,10 +147,11 @@ class Invoice < ApplicationRecord
 
 
     def invoice_ids_with_fewest_tracks(has_less_than_tracks_or_equal_to = 5)
-      Invoice.joins(:invoice_lines).group('invoices.id').
-        having("count_invoice_lines_id <= #{has_less_than_tracks_or_equal_to}").
-        order('count_invoice_lines_id desc').
-        count('invoice_lines.id')
+      Invoice.joins(:invoice_lines)
+             .group('invoices.id')
+             .having('COUNT(invoice_lines.id) <= ?', has_less_than_tracks_or_equal_to.to_i)
+             .order('COUNT(invoice_lines.id) DESC')
+             .count('invoice_lines.id')
     end
 
     def first_of_fewest_tracks_invoice_id(has_less_than_tracks_or_equal_to = 5)
