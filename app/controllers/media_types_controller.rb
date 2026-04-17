@@ -1,6 +1,7 @@
 class MediaTypesController < ApplicationController
   include Filterable
   include Sortable
+  include HttpCacheable
   before_action :set_media_type, only: %i[ show edit update destroy ]
   before_action :authorize_media_type
 
@@ -19,11 +20,10 @@ class MediaTypesController < ApplicationController
   end
 
   def json_list_for_select_element
-    _, media_types = pagy(MediaType.ransack(name_cont: params[:keyword]).result)
-    media_types = media_types.map do |media_type|
-      { value: media_type.id, label: media_type.name }
+    cache_json_response(MediaType, keyword: params[:keyword]) do
+      _, media_types = pagy(MediaType.ransack(name_cont: params[:keyword]).result)
+      render json: media_types.map { |m| { value: m.id, label: m.name } }
     end
-    render json: media_types
   end
 
   # GET /media_types/1 or /media_types/1.json

@@ -1,4 +1,5 @@
 class MediaType < ApplicationRecord
+  include Cacheable
   has_many :tracks
   has_many :albums, through: :tracks, source: :album
   has_many :artists, through: :albums

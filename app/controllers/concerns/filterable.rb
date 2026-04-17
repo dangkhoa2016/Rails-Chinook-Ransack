@@ -103,8 +103,6 @@ module Filterable
     pagy(query.ransack(new_filters).result.order(sorting_params), limit: page_size)
   end
 
-
-
   def sorting_params
     { sort_column => sort_direction }
   end

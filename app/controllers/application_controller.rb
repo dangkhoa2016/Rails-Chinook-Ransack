@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError,  with: :handle_not_authorized
   rescue_from Exception,                   with: :render_500 if Rails.env.production?
 
-  # Dùng trong controllers để skip verify_authorized (ví dụ: home)
+  # Use in controllers to skip verify_authorized (e.g. home)
   def skip_authorization_check
     skip_authorization
   end
@@ -34,6 +34,11 @@ class ApplicationController < ActionController::Base
       format.html { redirect_to root_path, alert: 'You are not authorized to perform this action.' }
       format.json { render json: { error: 'Forbidden' }, status: :forbidden }
     end
+  end
+
+  # Cache helper — use in controllers to cache query results
+  def cache_fetch(key, expires_in: 1.hour, &block)
+    Rails.cache.fetch(key, expires_in: expires_in, &block)
   end
 
   def set_locale

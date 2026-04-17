@@ -1,6 +1,7 @@
 class GenresController < ApplicationController
   include Filterable
   include Sortable
+  include HttpCacheable
   before_action :set_genre, only: %i[ show edit update destroy ]
   before_action :authorize_genre
 
@@ -19,11 +20,10 @@ class GenresController < ApplicationController
   end
 
   def json_list_for_select_element
-    _, genres = pagy(Genre.ransack(name_cont: params[:keyword]).result)
-    genres = genres.map do |genre|
-      { value: genre.id, label: genre.name }
+    cache_json_response(Genre, keyword: params[:keyword]) do
+      _, genres = pagy(Genre.ransack(name_cont: params[:keyword]).result)
+      render json: genres.map { |g| { value: g.id, label: g.name } }
     end
-    render json: genres
   end
 
   # GET /genres/1 or /genres/1.json

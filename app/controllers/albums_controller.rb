@@ -1,6 +1,7 @@
 class AlbumsController < ApplicationController
   include Filterable
   include Sortable
+  include HttpCacheable
   before_action :set_album, only: %i[ show edit update destroy ]
   before_action :authorize_album
 
@@ -19,11 +20,10 @@ class AlbumsController < ApplicationController
   end
 
   def json_list_for_select_element
-    _, albums = pagy(Album.ransack(title_cont: params[:keyword]).result)
-    albums = albums.map do |album|
-      { value: album.id, label: album.title }
+    cache_json_response(Album, keyword: params[:keyword]) do
+      _, albums = pagy(Album.ransack(title_cont: params[:keyword]).result)
+      render json: albums.map { |a| { value: a.id, label: a.title } }
     end
-    render json: albums
   end
 
   # GET /albums/1 or /albums/1.json

@@ -6,7 +6,7 @@ class ApplicationPolicy
     @record = record
   end
 
-  # Admin có toàn quyền, user thường chỉ được xem
+  # Admin has full access, regular users can only read
   def index?    = true
   def show?     = true
   def new?      = user.admin?
@@ -15,7 +15,7 @@ class ApplicationPolicy
   def update?   = user.admin?
   def destroy?  = user.admin?
 
-  # JSON select endpoints — tất cả user đều dùng được (cho form dropdowns)
+  # JSON select endpoints — accessible by all users (used in form dropdowns)
   def json_list_for_select_element? = true
 
   class Scope

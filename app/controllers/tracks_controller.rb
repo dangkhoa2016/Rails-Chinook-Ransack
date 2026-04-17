@@ -1,6 +1,7 @@
 class TracksController < ApplicationController
   include Filterable
   include Sortable
+  include HttpCacheable
   before_action :set_track, only: %i[ show edit update destroy ]
   before_action :authorize_track
 
@@ -19,11 +20,10 @@ class TracksController < ApplicationController
   end
 
   def json_list_for_select_element
-    _, tracks = pagy(Track.ransack(name_or_composer_cont: params[:keyword]).result)
-    tracks = tracks.map do |track|
-      { value: track.id, label: track.name }
+    cache_json_response(Track, keyword: params[:keyword]) do
+      _, tracks = pagy(Track.ransack(name_or_composer_cont: params[:keyword]).result)
+      render json: tracks.map { |t| { value: t.id, label: t.name } }
     end
-    render json: tracks
   end
 
   # GET /tracks/1 or /tracks/1.json

@@ -1,4 +1,5 @@
 class Artist < ApplicationRecord
+  include Cacheable
   has_many :albums
   has_many :tracks, through: :albums
   has_many :genres, through: :tracks, source: :genre
