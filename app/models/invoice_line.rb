@@ -1,4 +1,6 @@
 class InvoiceLine < ApplicationRecord
+  include Countable
+
   belongs_to :invoice
   belongs_to :track
   has_one :customer, through: :invoice
@@ -12,59 +14,17 @@ class InvoiceLine < ApplicationRecord
 
   validates :unit_price, :quantity, presence: true
 
+  # Keep legacy aliases for backward compatibility with existing callers
+  scope :with_record_count_by_model_in_range_for_use_as_sub_query, ->(model, min_value, max_value = nil) {
+    count_in_range(model, min_value, max_value)
+  }
+
+  scope :with_record_count_by_track_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
+    count_in_range(:track, min_value, max_value)
+  }
 
   scope :with_record_count_by_invoice_in_range_for_use_as_sub_query, ->(min_value, max_value = nil) {
-    return InvoiceLine.none if min_value.nil? && max_value.nil?
-
-    column_name = "#{model.to_s.singularize}_id"
-    query = InvoiceLine.select(:invoice_id).group(:invoice_id)
-
-    if min_value.present? && max_value.present?
-      if min_value > max_value
-        return InvoiceLine.none
-      elsif min_value == max_value
-        query = query.having('COUNT(id) = ?', min_value)
-      else
-        query = query.having('COUNT(id) BETWEEN ? AND ?', min_value, max_value)
-      end
-    elsif min_value.nil? && max_value.present?
-      query = query.having('COUNT(id) <= ?', max_value)
-    elsif min_value.present? && max_value.nil?
-      query = query.having('COUNT(id) >= ?', min_value)
-    end
-
-    query
-  }
-
-  scope :with_record_count_by_track_in_range_for_use_as_sub_query, ->(min_value, max_value) {
-    with_record_count_by_model_in_range_for_use_as_sub_query(:track, min_value, max_value)
-  }
-
-  scope :with_record_count_by_invoice_in_range_for_use_as_sub_query, ->(min_value, max_value) {
-    with_record_count_by_model_in_range_for_use_as_sub_query(:invoice, min_value, max_value)
-  }
-  
-  scope :with_record_count_by_model_in_range_for_use_as_sub_query, ->(model, min_value, max_value = nil) {
-    return InvoiceLine.none if min_value.nil? && max_value.nil?
-
-    column_name = "#{model.to_s.singularize}_id"
-    query = InvoiceLine.select(column_name).group(column_name)
-
-    if min_value.present? && max_value.present?
-      if min_value > max_value
-        return InvoiceLine.none
-      elsif min_value == max_value
-        query = query.having('COUNT(id) = ?', min_value)
-      else
-        query = query.having('COUNT(id) BETWEEN ? AND ?', min_value, max_value)
-      end
-    elsif min_value.nil? && max_value.present?
-      query = query.having('COUNT(id) <= ?', max_value)
-    elsif min_value.present? && max_value.nil?
-      query = query.having('COUNT(id) >= ?', min_value)
-    end
-
-    query
+    count_in_range(:invoice, min_value, max_value)
   }
 
   scope :by_customer_ids, ->(ids) {
@@ -72,7 +32,6 @@ class InvoiceLine < ApplicationRecord
   }
 
   scope :by_customer_name, ->(name) {
-    # where(invoice_id: Invoice.where(customer_id: Customer.where('first_name ILIKE ? OR last_name ILIKE ?', "%#{name}%", "%#{name}%").select(:id)).select(:id))
     joins(:customer)
     .ransack(customer_first_name_or_last_name_cont: name)
     .result

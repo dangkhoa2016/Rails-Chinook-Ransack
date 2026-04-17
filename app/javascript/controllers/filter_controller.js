@@ -104,7 +104,6 @@ export default class extends Controller {
 
   connect() {
     this.initEvents();
-    // console.log('FiltersController connected', this, this.element, this.choices);
     this.waitForTemplateControllerConnected(() => {
       this.addTemplateChangeEvent();
     });
@@ -115,15 +114,13 @@ export default class extends Controller {
 
     this.toggleFilterCardsVisible();
     this.toggleAdvancedFilterVisible();
-    
-    // document.addEventListener('turbo:before-fetch-request', this.handleTurboBeforeFetchRequest);
+
     document.addEventListener('turbo:before-fetch-response', this.handleTurboBeforeFetchResponse);
     document.addEventListener('turbo:fetch-request-error', this.handleTurboRequestError);
     document.addEventListener('turbo:before-stream-render', this.handleBeforeStreamRender);
   }
 
   disconnect() {
-    // document.removeEventListener('turbo:before-fetch-request', this.handleTurboBeforeFetchRequest);
     document.removeEventListener('turbo:before-fetch-response', this.handleTurboBeforeFetchResponse);
     document.removeEventListener('turbo:fetch-request-error', this.handleTurboRequestError);
     document.removeEventListener('turbo:before-stream-render', this.handleBeforeStreamRender);
@@ -135,7 +132,6 @@ export default class extends Controller {
   }
 
   handleBeforeStreamRender(event) {
-    // console.log('turbo:before-stream-render', event.target);
     const elements = event.target.templateContent.querySelectorAll('[data-field-name]');
     if (elements.length === 0)
       return;
@@ -166,19 +162,9 @@ export default class extends Controller {
     if (this.formTarget) {
       this.formTarget.addEventListener('turbo:before-fetch-request', (event) => {
         event.preventDefault();
-        // console.log('Form submit event', event);
 
         let searchParams = event.detail.url.searchParams;
-        
-        // searchParams = this.modifySearchParams(searchParams, ['created_at_between_from', 'created_at_between_to'], 'created_at_between');
-        // searchParams = this.modifySearchParams(searchParams, ['updated_at_between_from', 'updated_at_between_to'], 'updated_at_between');
-        // searchParams = this.modifySearchParams(searchParams, ['created_at_or_updated_at_between_from', 'created_at_or_updated_at_between_to'], 'created_at_or_updated_at_between');
-        // searchParams = this.modifySearchParams(searchParams, ['number_of_tracks_between_from', 'number_of_tracks_between_to'], 'number_of_tracks_between');
-        // searchParams = this.modifySearchParams(searchParams, ['number_of_invoices_between_from', 'number_of_invoices_between_to'], 'number_of_invoices_between');
-        // searchParams = this.modifySearchParams(searchParams, ['number_of_invoice_lines_between_from', 'number_of_invoice_lines_between_to'], 'number_of_invoice_lines_between');
-        // searchParams = this.modifySearchParams(searchParams, ['bytes_between_from', 'bytes_between_to'], 'bytes_between');
-        // searchParams = this.modifySearchParams(searchParams, ['milliseconds_between_from', 'milliseconds_between_to'], 'milliseconds_between');
-        // searchParams = this.modifySearchParams(searchParams, ['unit_price_between_from', 'unit_price_between_to'], 'unit_price_between');
+
         searchParams = this.modifySearchBetweenParams(searchParams);
         searchParams = this.modifySearchIDArrayParams(searchParams);
         event.detail.url.search = searchParams.toString();
@@ -282,7 +268,6 @@ export default class extends Controller {
 
   modifySearchParams(searchParams, keys_to_find, key_to_replace) {
     const entries = Array.from(searchParams.entries());
-    // find the index of the key-value pair with key 'created_at_between_from'
     const indx = entries.findIndex(([key, value]) => keys_to_find.includes(key));
     if (indx === -1)
       return searchParams;
@@ -321,7 +306,6 @@ export default class extends Controller {
   }
 
   initEvents() {
-    // this.handleTurboBeforeFetchRequest = this.handleTurboBeforeFetchRequest.bind(this);
     this.handleTurboBeforeFetchResponse = this.handleTurboBeforeFetchResponse.bind(this);
     this.handleTurboRequestError = this.handleTurboRequestError.bind(this);
     this.clearFilters = this.clearFilters.bind(this);
@@ -395,14 +379,6 @@ export default class extends Controller {
   }
 
   addEventHanleForButtons() {
-    /*
-    if (this.clearFiltersButton)
-      this.clearFiltersButton.addEventListener('click', this.clearFilters);
-
-    if (this.clearInputsButton)
-      this.clearInputsButton.addEventListener('click', this.clearInputs);
-    */
-
     if (this.closeLoadingButton) {
       this.closeLoadingButton.addEventListener('click', (event) => {
         if (this.loadingDiv)
@@ -431,9 +407,6 @@ export default class extends Controller {
   }
 
   handleTurboBeforeFetchResponse(event) {
-    // console.log('turbo:before-fetch-response', event);
-    // this.toggleFilterCardsVisible();
-
     if (!this.isFilterRequest(event.detail)) return;
 
     event.preventDefault();
@@ -486,13 +459,6 @@ export default class extends Controller {
     if (this.closeLoadingButton)
       this.closeLoadingButton.classList.add('d-none');
   }
-
-  /*
-  handleTurboBeforeFetchRequest(event) {
-    console.log('turbo:before-fetch-request', event);
-    if (!this.isFilterRequest(event.detail)) return;
-  }
-  */
 
   isFilterRequest(detail) {
     if (detail.url) // fetch request
@@ -556,7 +522,6 @@ export default class extends Controller {
   }
 
   toggleFilterStatus(element, disabled = true) {
-    // console.log('toggleFilterStatus', element, disabled);
     const value = element.getAttribute('data-field-name');
     if (!value)
       return;

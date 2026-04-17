@@ -1,4 +1,6 @@
 class PlaylistTrack < ApplicationRecord
+  include Countable
+
   belongs_to :playlist
   belongs_to :track
   has_one :genre, through: :track
@@ -14,28 +16,9 @@ class PlaylistTrack < ApplicationRecord
   validates :track_id, presence: true
   validates :track_id, uniqueness: { scope: :playlist_id, message: "already exists in this playlist" }
 
-
+  # Keep legacy alias for backward compatibility with existing callers
   scope :with_record_count_by_model_in_range_for_use_as_sub_query, ->(model, min_value, max_value = nil) {
-    return PlaylistTrack.none if min_value.nil? && max_value.nil?
-
-    column_name = "#{model.to_s.singularize}_id"
-    query = PlaylistTrack.select(column_name).group(column_name)
-
-    if min_value.present? && max_value.present?
-      if min_value > max_value
-        return PlaylistTrack.none
-      elsif min_value == max_value
-        query = query.having('COUNT(id) = ?', min_value)
-      else
-        query = query.having('COUNT(id) BETWEEN ? AND ?', min_value, max_value)
-      end
-    elsif min_value.nil? && max_value.present?
-      query = query.having('COUNT(id) <= ?', max_value)
-    elsif min_value.present? && max_value.nil?
-      query = query.having('COUNT(id) >= ?', min_value)
-    end
-
-    query
+    count_in_range(model, min_value, max_value)
   }
 
 

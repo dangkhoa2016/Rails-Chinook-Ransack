@@ -1,12 +1,6 @@
 module Tools
 	class FiltersController < ApplicationController
 		def index
-
-			# sleep 10 if request.headers['HTTP_X_TURBO_REQUEST_ID'].present?
-			# if rand(1..10) > 5
-			# 	raise 'Error'
-			# end
-
 			filter_field = filter_params[:name]
 			filter_template = filter_params[:template]
 			if filter_field.blank? && filter_template.blank?
