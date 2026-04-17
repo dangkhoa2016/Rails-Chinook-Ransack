@@ -2,6 +2,7 @@ class InvoicesController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_invoice, only: %i[ show edit update destroy ]
+  before_action :authorize_invoice
 
   # GET /invoices or /invoices.json
   def index
@@ -87,6 +88,10 @@ class InvoicesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
       @invoice = Invoice.find(params[:id])
+    end
+
+    def authorize_invoice
+      authorize(@invoice || Invoice)
     end
 
     # Only allow a list of trusted parameters through.

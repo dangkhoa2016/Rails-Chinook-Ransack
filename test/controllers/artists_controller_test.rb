@@ -12,6 +12,29 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view artists" do
+    sign_in_regular_user
+    get artists_url
+    assert_response :success
+  end
+
+  test "regular user cannot create artist" do
+    sign_in_regular_user
+    assert_no_difference("Artist.count") do
+      post artists_url, params: { artist: { name: "Hack" } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot destroy artist" do
+    sign_in_regular_user
+    assert_no_difference("Artist.count") do
+      delete artist_url(@artist)
+    end
+    assert_redirected_to root_path
+  end
+
   test "GET index returns success" do
     get artists_url
     assert_response :success

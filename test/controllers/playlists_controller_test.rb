@@ -12,6 +12,43 @@ class PlaylistsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get playlists_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get playlist_url(@playlist)
+    assert_response :success
+  end
+
+  test "regular user cannot create playlist" do
+    sign_in_regular_user
+    assert_no_difference("Playlist.count") do
+      post playlists_url, params: { playlist: { name: "Hack" } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update playlist" do
+    sign_in_regular_user
+    patch playlist_url(@playlist), params: { playlist: { name: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", @playlist.reload.name
+  end
+
+  test "regular user cannot destroy playlist" do
+    sign_in_regular_user
+    assert_no_difference("Playlist.count") do
+      delete playlist_url(@playlist)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get playlists_url
     assert_response :success

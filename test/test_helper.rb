@@ -12,6 +12,7 @@ end
 # Helper để sign in trong controller tests
 module AuthHelper
   def sign_in_as(user)
+    delete destroy_user_session_path  # sign out trước
     post user_session_path, params: {
       user: { email: user.email, password: 'password123' }
     }

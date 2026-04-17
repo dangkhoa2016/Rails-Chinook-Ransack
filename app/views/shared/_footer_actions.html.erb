@@ -15,8 +15,12 @@ data_attributes = {
     if action_name == 'index'
       actions << link_to(translate('actions.view'), model_record)
     end
-    actions << link_to(translate('actions.edit'), edit_polymorphic_path(model_record))
-    actions << link_to(translate('actions.delete'), model_record, method: :delete, data: data_attributes)
+    if policy(model_record).edit?
+      actions << link_to(translate('actions.edit'), edit_polymorphic_path(model_record))
+    end
+    if policy(model_record).destroy?
+      actions << link_to(translate('actions.delete'), model_record, method: :delete, data: data_attributes)
+    end
   elsif action_name.in?(%w[edit update])
     actions << link_to(translate('actions.view'), model_record)
   end

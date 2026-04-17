@@ -1,0 +1,2 @@
+class PlaylistTrackPolicy < ApplicationPolicy
+end

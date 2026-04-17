@@ -2,6 +2,7 @@ class CustomersController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_customer, only: %i[ show edit update destroy ]
+  before_action :authorize_customer
 
   # GET /customers or /customers.json
   def index
@@ -80,6 +81,10 @@ class CustomersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
       @customer = Customer.find(params[:id])
+    end
+
+    def authorize_customer
+      authorize(@customer || Customer)
     end
 
     # Only allow a list of trusted parameters through.

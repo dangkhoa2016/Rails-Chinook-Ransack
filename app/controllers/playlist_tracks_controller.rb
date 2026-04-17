@@ -1,5 +1,6 @@
 class PlaylistTracksController < ApplicationController
   before_action :set_playlist_track, only: %i[ show edit update destroy ]
+  before_action :authorize_playlist_track
 
   # GET /playlist_tracks or /playlist_tracks.json
   def index
@@ -61,6 +62,10 @@ class PlaylistTracksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist_track
       @playlist_track = PlaylistTrack.find(params[:id])
+    end
+
+    def authorize_playlist_track
+      authorize(@playlist_track || PlaylistTrack)
     end
 
     # Only allow a list of trusted parameters through.

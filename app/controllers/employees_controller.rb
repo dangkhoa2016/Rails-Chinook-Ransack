@@ -2,6 +2,7 @@ class EmployeesController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_employee, only: %i[ show edit update destroy ]
+  before_action :authorize_employee
 
   # GET /employees or /employees.json
   def index
@@ -82,6 +83,10 @@ class EmployeesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_employee
       @employee = Employee.find(params[:id])
+    end
+
+    def authorize_employee
+      authorize(@employee || Employee)
     end
 
     # Only allow a list of trusted parameters through.

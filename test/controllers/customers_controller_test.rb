@@ -12,6 +12,49 @@ class CustomersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get customers_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get customer_url(@customer)
+    assert_response :success
+  end
+
+  test "regular user cannot access new" do
+    sign_in_regular_user
+    get new_customer_url
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot create customer" do
+    sign_in_regular_user
+    assert_no_difference("Customer.count") do
+      post customers_url, params: { customer: { first_name: "Hack" } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update customer" do
+    sign_in_regular_user
+    patch customer_url(@customer), params: { customer: { first_name: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", @customer.reload.first_name
+  end
+
+  test "regular user cannot destroy customer" do
+    sign_in_regular_user
+    assert_no_difference("Customer.count") do
+      delete customer_url(@customer)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get customers_url
     assert_response :success

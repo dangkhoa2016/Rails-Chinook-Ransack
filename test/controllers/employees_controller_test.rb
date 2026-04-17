@@ -12,6 +12,49 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get employees_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get employee_url(@employee)
+    assert_response :success
+  end
+
+  test "regular user cannot access new" do
+    sign_in_regular_user
+    get new_employee_url
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot create employee" do
+    sign_in_regular_user
+    assert_no_difference("Employee.count") do
+      post employees_url, params: { employee: { first_name: "Hack" } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update employee" do
+    sign_in_regular_user
+    patch employee_url(@employee), params: { employee: { title: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", @employee.reload.title
+  end
+
+  test "regular user cannot destroy employee" do
+    sign_in_regular_user
+    assert_no_difference("Employee.count") do
+      delete employee_url(@employee)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get employees_url
     assert_response :success

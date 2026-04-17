@@ -1,11 +1,20 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
+  include Pundit::Authorization
+
   before_action :set_locale, :set_page_size
   before_action :authenticate_user!
+  after_action  :verify_authorized, unless: :devise_controller?
 
-  rescue_from Pagy::OverflowError, with: :handle_pagy_overflow
+  rescue_from Pagy::OverflowError,        with: :handle_pagy_overflow
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
-  rescue_from Exception, with: :render_500 if Rails.env.production?
+  rescue_from Pundit::NotAuthorizedError,  with: :handle_not_authorized
+  rescue_from Exception,                   with: :render_500 if Rails.env.production?
+
+  # Dùng trong controllers để skip verify_authorized (ví dụ: home)
+  def skip_authorization_check
+    skip_authorization
+  end
 
   private
 
@@ -17,6 +26,13 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to root_path, alert: 'Record not found.' }
       format.json { render json: { error: exception.message }, status: :not_found }
+    end
+  end
+
+  def handle_not_authorized(exception)
+    respond_to do |format|
+      format.html { redirect_to root_path, alert: 'You are not authorized to perform this action.' }
+      format.json { render json: { error: 'Forbidden' }, status: :forbidden }
     end
   end
 

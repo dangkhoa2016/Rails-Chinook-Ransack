@@ -2,6 +2,7 @@ class PlaylistsController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_playlist, only: %i[ show edit update destroy ]
+  before_action :authorize_playlist
 
   # GET /playlists or /playlists.json
   def index
@@ -72,6 +73,10 @@ class PlaylistsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist
       @playlist = Playlist.find(params[:id])
+    end
+
+    def authorize_playlist
+      authorize(@playlist || Playlist)
     end
 
     # Only allow a list of trusted parameters through.

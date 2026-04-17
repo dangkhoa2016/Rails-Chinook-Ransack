@@ -13,6 +13,54 @@ class AlbumsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization: regular user can only read ---
+  test "regular user can access index" do
+    sign_in_regular_user
+    get albums_url
+    assert_response :success
+  end
+
+  test "regular user can access show" do
+    sign_in_regular_user
+    get album_url(@album)
+    assert_response :success
+  end
+
+  test "regular user cannot access new" do
+    sign_in_regular_user
+    get new_album_url
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot create album" do
+    sign_in_regular_user
+    assert_no_difference("Album.count") do
+      post albums_url, params: { album: { title: "Hack", artist_id: artists(:metallica).id } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot edit album" do
+    sign_in_regular_user
+    get edit_album_url(@album)
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update album" do
+    sign_in_regular_user
+    patch album_url(@album), params: { album: { title: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", @album.reload.title
+  end
+
+  test "regular user cannot destroy album" do
+    sign_in_regular_user
+    assert_no_difference("Album.count") do
+      delete album_url(@album)
+    end
+    assert_redirected_to root_path
+  end
+
   # --- Index ---
   test "GET index returns success" do
     get albums_url

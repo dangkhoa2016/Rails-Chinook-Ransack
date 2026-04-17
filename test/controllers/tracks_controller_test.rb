@@ -12,6 +12,55 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get tracks_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get track_url(@track)
+    assert_response :success
+  end
+
+  test "regular user cannot access new" do
+    sign_in_regular_user
+    get new_track_url
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot create track" do
+    sign_in_regular_user
+    assert_no_difference("Track.count") do
+      post tracks_url, params: { track: { name: "Hack" } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot edit track" do
+    sign_in_regular_user
+    get edit_track_url(@track)
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update track" do
+    sign_in_regular_user
+    patch track_url(@track), params: { track: { name: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", @track.reload.name
+  end
+
+  test "regular user cannot destroy track" do
+    sign_in_regular_user
+    assert_no_difference("Track.count") do
+      delete track_url(@track)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get tracks_url
     assert_response :success

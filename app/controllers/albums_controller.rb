@@ -2,6 +2,7 @@ class AlbumsController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_album, only: %i[ show edit update destroy ]
+  before_action :authorize_album
 
   # GET /albums or /albums.json
   def index
@@ -77,12 +78,15 @@ class AlbumsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_album
       @album = Album.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
+    def authorize_album
+      authorize(@album || Album)
+    end
+
     def album_params
       params.require(:album).permit(:title, :artist_id)
     end

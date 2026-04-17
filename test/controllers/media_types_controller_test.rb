@@ -12,6 +12,43 @@ class MediaTypesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get media_types_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get media_type_url(@media_type)
+    assert_response :success
+  end
+
+  test "regular user cannot create media_type" do
+    sign_in_regular_user
+    assert_no_difference("MediaType.count") do
+      post media_types_url, params: { media_type: { name: "Hack" } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update media_type" do
+    sign_in_regular_user
+    patch media_type_url(@media_type), params: { media_type: { name: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", @media_type.reload.name
+  end
+
+  test "regular user cannot destroy media_type" do
+    sign_in_regular_user
+    assert_no_difference("MediaType.count") do
+      delete media_type_url(@media_type)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get media_types_url
     assert_response :success

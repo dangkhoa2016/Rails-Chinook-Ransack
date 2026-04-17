@@ -12,6 +12,39 @@ class PlaylistTracksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get playlist_tracks_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get playlist_track_url(@playlist_track)
+    assert_response :success
+  end
+
+  test "regular user cannot create playlist_track" do
+    sign_in_regular_user
+    assert_no_difference("PlaylistTrack.count") do
+      post playlist_tracks_url, params: { playlist_track: {
+        playlist_id: playlists(:empty_playlist).id,
+        track_id: tracks(:enter_sandman).id
+      }}
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot destroy playlist_track" do
+    sign_in_regular_user
+    assert_no_difference("PlaylistTrack.count") do
+      delete playlist_track_url(@playlist_track)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get playlist_tracks_url
     assert_response :success

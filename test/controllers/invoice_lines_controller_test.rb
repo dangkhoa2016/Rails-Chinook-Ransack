@@ -12,6 +12,43 @@ class InvoiceLinesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get invoice_lines_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get invoice_line_url(@invoice_line)
+    assert_response :success
+  end
+
+  test "regular user cannot create invoice_line" do
+    sign_in_regular_user
+    assert_no_difference("InvoiceLine.count") do
+      post invoice_lines_url, params: { invoice_line: { quantity: 1 } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update invoice_line" do
+    sign_in_regular_user
+    patch invoice_line_url(@invoice_line), params: { invoice_line: { quantity: 99 } }
+    assert_redirected_to root_path
+    assert_not_equal 99, @invoice_line.reload.quantity
+  end
+
+  test "regular user cannot destroy invoice_line" do
+    sign_in_regular_user
+    assert_no_difference("InvoiceLine.count") do
+      delete invoice_line_url(@invoice_line)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get invoice_lines_url
     assert_response :success

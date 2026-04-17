@@ -12,6 +12,49 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
+  # --- Authorization ---
+  test "regular user can view index" do
+    sign_in_regular_user
+    get invoices_url
+    assert_response :success
+  end
+
+  test "regular user can view show" do
+    sign_in_regular_user
+    get invoice_url(@invoice)
+    assert_response :success
+  end
+
+  test "regular user cannot access new" do
+    sign_in_regular_user
+    get new_invoice_url
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot create invoice" do
+    sign_in_regular_user
+    assert_no_difference("Invoice.count") do
+      post invoices_url, params: { invoice: { billing_city: "Hack" } }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "regular user cannot update invoice" do
+    sign_in_regular_user
+    patch invoice_url(@invoice), params: { invoice: { billing_city: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", @invoice.reload.billing_city
+  end
+
+  test "regular user cannot destroy invoice" do
+    sign_in_regular_user
+    assert_no_difference("Invoice.count") do
+      delete invoice_url(@invoice)
+    end
+    assert_redirected_to root_path
+  end
+
+  # --- CRUD (admin) ---
   test "GET index returns success" do
     get invoices_url
     assert_response :success

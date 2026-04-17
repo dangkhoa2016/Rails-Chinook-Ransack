@@ -2,6 +2,7 @@ class MediaTypesController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_media_type, only: %i[ show edit update destroy ]
+  before_action :authorize_media_type
 
   # GET /media_types or /media_types.json
   def index
@@ -80,6 +81,10 @@ class MediaTypesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_media_type
       @media_type = MediaType.find(params[:id])
+    end
+
+    def authorize_media_type
+      authorize(@media_type || MediaType)
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,0 +1,2 @@
+class AlbumPolicy < ApplicationPolicy
+end

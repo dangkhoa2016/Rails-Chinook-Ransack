@@ -2,6 +2,7 @@ class GenresController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_genre, only: %i[ show edit update destroy ]
+  before_action :authorize_genre
 
   # GET /genres or /genres.json
   def index
@@ -80,6 +81,10 @@ class GenresController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_genre
       @genre = Genre.find(params[:id])
+    end
+
+    def authorize_genre
+      authorize(@genre || Genre)
     end
 
     # Only allow a list of trusted parameters through.

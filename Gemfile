@@ -38,6 +38,9 @@ gem "ransack", "~> 4.2"
 # Authentication [https://github.com/heartcombo/devise]
 gem "devise", "~> 4.9"
 
+# Authorization [https://github.com/varvet/pundit]
+gem "pundit", "~> 2.4"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

@@ -2,6 +2,7 @@ class TracksController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_track, only: %i[ show edit update destroy ]
+  before_action :authorize_track
 
   # GET /tracks or /tracks.json
   def index
@@ -77,9 +78,12 @@ class TracksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_track
       @track = Track.find(params[:id])
+    end
+
+    def authorize_track
+      authorize(@track || Track)
     end
 
     # Only allow a list of trusted parameters through.

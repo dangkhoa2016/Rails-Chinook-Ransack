@@ -2,6 +2,7 @@ class ArtistsController < ApplicationController
   include Filterable
   include Sortable
   before_action :set_artist, only: %i[ show edit update destroy ]
+  before_action :authorize_artist
 
   # GET /artists or /artists.json
   def index
@@ -80,6 +81,10 @@ class ArtistsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_artist
       @artist = Artist.find(params[:id])
+    end
+
+    def authorize_artist
+      authorize(@artist || Artist)
     end
 
     # Only allow a list of trusted parameters through.
