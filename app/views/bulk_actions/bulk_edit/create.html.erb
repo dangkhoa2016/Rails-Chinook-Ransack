@@ -1,0 +1,17 @@
+<% if @error_message.present? %>
+  <div class='alert alert-danger mb-0' role='alert'>
+    <h3 class='alert-heading'>
+      <i class='bi bi-exclamation-triangle-fill me-2'></i> <%= translate('base.bulk_edit') %>
+    </h3>
+
+    <p class='mb-0'><%= @error_message %></p>
+  </div>
+<% else %>
+  <div class='alert alert-success mb-0' role='alert'>
+    <h3 class='alert-heading'>
+      <i class='bi bi-check-circle-fill me-2'></i> <%= translate('base.bulk_edit_success') %>
+    </h3>
+
+    <p class='mb-0'><%= translate('base.records_affected', count: @updated_count || 0) %></p>
+  </div>
+<% end %>

@@ -99,7 +99,7 @@ class TracksController < ApplicationController
       :name_or_album_title_or_genre_name_or_media_type_name_cont
     end
 
-    
+
     def model_query
       query = Track.includes(:album, :media_type, :genre)
       if is_sort_by_invoice_lines_count?

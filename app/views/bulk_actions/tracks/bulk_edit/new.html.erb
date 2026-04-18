@@ -1,0 +1,25 @@
+<h3>Bulk edit tracks</h3>
+
+<p><%= @records.pluck('id').join(', ') %></p>
+
+<div data-controller='bulk-edit' data-bulk-edit-model-value='tracks'>
+  <div class='' data-controller='choices'>
+    <%= select_tag 'fields', options_for_select(@fields),
+      class: 'form-control', multiple: true,
+      data: {
+        choices_target: 'select',
+        placeholder: 'Select fields to edit'
+      }, name: ''
+    %>
+  </div>
+
+  <button class='btn btn-primary btn-sm' data-action='bulk-edit#addFields'>Render selected fields</button>
+  <hr class='border-0 clearfix'></hr>
+
+  <%= form_tag bulk_actions_tracks_bulk_edit_index_path, method: :post do %>
+    <%= hidden_field_tag :picked_ids, @records.pluck('id').join(',') %>
+    <div id='fields-container' class='row g-3 row-cols-1 row-cols-md-2'></div>
+    <%= submit_tag 'Update selected tracks', class: 'btn btn-primary', disabled: true,
+      data: { disable_with: 'Updating...' } %>
+  <% end %>
+</div>

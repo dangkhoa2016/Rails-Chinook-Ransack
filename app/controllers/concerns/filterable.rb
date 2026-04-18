@@ -2,12 +2,7 @@ module Filterable
   extend ActiveSupport::Concern
 
   included do
-    before_action do |controller|
-      if controller.class.name.start_with?('BulkActions::') && controller.action_name == 'new' ||
-          controller.respond_to?(:index)
-        load_filters
-      end
-    end
+    before_action :load_filters, if: :load_filters_for_action?
     
     def render_index(mode = 'card')
       if request.query_parameters['partial_only'] == 'true'
@@ -20,12 +15,12 @@ module Filterable
   end
 
   def filter_service
-    name = controller_name
-    if params[:controller].start_with?('bulk_actions')
-      name = params[:controller].split('/').second
+    model_name = controller_name
+    if params[:controller].to_s.start_with?('bulk_actions')
+      model_name = params[:controller].to_s.split('/').second
     end
 
-    "Search::#{name.classify}".constantize rescue nil
+    "Search::#{model_name.to_s.singularize.classify}".safe_constantize
   end
 
   def load_filters
@@ -35,6 +30,8 @@ module Filterable
     end
 
     if params[:q].present?
+      return unless respond_to?(:default_ransack_params, true)
+
       @filters = { default_ransack_params => params[:q] }
       return
     end
@@ -119,5 +116,13 @@ module Filterable
 
   def page_size
     (cookies[:per_page].presence || Pagy::DEFAULT[:limit]).to_i
+  end
+
+  private
+
+  def load_filters_for_action?
+    return true if action_name == 'index'
+
+    self.class.name.start_with?('BulkActions::') && action_name.in?(%w[new create])
   end
 end

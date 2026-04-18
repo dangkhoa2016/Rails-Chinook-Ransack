@@ -1,0 +1,11 @@
+<h3 class='h5'><%= translate('base.bulk_delete') %></h3>
+
+<p><%= translate('base.bulk_action_confirm_destroy', count: @records.size) %></p>
+<p class='text-muted'><%= @records.pluck(:id).join(', ') %></p>
+
+<%= form_tag bulk_action_create_path, method: :post do %>
+  <%= hidden_field_tag :picked_ids, picked_ids_csv.presence || @records.pluck(:id).join(',') %>
+  <%= submit_tag translate('base.bulk_delete'),
+    class: 'btn btn-danger',
+    data: { disable_with: "#{translate('base.bulk_delete')}..." } %>
+<% end %>

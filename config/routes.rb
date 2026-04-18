@@ -107,8 +107,8 @@ Rails.application.routes.draw do
     namespace :playlists do
       resources :bulk_destroy, only: [:new, :create]
       resources :bulk_edit, only: [:new, :create]
-      resources :bulk_add_tracks, only: [:new, :create]
-      resources :bulk_remove_tracks, only: [:new, :create]
+      # resources :bulk_add_tracks, only: [:new, :create]
+      # resources :bulk_remove_tracks, only: [:new, :create]
     end
 
     namespace :tracks do

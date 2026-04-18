@@ -1,0 +1,24 @@
+<h3 class='h5'><%= translate('base.bulk_edit') %></h3>
+
+<p class='text-muted'><%= @records.pluck(:id).join(', ') %></p>
+
+<div data-controller='bulk-edit' data-bulk-edit-model-value='<%= model.model_name.plural %>'>
+  <div data-controller='choices'>
+    <%= select_tag 'fields', options_for_select(@fields),
+      class: 'form-control', multiple: true,
+      data: {
+        choices_target: 'select',
+        placeholder: 'Select fields to edit'
+      }, name: '' %>
+  </div>
+
+  <button class='btn btn-primary btn-sm mt-2' data-action='bulk-edit#addFields'>Render selected fields</button>
+  <hr class='border-0 clearfix' />
+
+  <%= form_tag bulk_action_create_path, method: :post do %>
+    <%= hidden_field_tag :picked_ids, picked_ids_csv.presence || @records.pluck(:id).join(',') %>
+    <div id='fields-container' class='row g-3 row-cols-1 row-cols-md-2'></div>
+    <%= submit_tag translate('base.bulk_edit'), class: 'btn btn-primary', disabled: true,
+      data: { disable_with: "#{translate('base.bulk_edit')}..." } %>
+  <% end %>
+</div>

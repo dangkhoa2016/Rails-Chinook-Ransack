@@ -1,4 +1,4 @@
-class BulkActions::Artists::BulkEditController < ApplicationController
+class BulkActions::Artists::BulkEditController < BulkActions::BulkEditController
 
   def model_query
     if is_sort_by_albums_count?

@@ -1,2 +1,2 @@
-class BulkActions::Genes::BulkDestroyController < BulkActions::BulkDestroyController
+class BulkActions::Genres::BulkDestroyController < BulkActions::BulkDestroyController
 end

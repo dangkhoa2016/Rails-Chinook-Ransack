@@ -74,7 +74,7 @@ export default class extends Controller {
     // console.log('fetchUrlValueChanged', this.fetchUrlValue, newVal, oldVal);
 
     if (newVal) {
-    this.triggerSearch = true;
+      this.triggerSearch = true;
       this.hasMoreData = true;
     } else {
       this.triggerSearch = false;
@@ -257,7 +257,9 @@ export default class extends Controller {
     choicesInstance.input.element.addEventListener('keyup', this.handleKeyUpInput);
 
     this.choices = choicesInstance;
-    this.cacheSearchHintElement = choicesInstance._store.state.choices.find(item => item.labelClass?.includes(this.searchHintClass)).choiceEl;
+    const searchHintOption = choicesInstance._store.state.choices.find(item => item.labelClass?.includes(this.searchHintClass));
+    if (searchHintOption)
+      this.cacheSearchHintElement = searchHintOption.choiceEl;
   }
 
   // Check if the dropdown is scrolled to the bottom and load more data
@@ -303,11 +305,14 @@ export default class extends Controller {
 
   // Toggle the visibility of selectable items
   toggleSelectableItemsVisibility(displayStyle) {
-    const items = this.choices.choiceList.element.querySelectorAll(`:not([data-label-class='${this.searchHintClass}']`);
+    const items = this.choices.choiceList.element.querySelectorAll('[data-choice-selectable]');
     if (!items)
       return;
 
     items.forEach(item => {
+      if (item.getAttribute('data-label-class') === this.searchHintClass)
+        return;
+
       item.style.display = displayStyle;
     });
   }

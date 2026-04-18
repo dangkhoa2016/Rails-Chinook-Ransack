@@ -85,6 +85,10 @@ vi:
     playlist_bulk_add_tracks: Thêm bài hát vào các danh sách phát
     playlist_bulk_remove_tracks: Xóa bài hát khỏi các danh sách phát
     bulk_destroy_success: Xóa hàng loạt thành công
+    bulk_edit_success: Cập nhật hàng loạt thành công
+    records_affected: "Số bản ghi bị ảnh hưởng: %{count}"
+    bulk_action_no_fields: Hãy chọn ít nhất một trường để cập nhật
+    bulk_action_confirm_destroy: "Bạn có chắc chắn muốn xóa %{count} bản ghi không?"
     select_all_checkboxes: Chọn tất cả
     deselect_all_checkboxes: Bỏ chọn tất cả
     do_not_clear_checkboxes_on_page_change: Không xóa các hộp chọn khi chuyển trang
