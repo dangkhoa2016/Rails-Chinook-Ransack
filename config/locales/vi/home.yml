@@ -1,0 +1,28 @@
+vi:
+  home:
+    index:
+      dashboard: Bảng điều khiển
+      title: Tổng quan dữ liệu Chinook
+      subtitle: Thống kê nhanh các bảng chính sau khi đăng nhập.
+      summary_html: "<strong>%{records}</strong> bản ghi trên <strong>%{tables}</strong> bảng"
+      cards:
+        data_tables:
+          title: Số bảng dữ liệu
+          description: Các bảng nghiệp vụ chính đang được theo dõi trên dashboard.
+        total_records:
+          title: Tổng số bản ghi
+          description: Tổng số dòng dữ liệu của các bảng nghiệp vụ chính trong Chinook.
+        largest_table:
+          title: Bảng lớn nhất
+          count: "%{count} bản ghi"
+          empty_title: Chưa có dữ liệu
+          empty_description: Dashboard chưa có thống kê bảng nào để hiển thị.
+      stats:
+        title: Thống kê theo bảng
+        description: Sắp xếp theo số lượng bản ghi để các bảng nhiều dữ liệu hiện lên trước.
+        top_table: "Bảng nhiều dữ liệu nhất: %{table}"
+        columns:
+          table: Bảng
+          records: Bản ghi
+          action: Thao tác
+        open_list: Mở danh sách

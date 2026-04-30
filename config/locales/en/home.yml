@@ -1,0 +1,28 @@
+en:
+  home:
+    index:
+      dashboard: Dashboard
+      title: Chinook data overview
+      subtitle: Quick counts for the main tables available after sign in.
+      summary_html: "<strong>%{records}</strong> records across <strong>%{tables}</strong> tables"
+      cards:
+        data_tables:
+          title: Data tables
+          description: Tracked business tables on this dashboard.
+        total_records:
+          title: Total records
+          description: Combined row count across the main Chinook tables.
+        largest_table:
+          title: Largest table
+          count: "%{count} records"
+          empty_title: No data
+          empty_description: The dashboard has no table stats to display yet.
+      stats:
+        title: Table statistics
+        description: Sorted by record count so the busiest tables stay on top.
+        top_table: "Top table: %{table}"
+        columns:
+          table: Table
+          records: Records
+          action: Action
+        open_list: Open list

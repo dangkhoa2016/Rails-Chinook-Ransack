@@ -1,3 +1,93 @@
 
-<h1>Home#index</h1>
+<div class='container-fluid py-4'>
+	<div class='d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4'>
+		<div>
+			<p class='text-uppercase text-muted fw-semibold small mb-2'><%= translate('home.index.dashboard') %></p>
+			<h1 class='mb-1'><%= translate('home.index.title') %></h1>
+			<p class='text-muted mb-0'><%= translate('home.index.subtitle') %></p>
+		</div>
+		<p class='text-muted mb-0'>
+			<%= translate('home.index.summary_html',
+				records: number_with_delimiter(@total_records),
+				tables: @table_stats.size) %>
+		</p>
+	</div>
+
+	<div class='row g-3 mb-4'>
+		<div class='col-12 col-md-4'>
+			<div class='card border-0 shadow-sm h-100'>
+				<div class='card-body'>
+					<p class='text-muted text-uppercase small fw-semibold mb-2'><%= translate('home.index.cards.data_tables.title') %></p>
+					<h2 class='display-6 mb-1'><%= @table_stats.size %></h2>
+					<p class='text-muted mb-0'><%= translate('home.index.cards.data_tables.description') %></p>
+				</div>
+			</div>
+		</div>
+
+		<div class='col-12 col-md-4'>
+			<div class='card border-0 shadow-sm h-100'>
+				<div class='card-body'>
+					<p class='text-muted text-uppercase small fw-semibold mb-2'><%= translate('home.index.cards.total_records.title') %></p>
+					<h2 class='display-6 mb-1'><%= number_with_delimiter(@total_records) %></h2>
+					<p class='text-muted mb-0'><%= translate('home.index.cards.total_records.description') %></p>
+				</div>
+			</div>
+		</div>
+
+		<div class='col-12 col-md-4'>
+			<div class='card border-0 shadow-sm h-100'>
+				<div class='card-body'>
+					<p class='text-muted text-uppercase small fw-semibold mb-2'><%= translate('home.index.cards.largest_table.title') %></p>
+					<% if @largest_table.present? %>
+						<h2 class='h3 mb-1'><%= @largest_table[:label] %></h2>
+						<p class='text-muted mb-0'><%= translate('home.index.cards.largest_table.count', count: number_with_delimiter(@largest_table[:count])) %></p>
+					<% else %>
+						<h2 class='h3 mb-1'><%= translate('home.index.cards.largest_table.empty_title') %></h2>
+						<p class='text-muted mb-0'><%= translate('home.index.cards.largest_table.empty_description') %></p>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class='card border-0 shadow-sm'>
+		<div class='card-body pb-0'>
+			<div class='d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2'>
+				<div>
+					<h2 class='h5 mb-1'><%= translate('home.index.stats.title') %></h2>
+					<p class='text-muted mb-0'><%= translate('home.index.stats.description') %></p>
+				</div>
+				<% if @largest_table.present? %>
+					<span class='badge text-bg-light border'><%= translate('home.index.stats.top_table', table: @largest_table[:label]) %></span>
+				<% end %>
+			</div>
+		</div>
+
+		<div class='table-responsive'>
+			<table class='table table-hover align-middle mb-0'>
+				<thead class='table-light'>
+					<tr>
+						<th scope='col'><%= translate('home.index.stats.columns.table') %></th>
+						<th scope='col' class='text-end'><%= translate('home.index.stats.columns.records') %></th>
+						<th scope='col' class='text-end'><%= translate('home.index.stats.columns.action') %></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @table_stats.each do |stat| %>
+						<tr>
+							<td>
+								<div class='fw-semibold'><%= stat[:label] %></div>
+								<div class='text-muted small'><%= stat[:table_name] %></div>
+							</td>
+							<td class='text-end fw-semibold'><%= number_with_delimiter(stat[:count]) %></td>
+							<td class='text-end'>
+								<%= link_to translate('home.index.stats.open_list'), polymorphic_path(stat[:model]), class: 'btn btn-sm btn-outline-primary' %>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 
